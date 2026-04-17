@@ -1,0 +1,49 @@
+.login-container {
+  max-width: 450px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-link p {
+  color: #666;
+  font-size: 14px;
+}
+
+.signup-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.signup-link a:hover {
+  color: #0056b3;
+}
+

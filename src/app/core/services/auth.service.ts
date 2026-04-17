@@ -45,6 +45,16 @@ export class AuthService {
       }));
   }
 
+  register(userData: { email: string; password: string; name?: string }): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/auth/register`, userData)
+      .pipe(map(response => {
+        // Si el registro es exitoso, guardamos el usuario/token en localStorage
+        localStorage.setItem('token', JSON.stringify(response));
+        this.currentUserSubject.next(response);
+        return response;
+      }));
+  }
+
   logout() {
     localStorage.removeItem('token');
     this.currentUserSubject.next({token: undefined});
