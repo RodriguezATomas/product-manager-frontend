@@ -1,0 +1,168 @@
+:host {
+  display: block;
+}
+
+.products-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: radial-gradient(circle at top left, rgba(33, 150, 243, 0.16), transparent 26%), radial-gradient(circle at bottom right, rgba(255, 183, 77, 0.18), transparent 24%), linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+}
+
+.products-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.products-hero h1 {
+  margin: 6px 0;
+  font-size: 2.2rem;
+  color: #16324f;
+}
+
+.products-hero p {
+  margin: 0;
+  max-width: 760px;
+  color: #4e647a;
+}
+
+.eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  color: #1e88e5;
+  font-weight: 700;
+}
+
+.access-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 18px 22px;
+  margin-bottom: 22px;
+  border-radius: 22px;
+  box-shadow: 0 22px 55px rgba(22, 50, 79, 0.08);
+}
+
+.access-card mat-icon {
+  color: #1e88e5;
+}
+
+.access-card-admin mat-icon {
+  color: #2e7d32;
+}
+
+.access-card strong,
+.access-card p {
+  display: block;
+}
+
+.access-card p {
+  margin: 4px 0 0;
+  color: #4e647a;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.product-card,
+.skeleton-card {
+  border-radius: 22px;
+  box-shadow: 0 22px 55px rgba(22, 50, 79, 0.08);
+}
+
+.product-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 18px 18px 0;
+}
+
+.category-chip,
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.category-chip {
+  background: rgba(30, 136, 229, 0.12);
+  color: #1565c0;
+}
+
+.stock-badge {
+  background: rgba(56, 142, 60, 0.12);
+  color: #2e7d32;
+}
+
+.stock-badge-low {
+  background: rgba(251, 140, 0, 0.14);
+  color: #ef6c00;
+}
+
+.product-card p {
+  color: #4e647a;
+  line-height: 1.6;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 40px 24px;
+  text-align: center;
+  color: #5e7287;
+}
+
+.empty-state mat-icon {
+  width: 44px;
+  height: 44px;
+  font-size: 44px;
+}
+
+.skeleton-card {
+  min-height: 260px;
+  background: linear-gradient(90deg, rgba(225, 232, 240, 0.9) 25%, rgba(245, 247, 250, 1) 50%, rgba(225, 232, 240, 0.9) 75%);
+  background-size: 200% 100%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 900px) {
+  .products-page {
+    padding: 20px;
+  }
+
+  .products-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}

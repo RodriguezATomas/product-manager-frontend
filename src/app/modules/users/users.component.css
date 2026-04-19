@@ -16,6 +16,12 @@
   margin-bottom: 24px;
 }
 
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 .users-hero h1 {
   margin: 6px 0;
   font-size: 2.2rem;
@@ -174,6 +180,11 @@ table {
   .users-hero {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .hero-actions {
+    width: 100%;
+    flex-wrap: wrap;
   }
 
   .filters-grid {

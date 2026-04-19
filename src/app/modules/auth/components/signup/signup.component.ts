@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../../../core/services/auth.service';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../../core/services/auth.service';
 import { passwordMatchValidator } from '../../../../shared/validators/password-match.validator';
 
 @Component({
@@ -16,7 +17,8 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,14 +47,14 @@ export class SignupComponent implements OnInit {
 
     this.authService.register({ email, password, name }).subscribe({
       next: () => {
-        this.snackBar.open('¡Registro exitoso! Bienvenido', 'Cerrar', { duration: 3000 });
         this.loading = false;
+        this.snackBar.open('¡Registro exitoso! Bienvenido', 'Cerrar', { duration: 3000 });
+        this.router.navigate(['/products']);
       },
       error: (err) => {
         this.loading = false;
         const errorMessage = err.error?.message || 'Error al registrarse';
-        
-        // Mostrar errores específicos del servidor
+
         if (err.error?.errors) {
           Object.values(err.error.errors).forEach((msg: any) => {
             this.snackBar.open(msg, 'Cerrar', { duration: 5000 });

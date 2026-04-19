@@ -1,8 +1,15 @@
 <section class="profile-page">
   <div class="profile-header">
-    <span class="eyebrow">Mi cuenta</span>
-    <h1>Perfil</h1>
-    <p>Actualizá tus datos de contacto desde un único espacio.</p>
+    <div>
+      <span class="eyebrow">Mi cuenta</span>
+      <h1>Perfil</h1>
+      <p>Actualizá tus datos de contacto desde un único espacio.</p>
+    </div>
+
+    <button mat-stroked-button type="button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Cerrar sesión
+    </button>
   </div>
 
   <div class="profile-grid" *ngIf="!loading; else loadingState">

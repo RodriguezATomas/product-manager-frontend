@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { UsersService } from '../users/services/users.service';
 
 @Component({
@@ -16,8 +18,10 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private authService: AuthService,
     private usersService: UsersService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +49,11 @@ export class ProfileComponent implements OnInit {
       },
       error: (error) => this.showRequestError(error, 'No se pudo actualizar el perfil.')
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
   }
 
   private loadProfile(): void {
