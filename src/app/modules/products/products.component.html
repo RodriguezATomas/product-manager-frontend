@@ -1,1 +1,9 @@
-<p>products works!</p>
+<section>
+  <h1>Productos</h1>
+  <p>La lista de productos puede ser vista por cualquier usuario autenticado.</p>
+  <p *ngIf="isAdmin; else readOnlyState">Tu usuario es admin, así que también puede crear, editar y eliminar productos.</p>
+</section>
+
+<ng-template #readOnlyState>
+  <p>Tu usuario no es admin, así que esta sección debe quedar en modo solo lectura.</p>
+</ng-template>
