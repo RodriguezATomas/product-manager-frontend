@@ -32,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'products',
+    redirectTo: 'auth',
     pathMatch: 'full'
   }
 ];

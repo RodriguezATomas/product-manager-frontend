@@ -1,14 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort } from '@angular/material/sort';
 import { finalize } from 'rxjs';
-import { UsersService } from './services/users.service';
-import { User, UserPayload, UsersQuery } from './models/user.model';
-import { UserFormDialogComponent } from './components/user-form-dialog/user-form-dialog.component';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { UserFormDialogComponent } from './components/user-form-dialog/user-form-dialog.component';
+import { User, UserPayload, UsersQuery } from './models/user.model';
+import { UsersService } from './services/users.service';
 
 @Component({
   selector: 'app-users',
@@ -36,9 +38,11 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private authService: AuthService,
     private usersService: UsersService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.filtersForm = this.fb.group({
       name: [''],
@@ -140,8 +144,9 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  trackByUser(_: number, user: User): string {
-    return user.id;
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
   }
 
   getRoleClass(role: string): string {

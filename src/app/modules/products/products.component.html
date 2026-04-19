@@ -1,9 +1,69 @@
-<section>
-  <h1>Productos</h1>
-  <p>La lista de productos puede ser vista por cualquier usuario autenticado.</p>
-  <p *ngIf="isAdmin; else readOnlyState">Tu usuario es admin, así que también puede crear, editar y eliminar productos.</p>
+<section class="products-page">
+  <div class="products-hero">
+    <div>
+      <span class="eyebrow">Catálogo</span>
+      <h1>Productos</h1>
+      <p>Todos los usuarios autenticados pueden consultar el catálogo. La gestión queda reservada para administradores.</p>
+    </div>
+
+    <div class="hero-actions">
+      <button *ngIf="isAdmin" mat-stroked-button type="button" routerLink="/users">
+        <mat-icon>group</mat-icon>
+        Ver usuarios
+      </button>
+      <button mat-stroked-button type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+      </button>
+      <button *ngIf="isAdmin" mat-flat-button color="primary" type="button" (click)="openCreateDialog()">
+        <mat-icon>inventory_2</mat-icon>
+        Nuevo producto
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="access-card" [class.access-card-admin]="isAdmin">
+    <mat-icon>{{ isAdmin ? 'verified_user' : 'visibility' }}</mat-icon>
+    <div>
+      <strong>{{ isAdmin ? 'Modo administración activo' : 'Modo solo lectura' }}</strong>
+      <p>{{ isAdmin ? 'Podés crear, editar y eliminar productos.' : 'Podés consultar el catálogo, pero no gestionar productos.' }}</p>
+    </div>
+  </mat-card>
+
+  <div *ngIf="!loading; else loadingState" class="products-grid">
+    <mat-card class="product-card" *ngFor="let product of products; trackBy: trackByProduct">
+      <div class="product-top">
+        <span class="category-chip">{{ product.category }}</span>
+        <span class="stock-badge" [class.stock-badge-low]="product.stock <= 5">
+          Stock: {{ product.stock }}
+        </span>
+      </div>
+
+      <mat-card-header>
+        <mat-card-title>{{ product.name }}</mat-card-title>
+        <mat-card-subtitle>{{ product.price | currency:'USD':'symbol':'1.0-2' }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>{{ product.description }}</p>
+      </mat-card-content>
+
+      <mat-card-actions align="end" *ngIf="isAdmin">
+        <button mat-button type="button" (click)="openEditDialog(product)">Editar</button>
+        <button mat-flat-button color="warn" type="button" (click)="confirmDelete(product)">Eliminar</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="empty-state" *ngIf="!products.length">
+      <mat-icon>inventory</mat-icon>
+      <h2>No hay productos para mostrar</h2>
+      <p>{{ isAdmin ? 'Podés crear el primer producto desde esta pantalla.' : 'Todavía no hay productos cargados en el catálogo.' }}</p>
+    </div>
+  </div>
 </section>
 
-<ng-template #readOnlyState>
-  <p>Tu usuario no es admin, así que esta sección debe quedar en modo solo lectura.</p>
+<ng-template #loadingState>
+  <div class="products-grid">
+    <div class="skeleton-card" *ngFor="let card of [1, 2, 3, 4, 5, 6]"></div>
+  </div>
 </ng-template>

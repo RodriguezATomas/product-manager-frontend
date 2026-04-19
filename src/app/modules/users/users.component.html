@@ -6,10 +6,16 @@
       <p>Gestioná accesos, roles y estados de verificación desde una vista preparada para operar con backend paginado.</p>
     </div>
 
-    <button mat-flat-button color="primary" type="button" (click)="openCreateDialog()">
-      <mat-icon>person_add</mat-icon>
-      Nuevo usuario
-    </button>
+    <div class="hero-actions">
+      <button mat-stroked-button type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+      </button>
+      <button mat-flat-button color="primary" type="button" (click)="openCreateDialog()">
+        <mat-icon>person_add</mat-icon>
+        Nuevo usuario
+      </button>
+    </div>
   </div>
 
   <mat-card class="filters-card">
