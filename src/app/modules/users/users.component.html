@@ -6,12 +6,11 @@
       <p>Gestioná accesos, roles y estados de verificación desde una vista preparada para operar con backend paginado.</p>
     </div>
 
-      <button mat-stroked-button type="button" routerLink="/products">         
-      <mat-icon>inventory_2</mat-icon>         
-      Ver productos       
-      </button>
-
     <div class="hero-actions">
+      <button mat-stroked-button type="button" routerLink="/products">
+        <mat-icon>inventory_2</mat-icon>
+        Ver productos
+      </button>
       <button mat-stroked-button type="button" (click)="logout()">
         <mat-icon>logout</mat-icon>
         Cerrar sesión
@@ -48,7 +47,13 @@
   <mat-card class="table-card">
     <div class="table-shell" *ngIf="!loading; else loadingState">
       <div class="table-wrapper">
-        <table mat-table [dataSource]="users" matSort [matSortActive]="currentSort.active" [matSortDirection]="currentSort.direction" (matSortChange)="onSortChange($event)">
+        <table
+          mat-table
+          [dataSource]="users"
+          matSort
+          [matSortActive]="currentSort.active"
+          [matSortDirection]="currentSort.direction"
+          (matSortChange)="onSortChange($event)">
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
             <td mat-cell *matCellDef="let user">
@@ -74,7 +79,10 @@
           <ng-container matColumnDef="isEmailVerified">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Verificación</th>
             <td mat-cell *matCellDef="let user">
-              <span class="status-pill" [class.status-pill-ok]="user.isEmailVerified" [class.status-pill-pending]="!user.isEmailVerified">
+              <span
+                class="status-pill"
+                [class.status-pill-ok]="user.isEmailVerified"
+                [class.status-pill-pending]="!user.isEmailVerified">
                 {{ user.isEmailVerified ? 'Verificado' : 'Pendiente' }}
               </span>
             </td>
