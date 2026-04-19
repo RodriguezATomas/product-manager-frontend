@@ -57,13 +57,18 @@
   display: grid;
   grid-template-columns: minmax(240px, 2fr) minmax(180px, 1fr) auto;
   gap: 16px;
-  align-items: center;
+  align-items: end;
+}
+
+.filters-grid mat-form-field {
+  width: 100%;
 }
 
 .filter-actions {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+  align-self: end;
 }
 
 .table-shell {

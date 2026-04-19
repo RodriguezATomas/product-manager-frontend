@@ -35,7 +35,7 @@ export class LoginComponent {
       next: () => {
         this.loading = false;
         this.snackBar.open('¡Bienvenido!', 'Cerrar', { duration: 3000 });
-        this.router.navigate(['/products']);
+        this.router.navigate([this.authService.isAdmin() ? '/products' : '/profile']);
       },
       error: (err) => {
         this.loading = false;
