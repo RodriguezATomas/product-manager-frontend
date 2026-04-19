@@ -51,6 +51,10 @@
 
 .filters-card {
   margin-bottom: 20px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 10px;
+  padding-bottom: 4px;
 }
 
 .filters-grid {
@@ -60,10 +64,16 @@
   align-items: center;
 }
 
+.filters-grid mat-form-field {
+  width: 100%;
+  margin-top: 6px;
+}
+
 .filter-actions {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+  align-self: center;
 }
 
 .table-shell {
