@@ -7,14 +7,6 @@
     </div>
 
     <div class="hero-actions">
-      <button *ngIf="isAdmin" mat-stroked-button type="button" routerLink="/users">
-        <mat-icon>group</mat-icon>
-        Ver usuarios
-      </button>
-      <button mat-stroked-button type="button" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Cerrar sesión
-      </button>
       <button *ngIf="isAdmin" mat-flat-button color="primary" type="button" (click)="openCreateDialog()">
         <mat-icon>inventory_2</mat-icon>
         Nuevo producto
