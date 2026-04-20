@@ -1,12 +1,17 @@
 .login-container {
   max-width: 450px;
-  margin: 50px auto;
-  padding: 20px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 110px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 form {
   display: flex;
   flex-direction: column;
+  
 }
 
 h2 {
