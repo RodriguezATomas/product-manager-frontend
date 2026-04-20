@@ -153,6 +153,25 @@ export class UsersComponent implements OnInit {
     return role === 'admin' ? 'role-chip role-chip-admin' : 'role-chip role-chip-user';
   }
 
+  exportFilteredUsers(): void {
+    if (!this.users.length) {
+      this.snackBar.open('No hay usuarios para exportar con los filtros actuales.', 'Cerrar', { duration: 4000 });
+      return;
+    }
+
+    const csvContent = this.buildCsvContent(this.users);
+    const csvBlob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const downloadUrl = URL.createObjectURL(csvBlob);
+    const link = document.createElement('a');
+
+    link.href = downloadUrl;
+    link.download = this.buildCsvFileName();
+    link.click();
+
+    URL.revokeObjectURL(downloadUrl);
+    this.snackBar.open('Reporte CSV descargado correctamente.', 'Cerrar', { duration: 3000 });
+  }
+
   private loadUsers(): void {
     this.loading = true;
     this.usersService.getUsers(this.buildQuery()).pipe(
@@ -185,6 +204,31 @@ export class UsersComponent implements OnInit {
       name,
       role
     };
+  }
+
+  private buildCsvContent(users: User[]): string {
+    const headers = ['Nombre', 'Email', 'Rol', 'Verificacion', 'Estado'];
+    const rows = users.map((user) => [
+      this.escapeCsvValue(user.name),
+      this.escapeCsvValue(user.email),
+      this.escapeCsvValue(user.role),
+      this.escapeCsvValue(user.isEmailVerified ? 'Verificado' : 'Pendiente'),
+      this.escapeCsvValue(user.status === 'inactive' ? 'Inactivo' : 'Activo')
+    ]);
+
+    return [headers, ...rows].map((row) => row.join(',')).join('\n');
+  }
+
+  private buildCsvFileName(): string {
+    const { name, role } = this.filtersForm.getRawValue();
+    const nameSegment = String(name || 'todos').trim().replace(/\s+/g, '-').toLowerCase() || 'todos';
+    const roleSegment = String(role || 'todos').trim().toLowerCase() || 'todos';
+    return `usuarios-${nameSegment}-${roleSegment}.csv`;
+  }
+
+  private escapeCsvValue(value: unknown): string {
+    const normalizedValue = String(value ?? '').replace(/"/g, '""');
+    return `"${normalizedValue}"`;
   }
 
   private showRequestError(error: any, fallbackMessage: string): void {
