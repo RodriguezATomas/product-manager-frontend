@@ -35,7 +35,7 @@
       </mat-card-content>
 
       <mat-card-actions align="end">
-        <button mat-flat-button color="primary" type="button" [disabled]="profileForm.invalid || savingProfile" (click)="saveProfile()">
+        <button mat-flat-button type="button" class="primary-action-button" [disabled]="profileForm.invalid || savingProfile" (click)="saveProfile()">
           {{ savingProfile ? 'Guardando...' : 'Guardar perfil' }}
         </button>
       </mat-card-actions>

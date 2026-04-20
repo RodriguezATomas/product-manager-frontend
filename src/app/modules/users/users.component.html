@@ -11,7 +11,7 @@
         <mat-icon>download</mat-icon>
         Exportar CSV
       </button>
-      <button mat-flat-button color="primary" type="button" (click)="openCreateDialog()">
+      <button mat-flat-button type="button" class="primary-action-button" (click)="openCreateDialog()">
         <mat-icon>person_add</mat-icon>
         Nuevo usuario
       </button>
@@ -34,7 +34,7 @@
       </mat-form-field>
 
       <div class="filter-actions">
-        <button mat-flat-button color="primary" type="submit">Aplicar filtros</button>
+        <button mat-flat-button type="submit" class="primary-action-button">Aplicar filtros</button>
         <button mat-stroked-button type="button" (click)="clearFilters()">Limpiar</button>
       </div>
     </form>

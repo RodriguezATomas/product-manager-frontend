@@ -11,7 +11,7 @@
   background:
     radial-gradient(circle at top left, rgba(47, 142, 208, 0.45), transparent 24%),
     radial-gradient(circle at bottom right, rgba(10, 98, 170, 0.36), transparent 26%),
-    linear-gradient(135deg, #c5e4fb 0%, #81bbe4 48%, #359be4 100%);
+    linear-gradient(135deg, #c5e4fb 0%, #a1d0f1 48%, #5eb2ee 100%);
 }
 
 .auth-card {

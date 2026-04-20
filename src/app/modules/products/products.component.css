@@ -5,7 +5,10 @@
 .products-page {
   min-height: 100vh;
   padding: 32px;
-  background: radial-gradient(circle at top left, rgba(33, 150, 243, 0.16), transparent 26%), radial-gradient(circle at bottom right, rgba(255, 183, 77, 0.18), transparent 24%), linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+  background:
+    radial-gradient(circle at top left, rgba(47, 142, 208, 0.22), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(10, 98, 170, 0.18), transparent 26%),
+    linear-gradient(135deg, #edf7fe 0%, #d8ecfb 48%, #c3e1f7 100%);
 }
 
 .products-hero {
@@ -20,6 +23,22 @@
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.new-product-button {
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1b8fe0 0%, #0e74c2 100%);
+  color: #f8fcff;
+  box-shadow: 0 12px 24px rgba(14, 116, 194, 0.22);
+}
+
+.new-product-button ::ng-deep .mdc-button__label,
+.new-product-button mat-icon {
+  color: #f8fcff;
+}
+
+.new-product-button:hover {
+  filter: brightness(1.03);
 }
 
 .products-hero h1 {
@@ -39,7 +58,7 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.78rem;
-  color: #1e88e5;
+  color: #0b6aa8;
   font-weight: 700;
 }
 
@@ -51,11 +70,13 @@
   padding: 18px 22px;
   margin-bottom: 22px;
   border-radius: 22px;
-  box-shadow: 0 22px 55px rgba(22, 50, 79, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(42, 126, 192, 0.18);
+  box-shadow: 0 20px 50px rgba(14, 88, 146, 0.14);
 }
 
 .access-card mat-icon {
-  color: #1e88e5;
+  color: #0d7bc4;
 }
 
 .access-card-admin mat-icon {
@@ -81,7 +102,9 @@
 .product-card,
 .skeleton-card {
   border-radius: 22px;
-  box-shadow: 0 22px 55px rgba(22, 50, 79, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(42, 126, 192, 0.18);
+  box-shadow: 0 20px 50px rgba(14, 88, 146, 0.14);
 }
 
 .product-top {
@@ -104,8 +127,8 @@
 }
 
 .category-chip {
-  background: rgba(30, 136, 229, 0.12);
-  color: #1565c0;
+  background: rgba(13, 123, 196, 0.12);
+  color: #0b6aa8;
 }
 
 .stock-badge {
@@ -141,7 +164,7 @@
 
 .skeleton-card {
   min-height: 260px;
-  background: linear-gradient(90deg, rgba(225, 232, 240, 0.9) 25%, rgba(245, 247, 250, 1) 50%, rgba(225, 232, 240, 0.9) 75%);
+  background: linear-gradient(90deg, rgba(201, 224, 242, 0.9) 25%, rgba(243, 249, 253, 1) 50%, rgba(201, 224, 242, 0.9) 75%);
   background-size: 200% 100%;
   animation: pulse 1.4s ease-in-out infinite;
 }
