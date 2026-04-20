@@ -1,48 +1,49 @@
-<div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <h2>Iniciar Sesión</h2>
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <span class="auth-badge">Project Manager</span>
+      <h1>Iniciar sesion</h1>
+      <p>Accede a tu panel con una interfaz limpia, moderna y en tonos celestes.</p>
+    </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Email</mat-label>
-      <input 
-        matInput 
-        type="email" 
-        formControlName="email" 
-        placeholder="tu@email.com"
-        title="Ingresa tu email"
-        required
-      >
-      <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Email inválido</mat-error>
-      <mat-error *ngIf="loginForm.get('email')?.hasError('required')">El email es requerido</mat-error>
-    </mat-form-field>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="tu@email.com"
+          title="Ingresa tu email"
+          required>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Email invalido</mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">El email es requerido</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Contraseña</mat-label>
-      <input 
-        matInput 
-        type="password" 
-        formControlName="password" 
-        placeholder="Ingresa tu contraseña"
-        title="Ingresa tu contraseña"
-        required
-      >
-      <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
-      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">La contraseña es requerida</mat-error>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contrasena</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="Ingresa tu contrasena"
+          title="Ingresa tu contrasena"
+          required>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Minimo 6 caracteres</mat-error>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">La contrasena es requerida</mat-error>
+      </mat-form-field>
 
-    <button 
-      mat-raised-button 
-      color="primary" 
-      type="submit" 
-      [disabled]="loginForm.invalid"
-      class="submit-button"
-    >
-      {{ loading ? 'Ingresando...' : 'Ingresar' }}
-    </button>
-  </form>
+      <button
+        mat-flat-button
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="submit-button">
+        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
 
-  <!-- Link a Signup -->
-  <div class="signup-link">
-    <p>¿No tienes cuenta? <a routerLink="/auth/signup">Crea una aquí</a></p>
+    <div class="auth-link">
+      <p>No tienes cuenta? <a routerLink="/auth/signup">Crea una aqui</a></p>
+    </div>
   </div>
-</div>
+</section>
