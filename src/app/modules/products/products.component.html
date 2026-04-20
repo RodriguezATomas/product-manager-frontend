@@ -1,9 +1,9 @@
 <section class="products-page">
   <div class="products-hero">
     <div>
-      <span class="eyebrow">Catálogo</span>
+      <span class="eyebrow">Catalogo</span>
       <h1>Productos</h1>
-      <p>Todos los usuarios autenticados pueden consultar el catálogo. La gestión queda reservada para administradores.</p>
+      <p>Todos los usuarios autenticados pueden consultar el catalogo. La gestion queda reservada para administradores.</p>
     </div>
 
     <div class="hero-actions">
@@ -17,8 +17,8 @@
   <mat-card class="access-card" [class.access-card-admin]="isAdmin">
     <mat-icon>{{ isAdmin ? 'verified_user' : 'visibility' }}</mat-icon>
     <div>
-      <strong>{{ isAdmin ? 'Modo administración activo' : 'Modo solo lectura' }}</strong>
-      <p>{{ isAdmin ? 'Podés crear, editar y eliminar productos.' : 'Podés consultar el catálogo, pero no gestionar productos.' }}</p>
+      <strong>{{ isAdmin ? 'Modo administracion activo' : 'Modo solo lectura' }}</strong>
+      <p>{{ isAdmin ? 'Podes crear, editar y eliminar productos.' : 'Podes consultar el catalogo, pero no gestionar productos.' }}</p>
     </div>
   </mat-card>
 
@@ -49,7 +49,7 @@
     <div class="empty-state" *ngIf="!products.length">
       <mat-icon>inventory</mat-icon>
       <h2>No hay productos para mostrar</h2>
-      <p>{{ isAdmin ? 'Podés crear el primer producto desde esta pantalla.' : 'Todavía no hay productos cargados en el catálogo.' }}</p>
+      <p>{{ isAdmin ? 'Podes crear el primer producto desde esta pantalla.' : 'Todavia no hay productos cargados en el catalogo.' }}</p>
     </div>
   </div>
 </section>

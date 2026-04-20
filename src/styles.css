@@ -1,5 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: 32px 24px;
+  background:
+    radial-gradient(circle at top left, rgba(47, 142, 208, 0.22), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(10, 98, 170, 0.18), transparent 26%),
+    linear-gradient(135deg, #edf7fe 0%, #d8ecfb 48%, #c3e1f7 100%);
+}
+
+.page-card {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(42, 126, 192, 0.18);
+  box-shadow: 0 20px 50px rgba(14, 88, 146, 0.14);
+}
+
+.page-title {
+  margin: 0 0 8px;
+  color: #143a5c;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.15;
+}
+
+.page-subtitle {
+  margin: 0 0 24px;
+  color: #60788f;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 20px 14px;
+  }
+
+  .page-card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+}
