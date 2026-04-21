@@ -1,83 +1,106 @@
-<section class="auth-page">
-  <div class="auth-card">
-    <div class="auth-card-header">
-      <span class="auth-badge">Project Manager</span>
-      <h1>Crear cuenta</h1>
-      <p>Registrate para empezar a trabajar con una experiencia clara y en una paleta celeste suave.</p>
-    </div>
+<section class="auth-shell">
+  <div class="auth-backdrop"></div>
 
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nombre</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="name"
-          placeholder="Tu nombre completo"
-          title="Ingresa tu nombre"
-          required>
-        <mat-error *ngIf="signupForm.get('name')?.hasError('required')">El nombre es requerido</mat-error>
-        <mat-error *ngIf="signupForm.get('name')?.hasError('minlength')">Minimo 3 caracteres</mat-error>
-      </mat-form-field>
+  <div class="auth-frame">
+    <aside class="brand-panel">
+      <div class="brand-copy">
+        <img
+          src="assets/images/esueldos-logo.png"
+          alt="e-Sueldos"
+          class="brand-logo">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          type="email"
-          formControlName="email"
-          placeholder="tu@email.com"
-          title="Ingresa tu email"
-          required>
-        <mat-error *ngIf="signupForm.get('email')?.hasError('required')">El email es requerido</mat-error>
-        <mat-error *ngIf="signupForm.get('email')?.hasError('email')">Email invalido</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Contrasena</mat-label>
-        <input
-          matInput
-          type="password"
-          formControlName="password"
-          placeholder="Minimo 8 caracteres"
-          title="Ingresa tu contrasena"
-          required>
-        <mat-error *ngIf="signupForm.get('password')?.hasError('required')">La contrasena es requerida</mat-error>
-        <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">Minimo 8 caracteres</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Confirmar contrasena</mat-label>
-        <input
-          matInput
-          type="password"
-          formControlName="confirmPassword"
-          placeholder="Confirma tu contrasena"
-          title="Confirma tu contrasena"
-          required>
-        <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('required')">Debes confirmar la contrasena</mat-error>
-        <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('passwordMismatch')">Las contrasenas no coinciden</mat-error>
-      </mat-form-field>
-
-      <div
-        *ngIf="signupForm.get('password')?.value && signupForm.get('confirmPassword')?.value"
-        class="password-indicator"
-        [class.match]="signupForm.get('password')?.value === signupForm.get('confirmPassword')?.value"
-        [class.mismatch]="signupForm.get('password')?.value !== signupForm.get('confirmPassword')?.value">
-        {{ signupForm.get('password')?.value === signupForm.get('confirmPassword')?.value ? 'Las contrasenas coinciden' : 'Las contrasenas no coinciden' }}
+        <span class="brand-kicker">Nueva cuenta</span>
+        <h1>Empieza con una alta simple y visualmente clara</h1>
+        <p>
+          Reinterpretamos el layout de la referencia para que el registro mantenga la misma estetica corporativa.
+        </p>
       </div>
+    </aside>
 
-      <button
-        mat-flat-button
-        type="submit"
-        [disabled]="signupForm.invalid || loading"
-        class="submit-button">
-        {{ loading ? 'Registrando...' : 'Registrarse' }}
-      </button>
-    </form>
+    <section class="form-panel">
+      <div class="form-panel-inner">
+        <span class="form-eyebrow">Sign Up</span>
+        <h2>Crear cuenta</h2>
+        <p class="form-description">Completa tus datos para comenzar a trabajar dentro de e-Sueldos.</p>
 
-    <div class="auth-link">
-      <p>Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesion aqui</a></p>
-    </div>
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="name"
+              placeholder="Tu nombre completo"
+              title="Ingresa tu nombre"
+              autocomplete="name"
+              required>
+            <mat-error *ngIf="signupForm.get('name')?.hasError('required')">El nombre es requerido</mat-error>
+            <mat-error *ngIf="signupForm.get('name')?.hasError('minlength')">Minimo 3 caracteres</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="tu@email.com"
+              title="Ingresa tu email"
+              autocomplete="email"
+              required>
+            <mat-error *ngIf="signupForm.get('email')?.hasError('required')">El email es requerido</mat-error>
+            <mat-error *ngIf="signupForm.get('email')?.hasError('email')">Email invalido</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contrasena</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              placeholder="Minimo 8 caracteres"
+              title="Ingresa tu contrasena"
+              autocomplete="new-password"
+              required>
+            <mat-error *ngIf="signupForm.get('password')?.hasError('required')">La contrasena es requerida</mat-error>
+            <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">Minimo 8 caracteres</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirmar contrasena</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Confirma tu contrasena"
+              title="Confirma tu contrasena"
+              autocomplete="new-password"
+              required>
+            <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('required')">Debes confirmar la contrasena</mat-error>
+            <mat-error *ngIf="signupForm.get('confirmPassword')?.hasError('passwordMismatch')">Las contrasenas no coinciden</mat-error>
+          </mat-form-field>
+
+          <div
+            *ngIf="signupForm.get('password')?.value && signupForm.get('confirmPassword')?.value"
+            class="password-indicator"
+            [class.match]="signupForm.get('password')?.value === signupForm.get('confirmPassword')?.value"
+            [class.mismatch]="signupForm.get('password')?.value !== signupForm.get('confirmPassword')?.value">
+            {{ signupForm.get('password')?.value === signupForm.get('confirmPassword')?.value ? 'Las contrasenas coinciden' : 'Las contrasenas no coinciden' }}
+          </div>
+
+          <div class="form-actions">
+            <a routerLink="/auth/login" class="secondary-link">Ya tienes cuenta?</a>
+
+            <button
+              mat-flat-button
+              type="submit"
+              [disabled]="signupForm.invalid || loading"
+              class="submit-button">
+              {{ loading ? 'Registrando...' : 'Registrarse' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
   </div>
 </section>

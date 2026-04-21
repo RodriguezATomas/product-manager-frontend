@@ -30,6 +30,14 @@ export class ProductsComponent implements OnInit {
     return this.authService.isAdmin();
   }
 
+  get currentUserName(): string {
+    return this.authService.currentUserData?.name || 'Usuario';
+  }
+
+  get currentUserRoleLabel(): string {
+    return this.isAdmin ? 'Administrador' : 'Usuario';
+  }
+
   ngOnInit(): void {
     this.loadProducts();
   }
