@@ -2,66 +2,6 @@
   display: block;
 }
 
-.users-page {
-  min-height: 100vh;
-  padding: 32px;
-  background:
-    radial-gradient(circle at top left, rgba(47, 142, 208, 0.22), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(10, 98, 170, 0.18), transparent 26%),
-    linear-gradient(135deg, #edf7fe 0%, #d8ecfb 48%, #c3e1f7 100%);
-}
-
-.users-hero {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.primary-action-button {
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1b8fe0 0%, #0e74c2 100%);
-  color: #f8fcff;
-  box-shadow: 0 12px 24px rgba(14, 116, 194, 0.22);
-}
-
-.primary-action-button ::ng-deep .mdc-button__label,
-.primary-action-button mat-icon {
-  color: #f8fcff;
-}
-
-.primary-action-button:hover {
-  filter: brightness(1.03);
-}
-
-.users-hero h1 {
-  margin: 6px 0;
-  font-size: 2.2rem;
-  color: #16324f;
-}
-
-.users-hero p {
-  max-width: 760px;
-  margin: 0;
-  color: #4e647a;
-}
-
-.eyebrow {
-  display: inline-block;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.78rem;
-  color: #0b6aa8;
-  font-weight: 700;
-}
-
 .filters-card,
 .table-card {
   border-radius: 22px;
@@ -208,20 +148,6 @@ table {
 }
 
 @media (max-width: 900px) {
-  .users-page {
-    padding: 20px;
-  }
-
-  .users-hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .hero-actions {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
   .filters-grid {
     grid-template-columns: 1fr;
   }

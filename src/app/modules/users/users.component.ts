@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, Sort } from '@angular/material/sort';
-import { finalize } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { UserFormDialogComponent } from './components/user-form-dialog/user-form-dialog.component';
@@ -17,7 +17,7 @@ import { UsersService } from './services/users.service';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort;
 
@@ -35,6 +35,7 @@ export class UsersComponent implements OnInit {
   loading = false;
   filtersForm: FormGroup;
   currentSort: Sort = { active: 'name', direction: 'asc' };
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -50,8 +51,18 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  get currentUserName(): string {
+    return this.authService.currentUserData?.name || 'Usuario';
+  }
+
   ngOnInit(): void {
+    this.setupRealtimeFilters();
     this.loadUsers();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   applyFilters(): void {
@@ -62,7 +73,6 @@ export class UsersComponent implements OnInit {
 
   clearFilters(): void {
     this.filtersForm.reset({ name: '', role: '' });
-    this.applyFilters();
   }
 
   onPageChange(event: PageEvent): void {
@@ -172,9 +182,28 @@ export class UsersComponent implements OnInit {
     this.snackBar.open('Reporte CSV descargado correctamente.', 'Cerrar', { duration: 3000 });
   }
 
+  private setupRealtimeFilters(): void {
+    this.filtersForm.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged((previous, current) => JSON.stringify(previous) === JSON.stringify(current)),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.pageIndex = 0;
+      this.paginator?.firstPage();
+      this.loadUsers();
+    });
+  }
+
   private loadUsers(): void {
+    const query = this.buildQuery();
+
+    if (query.name?.trim()) {
+      this.loadUsersByPartialName(query);
+      return;
+    }
+
     this.loading = true;
-    this.usersService.getUsers(this.buildQuery()).pipe(
+    this.usersService.getUsers(query).pipe(
       finalize(() => {
         this.loading = false;
       })
@@ -184,6 +213,39 @@ export class UsersComponent implements OnInit {
         this.totalUsers = response.total;
         this.pageIndex = response.pageIndex;
         this.pageSize = response.pageSize;
+      },
+      error: (error) => {
+        this.users = [];
+        this.totalUsers = 0;
+        this.showRequestError(error, 'No se pudo cargar la lista de usuarios.');
+      }
+    });
+  }
+
+  private loadUsersByPartialName(query: UsersQuery): void {
+    const normalizedSearch = this.normalizeSearchTerm(query.name);
+    const baseQuery: UsersQuery = {
+      ...query,
+      pageIndex: 0,
+      pageSize: 500,
+      name: ''
+    };
+
+    this.loading = true;
+    this.usersService.getUsers(baseQuery).pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe({
+      next: (response) => {
+        const filteredUsers = response.items.filter((user) =>
+          this.normalizeSearchTerm(user.name).includes(normalizedSearch)
+        );
+        const startIndex = this.pageIndex * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+
+        this.totalUsers = filteredUsers.length;
+        this.users = filteredUsers.slice(startIndex, endIndex);
       },
       error: (error) => {
         this.users = [];
@@ -229,6 +291,14 @@ export class UsersComponent implements OnInit {
   private escapeCsvValue(value: unknown): string {
     const normalizedValue = String(value ?? '').replace(/"/g, '""');
     return `"${normalizedValue}"`;
+  }
+
+  private normalizeSearchTerm(value: unknown): string {
+    return String(value ?? '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
   }
 
   private showRequestError(error: any, fallbackMessage: string): void {

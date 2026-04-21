@@ -2,64 +2,16 @@
   display: block;
 }
 
-.profile-page {
-  min-height: 100vh;
-  padding: 32px;
-  background: radial-gradient(circle at top left, rgba(33, 150, 243, 0.16), transparent 28%), radial-gradient(circle at bottom right, rgba(255, 183, 77, 0.16), transparent 24%), linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
-}
-
-.profile-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.profile-header h1 {
-  margin: 6px 0;
-  font-size: 2.2rem;
-  color: #16324f;
-}
-
-.profile-header p {
-  margin: 0;
-  color: #4e647a;
-}
-
-.eyebrow {
-  display: inline-block;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.78rem;
-  color: #1e88e5;
-  font-weight: 700;
-}
-
 .profile-grid {
   display: grid;
-  grid-template-columns: minmax(0, 720px);
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
 }
 
-.primary-action-button {
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1b8fe0 0%, #0e74c2 100%);
-  color: #f8fcff;
-  box-shadow: 0 12px 24px rgba(14, 116, 194, 0.22);
-}
-
-.primary-action-button ::ng-deep .mdc-button__label,
-.primary-action-button mat-icon {
-  color: #f8fcff;
-}
-
-.primary-action-button:hover {
-  filter: brightness(1.03);
-}
-
-mat-card {
+.profile-card {
+  width: 100%;
   border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 22px 55px rgba(22, 50, 79, 0.08);
 }
 
@@ -71,7 +23,7 @@ mat-card {
 
 .loading-shell {
   display: grid;
-  grid-template-columns: minmax(0, 720px);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .skeleton-card {
@@ -88,15 +40,6 @@ mat-card {
 }
 
 @media (max-width: 900px) {
-  .profile-page {
-    padding: 20px;
-  }
-
-  .profile-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .profile-grid,
   .loading-shell {
     grid-template-columns: 1fr;

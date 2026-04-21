@@ -1,49 +1,70 @@
-<section class="auth-page">
-  <div class="auth-card">
-    <div class="auth-card-header">
-      <span class="auth-badge">Project Manager</span>
-      <h1>Iniciar sesion</h1>
-      <p>Accede a tu panel con una interfaz limpia, moderna y en tonos celestes.</p>
-    </div>
+<section class="auth-shell">
+  <div class="auth-backdrop"></div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          type="email"
-          formControlName="email"
-          placeholder="tu@email.com"
-          title="Ingresa tu email"
-          required>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Email invalido</mat-error>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">El email es requerido</mat-error>
-      </mat-form-field>
+  <div class="auth-frame">
+    <aside class="brand-panel">
+      <div class="brand-copy">
+        <img
+          src="assets/images/esueldos-logo.png"
+          alt="e-Sueldos"
+          class="brand-logo">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Contrasena</mat-label>
-        <input
-          matInput
-          type="password"
-          formControlName="password"
-          placeholder="Ingresa tu contrasena"
-          title="Ingresa tu contrasena"
-          required>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Minimo 6 caracteres</mat-error>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">La contrasena es requerida</mat-error>
-      </mat-form-field>
+        <span class="brand-kicker">Gestion inteligente</span>
+        <h1>Ingresa a tu espacio de trabajo</h1>
+        <p>
+          Un acceso claro, corporativo y simple, inspirado en la referencia visual que compartiste.
+        </p>
+      </div>
+    </aside>
 
-      <button
-        mat-flat-button
-        type="submit"
-        [disabled]="loginForm.invalid"
-        class="submit-button">
-        {{ loading ? 'Ingresando...' : 'Ingresar' }}
-      </button>
-    </form>
+    <section class="form-panel">
+      <div class="form-panel-inner">
+        <span class="form-eyebrow">Sign In</span>
+        <h2>Bienvenido</h2>
+        <p class="form-description">Accede con tu email y contrasena para continuar en e-Sueldos.</p>
 
-    <div class="auth-link">
-      <p>No tienes cuenta? <a routerLink="/auth/signup">Crea una aqui</a></p>
-    </div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="tu@email.com"
+              title="Ingresa tu email"
+              autocomplete="email"
+              required>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Email invalido</mat-error>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">El email es requerido</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contrasena</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              placeholder="Ingresa tu contrasena"
+              title="Ingresa tu contrasena"
+              autocomplete="current-password"
+              required>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Minimo 6 caracteres</mat-error>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">La contrasena es requerida</mat-error>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <a routerLink="/auth/signup" class="secondary-link">No tienes cuenta?</a>
+
+            <button
+              mat-flat-button
+              type="submit"
+              [disabled]="loginForm.invalid || loading"
+              class="submit-button">
+              {{ loading ? 'Ingresando...' : 'Ingresar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
   </div>
 </section>

@@ -24,6 +24,14 @@ export class ProfileComponent implements OnInit {
     private router: Router
   ) {}
 
+  get currentUserName(): string {
+    return this.authService.currentUserData?.name || 'Usuario';
+  }
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
   ngOnInit(): void {
     this.profileForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],

@@ -40,9 +40,9 @@
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button type="button" mat-dialog-close>Cancelar</button>
-  <button mat-flat-button color="primary" type="button" [disabled]="form.invalid" (click)="save()">
+<mat-dialog-actions align="end" class="dialog-actions-row">
+  <button mat-stroked-button type="button" class="dialog-secondary-button" mat-dialog-close>Cancelar</button>
+  <button mat-flat-button type="button" class="dialog-primary-button" [disabled]="form.invalid" (click)="save()">
     {{ isEditMode ? 'Guardar cambios' : 'Crear producto' }}
   </button>
 </mat-dialog-actions>

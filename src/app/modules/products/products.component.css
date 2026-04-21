@@ -2,97 +2,6 @@
   display: block;
 }
 
-.products-page {
-  min-height: 100vh;
-  padding: 32px;
-  background:
-    radial-gradient(circle at top left, rgba(47, 142, 208, 0.22), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(10, 98, 170, 0.18), transparent 26%),
-    linear-gradient(135deg, #edf7fe 0%, #d8ecfb 48%, #c3e1f7 100%);
-}
-
-.products-hero {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: center;
-  margin-bottom: 22px;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.new-product-button {
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1b8fe0 0%, #0e74c2 100%);
-  color: #f8fcff;
-  box-shadow: 0 12px 24px rgba(14, 116, 194, 0.22);
-}
-
-.new-product-button ::ng-deep .mdc-button__label,
-.new-product-button mat-icon {
-  color: #f8fcff;
-}
-
-.new-product-button:hover {
-  filter: brightness(1.03);
-}
-
-.products-hero h1 {
-  margin: 6px 0;
-  font-size: 2.2rem;
-  color: #16324f;
-}
-
-.products-hero p {
-  margin: 0;
-  max-width: 760px;
-  color: #4e647a;
-}
-
-.eyebrow {
-  display: inline-block;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.78rem;
-  color: #0b6aa8;
-  font-weight: 700;
-}
-
-.access-card {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 16px;
-  align-items: start;
-  padding: 18px 22px;
-  margin-bottom: 22px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(42, 126, 192, 0.18);
-  box-shadow: 0 20px 50px rgba(14, 88, 146, 0.14);
-}
-
-.access-card mat-icon {
-  color: #0d7bc4;
-}
-
-.access-card-admin mat-icon {
-  color: #2e7d32;
-}
-
-.access-card strong,
-.access-card p {
-  display: block;
-}
-
-.access-card p {
-  margin: 4px 0 0;
-  color: #4e647a;
-}
-
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -146,6 +55,16 @@
   line-height: 1.6;
 }
 
+.product-delete-button {
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #dc4d63 0%, #b5233a 100%) !important;
+  color: #ffffff !important;
+}
+
+.product-delete-button .mdc-button__label {
+  color: #ffffff !important;
+}
+
 .empty-state {
   grid-column: 1 / -1;
   display: grid;
@@ -172,20 +91,4 @@
 @keyframes pulse {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
-}
-
-@media (max-width: 900px) {
-  .products-page {
-    padding: 20px;
-  }
-
-  .products-hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .hero-actions {
-    width: 100%;
-    flex-wrap: wrap;
-  }
 }
