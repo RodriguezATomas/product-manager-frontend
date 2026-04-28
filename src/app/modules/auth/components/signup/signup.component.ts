@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../../core/services/auth.service';
 import { passwordMatchValidator } from '../../../../shared/validators/password-match.validator';
+import { ThemeService } from 'src/app/core/services/theme.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,6 +18,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private themeService: ThemeService, // NUEVO: permite elegir logo segun tema activo.
     private snackBar: MatSnackBar,
     private router: Router
   ) {}
@@ -64,5 +66,9 @@ export class SignupComponent implements OnInit {
         }
       }
     });
+  }
+
+  get isDarkTheme(): boolean {
+    return this.themeService.isDarkTheme; // NUEVO: expone estado del tema al template.
   }
 }

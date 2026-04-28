@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductsComponent } from './products.component';
@@ -31,6 +32,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     MatIconModule,
     MatInputModule,
     MatSnackBarModule,
+    MatSlideToggleModule, // NUEVO: habilita el componente mat-slide-toggle para el switch de tema.
     ProductsRoutingModule
   ]
 })

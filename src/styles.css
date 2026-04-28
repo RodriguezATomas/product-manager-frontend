@@ -11,6 +11,24 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+/* NUEVO: variables base del tema claro para reutilizar colores en toda la app. */
+body.light-theme {
+  --app-surface: rgba(255, 255, 255, 0.97); /* NUEVO: superficies mas claras para el modo principal. */
+  --app-surface-strong: rgba(255, 255, 255, 1); /* NUEVO: capa fuerte totalmente clara. */
+  --app-text-primary: #1b486d; /* NUEVO: texto principal ligeramente mas suave que el azul anterior. */
+  --app-text-secondary: #6d87a2; /* NUEVO: texto secundario claro pero legible. */
+  --app-border: rgba(88, 160, 214, 0.22); /* NUEVO: borde mas suave para el look claro. */
+}
+
+/* NUEVO: variables del tema oscuro aplicadas cuando el body tiene la clase dark-theme. */
+body.dark-theme {
+  --app-surface: rgba(9, 24, 40, 0.94); /* NUEVO: superficie dark mas profunda para que contraste mas con modo claro. */
+  --app-surface-strong: rgba(6, 18, 31, 0.99); /* NUEVO: segunda capa aun mas oscura para tablas, selects y dialogs. */
+  --app-text-primary: #f2f8ff; /* NUEVO: texto principal mas claro para mejorar lectura en dark. */
+  --app-text-secondary: #c9daea; /* NUEVO: texto secundario con mas contraste que el ajuste previo. */
+  --app-border: rgba(109, 158, 198, 0.42); /* NUEVO: bordes mas visibles en modo oscuro. */
+}
+
 .auth-shell {
   --auth-blue-900: #0d4f85;
   --auth-blue-700: #1f79b5;
@@ -19,10 +37,34 @@ body {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
+  display: grid; /* NUEVO: permite centrar la card de auth en ambos ejes. */
+  align-items: center; /* NUEVO: centra verticalmente el contenido. */
   background:
     radial-gradient(circle at 20% 20%, rgba(111, 201, 255, 0.24), transparent 28%),
     radial-gradient(circle at 85% 18%, rgba(255, 255, 255, 0.08), transparent 16%),
     linear-gradient(135deg, #0b4d84 0%, #12629d 48%, #0a5f94 100%);
+}
+
+body.light-theme .auth-shell { /* NUEVO: paleta clara para login/register en modo principal. */
+  --auth-blue-900: #1f5d88;
+  --auth-blue-700: #2f7fb5;
+  --auth-ice: #f5fbff;
+  --auth-line: rgba(255, 255, 255, 0.38);
+  background:
+    radial-gradient(circle at 14% 12%, rgba(111, 201, 255, 0.2), transparent 22%), /* NUEVO: mismo fondo que dashboard en modo principal. */
+    radial-gradient(circle at 88% 14%, rgba(255, 255, 255, 0.08), transparent 16%), /* NUEVO: mismo segundo acento que dashboard. */
+    linear-gradient(135deg, #5ca6d3 0%, #78bde4 48%, #4f9dcc 100%); /* NUEVO: mismo gradiente celeste del dashboard. */
+}
+
+body.dark-theme .auth-shell { /* NUEVO: paleta oscura real para login/register en modo dark. */
+  --auth-blue-900: #c6dff3;
+  --auth-blue-700: #82bbe0;
+  --auth-ice: #12314d;
+  --auth-line: rgba(125, 170, 206, 0.34);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(54, 110, 157, 0.26), transparent 30%),
+    radial-gradient(circle at 84% 16%, rgba(24, 73, 113, 0.28), transparent 20%),
+    linear-gradient(135deg, #07192b 0%, #0a2740 48%, #0e3553 100%);
 }
 
 .auth-backdrop {
@@ -34,32 +76,70 @@ body {
   backdrop-filter: blur(2px);
 }
 
+body.light-theme .auth-backdrop { /* NUEVO: overlay claro para suavizar el fondo en modo principal. */
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.16)), /* NUEVO: mismo overlay lineal del dashboard. */
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.14), transparent 52%); /* NUEVO: mismo halo central del dashboard. */
+}
+
+body.dark-theme .auth-backdrop { /* NUEVO: overlay oscuro para reforzar el contraste en dark mode. */
+  background:
+    linear-gradient(rgba(4, 16, 29, 0.46), rgba(4, 16, 29, 0.52)),
+    radial-gradient(circle at center, rgba(90, 156, 205, 0.08), transparent 52%);
+}
+
 .auth-frame {
   position: relative;
   z-index: 1;
-  min-height: 100vh;
-  width: min(1120px, calc(100% - 40px));
-  margin: 0 auto;
+  min-height: auto; /* NUEVO: evita que la card ocupe toda la altura de pantalla. */
+  width: min(940px, calc(100% - 40px)); /* NUEVO: card mas angosta para un layout menos gigante. */
+  margin: 24px auto; /* NUEVO: margen superior/inferior para que no quede pegada en pantallas bajas. */
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 0.95fr 1.05fr; /* NUEVO: mas protagonismo al formulario para mejorar jerarquia visual. */
+  gap: 0; /* NUEVO: sin separacion para que se perciba como una sola card. */
   align-items: center;
+  border-radius: 30px; /* NUEVO: card principal unificada para login/register. */
+  border: 1px solid var(--auth-line); /* NUEVO: borde unico del contenedor principal. */
+  overflow: hidden; /* NUEVO: respeta radios del contenedor al renderizar columnas internas. */
+  backdrop-filter: blur(10px); /* NUEVO: acabado suave en el bloque general. */
 }
 
 .brand-panel,
 .form-panel {
-  min-height: 640px;
+  min-height: auto; /* NUEVO: quita altura fija excesiva en ambas columnas. */
   display: flex;
   align-items: center;
 }
 
 .brand-panel {
   justify-content: center;
-  padding: 48px 56px 48px 24px;
+  padding: 40px 32px; /* NUEVO: reduce el tamaño visual de la columna izquierda. */
+  border-right: 1px solid var(--auth-line); /* NUEVO: divisor sutil entre texto y formulario. */
+}
+
+body.light-theme .brand-panel { /* NUEVO: divisor visible en light-mode para que se note la separacion central. */
+  border-right-color: rgba(74, 137, 188, 0.38);
+  background: transparent; /* NUEVO: mismo nivel de blanco que la columna derecha en light-mode. */
+}
+
+body.light-theme .form-panel { /* NUEVO: leve contraste de fondo entre columnas en light-mode. */
+  background: transparent; /* NUEVO: iguala el tono de blanco entre ambas columnas. */
 }
 
 .brand-copy {
   max-width: 380px;
   color: #ffffff;
+  padding: 0; /* NUEVO: se elimina card interna para unificar todo en un solo bloque. */
+  border-radius: 0; /* NUEVO: sin radio interno duplicado. */
+  border: 0; /* NUEVO: sin borde interno. */
+  background: transparent; /* NUEVO: fondo transparente dentro de la card principal. */
+  backdrop-filter: none; /* NUEVO: blur centralizado en auth-frame. */
+  box-shadow: none; /* NUEVO: sin sombra interna para evitar separacion visual. */
+}
+
+body.dark-theme .brand-copy,
+body.dark-theme .form-panel-inner { /* NUEVO: texto base mas claro para legibilidad en auth dark. */
+  color: #eaf4ff;
 }
 
 .brand-logo {
@@ -93,6 +173,36 @@ body {
   line-height: 1.75;
 }
 
+body.light-theme .brand-copy p,
+body.light-theme .form-description { /* NUEVO: texto descriptivo suave en auth claro. */
+  color: rgba(255, 255, 255, 0.86);
+}
+
+body.light-theme .brand-copy,
+body.light-theme .form-panel-inner { /* NUEVO: color base mas oscuro para mejorar legibilidad en login/register claro. */
+  color: #123a5a;
+}
+
+body.light-theme .brand-kicker,
+body.light-theme .form-eyebrow { /* NUEVO: etiquetas superiores con contraste alto en modo claro. */
+  color: rgba(18, 58, 90, 0.78);
+}
+
+body.light-theme .brand-copy h1,
+body.light-theme .form-panel-inner h2 { /* NUEVO: titulos principales mas oscuros para destacar sobre fondo claro. */
+  color: #0f3452;
+}
+
+body.light-theme .brand-copy p,
+body.light-theme .form-description { /* NUEVO: reemplaza texto claro por tono oscuro legible en auth claro. */
+  color: rgba(21, 61, 92, 0.9);
+}
+
+body.dark-theme .brand-copy p,
+body.dark-theme .form-description { /* NUEVO: texto descriptivo con mayor contraste en auth dark. */
+  color: rgba(226, 240, 252, 0.82);
+}
+
 .brand-cta,
 .secondary-link {
   color: rgba(255, 255, 255, 0.9);
@@ -106,13 +216,45 @@ body {
 }
 
 .form-panel {
-  padding: 48px 24px 48px 56px;
-  border-left: 1px solid var(--auth-line);
+  padding: 40px 32px; /* NUEVO: reduce el tamaño visual de la columna derecha. */
+  border-left: 0; /* NUEVO: se quita divisor para priorizar el encuadre de cards. */
 }
 
 .form-panel-inner {
   width: min(100%, 380px);
   color: #ffffff;
+  padding: 0; /* NUEVO: se elimina card interna para mantener un solo contenedor. */
+  border-radius: 0; /* NUEVO: sin radio interno. */
+  border: 0; /* NUEVO: sin borde secundario. */
+  background: transparent; /* NUEVO: fondo transparente dentro del bloque principal. */
+  backdrop-filter: none; /* NUEVO: blur unico en auth-frame. */
+  box-shadow: none; /* NUEVO: sin sombra secundaria. */
+}
+
+body.light-theme .brand-copy,
+body.light-theme .form-panel-inner { /* NUEVO: cards claras alineadas con el panel de productos en modo principal. */
+  background: transparent; /* NUEVO: desactiva cards internas en modo claro. */
+  border-color: transparent; /* NUEVO: evita borde interno duplicado. */
+  box-shadow: none; /* NUEVO: evita doble profundidad visual. */
+}
+
+body.dark-theme .brand-copy,
+body.dark-theme .form-panel-inner { /* NUEVO: cards oscuras consistentes con dark mode del dashboard. */
+  background: transparent; /* NUEVO: desactiva cards internas en modo dark. */
+  border-color: transparent; /* NUEVO: evita borde interno duplicado. */
+  box-shadow: none; /* NUEVO: evita doble profundidad visual. */
+}
+
+body.light-theme .auth-frame { /* NUEVO: estilo de card principal en modo claro. */
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  box-shadow: 0 28px 60px rgba(14, 88, 146, 0.18);
+}
+
+body.dark-theme .auth-frame { /* NUEVO: estilo de card principal en modo oscuro. */
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  box-shadow: 0 28px 60px rgba(2, 12, 22, 0.46);
 }
 
 .form-panel-inner h2 {
@@ -146,6 +288,10 @@ body {
   background: rgba(255, 255, 255, 0.97);
 }
 
+body.dark-theme .auth-form .mat-mdc-text-field-wrapper { /* NUEVO: inputs oscuros para coherencia con login/register dark. */
+  background: rgba(9, 26, 42, 0.88);
+}
+
 .auth-form .mdc-text-field--outlined {
   --mdc-outlined-text-field-container-shape: 0;
   --mdc-outlined-text-field-outline-color: rgba(13, 79, 133, 0.16);
@@ -162,6 +308,17 @@ body {
 .auth-form .mdc-floating-label,
 .auth-form input.mat-mdc-input-element {
   color: #12446f;
+}
+
+body.dark-theme .auth-form .mdc-floating-label,
+body.dark-theme .auth-form input.mat-mdc-input-element { /* NUEVO: texto de inputs claro en auth dark. */
+  color: #e5f2ff;
+}
+
+body.dark-theme .auth-form .mdc-notched-outline__leading,
+body.dark-theme .auth-form .mdc-notched-outline__notch,
+body.dark-theme .auth-form .mdc-notched-outline__trailing { /* NUEVO: bordes de campos visibles en auth dark. */
+  border-color: rgba(137, 184, 221, 0.42) !important;
 }
 
 .password-indicator {
@@ -193,6 +350,25 @@ body {
   font-size: 0.95rem;
 }
 
+body.dark-theme .secondary-link,
+body.dark-theme .brand-cta { /* NUEVO: enlaces mas legibles en auth dark. */
+  color: rgba(223, 240, 255, 0.92);
+}
+
+body.light-theme .secondary-link,
+body.light-theme .brand-cta { /* NUEVO: enlaces en auth claro con azul oscuro para no perderse en el fondo. */
+  color: #134a73;
+}
+
+body.light-theme .submit-button { /* NUEVO: boton principal mas contrastado en auth claro. */
+  background: #0f5f95;
+  color: #ffffff;
+}
+
+body.light-theme .submit-button .mdc-button__label { /* NUEVO: texto del boton claro para contraste fuerte. */
+  color: #ffffff;
+}
+
 .secondary-link:hover,
 .brand-cta:hover {
   opacity: 0.9;
@@ -214,6 +390,15 @@ body {
   color: var(--auth-blue-900);
 }
 
+body.dark-theme .submit-button { /* NUEVO: boton principal adaptado a paleta oscura del auth. */
+  background: linear-gradient(135deg, #8cc3e8 0%, #67a8d6 100%);
+  color: #0a2a43;
+}
+
+body.dark-theme .submit-button .mdc-button__label { /* NUEVO: texto del boton en dark con contraste alto. */
+  color: #0a2a43;
+}
+
 .submit-button:hover:not([disabled]) {
   background: var(--auth-ice);
 }
@@ -223,12 +408,12 @@ body {
 }
 
 .dashboard-shell {
-  --dashboard-bg-1: #0b4d84;
-  --dashboard-bg-2: #12629d;
-  --dashboard-bg-3: #0a5f94;
-  --dashboard-panel: rgba(255, 255, 255, 0.94);
-  --dashboard-line: rgba(255, 255, 255, 0.18);
-  --dashboard-text: #143a5c;
+  --dashboard-bg-1: #5ca6d3; /* NUEVO: paleta principal mas clara (tono celeste). */
+  --dashboard-bg-2: #78bde4; /* NUEVO: gradiente intermedio mas luminoso. */
+  --dashboard-bg-3: #4f9dcc; /* NUEVO: cierre del gradiente en azul claro. */
+  --dashboard-panel: rgba(255, 255, 255, 0.97); /* NUEVO: paneles claros para combinar con la nueva paleta. */
+  --dashboard-line: rgba(255, 255, 255, 0.28); /* NUEVO: borde del navbar mas visible en fondo claro. */
+  --dashboard-text: #1b486d; /* NUEVO: color de titulos en modo principal. */
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -238,12 +423,28 @@ body {
     linear-gradient(135deg, var(--dashboard-bg-1) 0%, var(--dashboard-bg-2) 48%, var(--dashboard-bg-3) 100%);
 }
 
+/* NUEVO: estilo del control de tema en la barra superior. */
+.theme-toggle {
+  color: #ffffff !important; /* NUEVO: texto del toggle siempre blanco en navbar (light y dark). */
+}
+
+.theme-toggle .mdc-label {
+  color: #ffffff !important; /* NUEVO: label 'Modo oscuro' blanco fijo en ambos modos. */
+  font-weight: 600;
+}
+
+.dashboard-topbar .theme-toggle .mdc-form-field,
+.dashboard-topbar .theme-toggle .mdc-label,
+.dashboard-topbar .theme-toggle .mat-internal-form-field > label { /* NUEVO: mayor especificidad para sobreescribir estilos por defecto de Angular Material. */
+  color: #ffffff !important;
+}
+
 .dashboard-backdrop {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(rgba(7, 54, 94, 0.2), rgba(7, 54, 94, 0.24)),
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.06), transparent 50%);
+    linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.16)), /* NUEVO: overlay claro para reforzar el modo principal. */
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.14), transparent 52%); /* NUEVO: halo mas luminoso en modo claro. */
 }
 
 .dashboard-frame {
@@ -483,23 +684,219 @@ body {
   margin: 0 auto;
   padding: 24px;
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(42, 126, 192, 0.18);
+  background: var(--app-surface, rgba(255, 255, 255, 0.94));
+  border: 1px solid var(--app-border, rgba(42, 126, 192, 0.18));
   box-shadow: 0 20px 50px rgba(14, 88, 146, 0.14);
 }
 
 .page-title {
   margin: 0 0 8px;
-  color: #143a5c;
+  color: var(--app-text-primary, #143a5c);
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   line-height: 1.15;
 }
 
 .page-subtitle {
   margin: 0 0 24px;
-  color: #60788f;
+  color: var(--app-text-secondary, #60788f);
   font-size: 0.98rem;
   line-height: 1.5;
+}
+
+/* NUEVO: overrides de tema oscuro para bloques principales y componentes Angular Material. */
+body.dark-theme .dashboard-hero-copy,
+body.dark-theme .dashboard-highlight-card,
+body.dark-theme .dashboard-section,
+body.dark-theme .page-card,
+body.dark-theme .profile-card,
+body.dark-theme .filters-card,
+body.dark-theme .table-card,
+body.dark-theme .product-card {
+  background: var(--app-surface);
+  border-color: var(--app-border);
+}
+
+body.dark-theme .dashboard-shell { /* NUEVO: fondo general dark mas notorio para separar visualmente ambos modos. */
+  --dashboard-bg-1: #041523; /* NUEVO: base oscura para dark mode. */
+  --dashboard-bg-2: #072238; /* NUEVO: tono medio oscuro para el gradiente dark. */
+  --dashboard-bg-3: #0a2f4b; /* NUEVO: tercer tono oscuro para profundidad visual. */
+  --dashboard-panel: var(--app-surface); /* NUEVO: mantiene coherencia con superficies del dark mode. */
+  --dashboard-text: var(--app-text-primary); /* NUEVO: usa el color de texto principal dark. */
+  background:
+    radial-gradient(circle at 12% 10%, rgba(62, 129, 180, 0.22), transparent 24%), /* NUEVO: acento tenue en dark mode. */
+    radial-gradient(circle at 85% 12%, rgba(20, 79, 128, 0.2), transparent 22%), /* NUEVO: segundo acento tenue en dark mode. */
+    linear-gradient(135deg, var(--dashboard-bg-1) 0%, var(--dashboard-bg-2) 50%, var(--dashboard-bg-3) 100%); /* NUEVO: fondo oscuro real. */
+}
+
+body.dark-theme .dashboard-backdrop { /* NUEVO: capa oscura adicional para reducir brillo de gradientes en dark. */
+  background:
+    linear-gradient(rgba(2, 10, 18, 0.56), rgba(2, 10, 18, 0.62)), /* NUEVO: overlay oscuro para reforzar el dark mode. */
+    radial-gradient(circle at center, rgba(121, 178, 226, 0.08), transparent 56%); /* NUEVO: leve luz central sin aclarar demasiado. */
+}
+
+body.dark-theme .dashboard-topbar { /* NUEVO: topbar mas oscura para que destaque sobre el fondo. */
+  background: var(--app-surface); /* NUEVO: mismo color base que las cards para mantener consistencia visual. */
+  border-color: var(--app-border); /* NUEVO: mismo borde que componentes inferiores. */
+  backdrop-filter: none; /* NUEVO: evita efecto grisáceo por transparencia/blur del navbar. */
+}
+
+body.dark-theme .dashboard-hero-copy h1,
+body.dark-theme .dashboard-highlight-card strong,
+body.dark-theme .page-title,
+body.dark-theme .mat-mdc-card-title,
+body.dark-theme .mat-mdc-card-header .mat-mdc-card-subtitle,
+body.dark-theme .mat-mdc-header-cell,
+body.dark-theme .mat-mdc-cell,
+body.dark-theme .mat-mdc-paginator,
+body.dark-theme .mat-mdc-form-field,
+body.dark-theme .mat-mdc-select-value,
+body.dark-theme .mat-mdc-select-arrow,
+body.dark-theme .mat-mdc-option {
+  color: var(--app-text-primary);
+}
+
+body.dark-theme .dashboard-hero-copy p,
+body.dark-theme .dashboard-highlight-card p,
+body.dark-theme .page-subtitle,
+body.dark-theme .empty-state p,
+body.dark-theme .mat-mdc-card-subtitle,
+body.dark-theme .mat-mdc-paginator-range-label,
+body.dark-theme .user-cell span {
+  color: var(--app-text-secondary);
+}
+
+body.dark-theme .mat-mdc-table,
+body.dark-theme .mat-mdc-paginator,
+body.dark-theme .mat-mdc-select-panel,
+body.dark-theme .mat-mdc-dialog-surface {
+  background: var(--app-surface-strong);
+}
+
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-dialog-title,
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-dialog-content,
+body.dark-theme .mat-mdc-dialog-surface p { /* NUEVO: texto general de dialogs en color claro. */
+  color: var(--app-text-primary) !important;
+}
+
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-form-field,
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-form-field .mdc-floating-label,
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-input-element,
+body.dark-theme .mat-mdc-dialog-surface textarea.mat-mdc-input-element,
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-select-value-text,
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-select-arrow,
+body.dark-theme .mat-mdc-dialog-surface .mat-icon { /* NUEVO: labels/inputs/select/iconos blancos en formularios de modal. */
+  color: var(--app-text-primary) !important;
+}
+
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-form-field .mdc-floating-label--float-above { /* NUEVO: label flotante en tono secundario para contraste. */
+  color: var(--app-text-secondary) !important;
+}
+
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-form-field-subscript-wrapper,
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-form-field-hint,
+body.dark-theme .mat-mdc-dialog-surface .mat-mdc-form-field-error-wrapper { /* NUEVO: textos auxiliares/errores legibles en dark mode. */
+  color: var(--app-text-secondary) !important;
+}
+
+body.dark-theme .mat-mdc-text-field-wrapper,
+body.dark-theme .mat-mdc-form-field-focus-overlay {
+  background: rgba(22, 43, 64, 0.78) !important;
+}
+
+body.dark-theme .mat-mdc-form-field .mdc-floating-label,
+body.dark-theme .mat-mdc-form-field .mat-mdc-input-element,
+body.dark-theme .mat-mdc-form-field textarea.mat-mdc-input-element,
+body.dark-theme .mat-mdc-form-field .mat-mdc-select-value-text { /* NUEVO: texto de campos en blanco en dark mode (incluye Buscar por nombre). */
+  color: var(--app-text-primary) !important;
+}
+
+body.dark-theme .cdk-overlay-pane .mat-mdc-select-panel,
+body.dark-theme .cdk-overlay-pane .mat-mdc-option,
+body.dark-theme .cdk-overlay-pane .mat-mdc-option .mdc-list-item__primary-text { /* NUEVO: opciones del selector de Rol (admin/user) visibles en blanco en dark mode. */
+  color: var(--app-text-primary) !important;
+}
+
+body.dark-theme .cdk-overlay-pane .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text { /* NUEVO: opcion seleccionada del Rol tambien en color claro. */
+  color: #ffffff !important;
+}
+
+body.dark-theme .mat-mdc-form-field .mat-mdc-input-element::placeholder,
+body.dark-theme .mat-mdc-form-field textarea.mat-mdc-input-element::placeholder { /* NUEVO: placeholders legibles en dark mode. */
+  color: rgba(196, 217, 235, 0.76) !important;
+}
+
+body.dark-theme .mat-mdc-input-element:-webkit-autofill,
+body.dark-theme .mat-mdc-input-element:-webkit-autofill:hover,
+body.dark-theme .mat-mdc-input-element:-webkit-autofill:focus,
+body.dark-theme textarea.mat-mdc-input-element:-webkit-autofill { /* NUEVO: elimina fondo blanco del autofill en email/contrasena del modal. */
+  -webkit-text-fill-color: var(--app-text-primary) !important;
+  transition: background-color 9999s ease-out 0s;
+  box-shadow: 0 0 0 1000px rgba(22, 43, 64, 0.88) inset !important;
+  caret-color: var(--app-text-primary);
+}
+
+body.dark-theme .mdc-notched-outline__leading,
+body.dark-theme .mdc-notched-outline__notch,
+body.dark-theme .mdc-notched-outline__trailing {
+  border-color: rgba(146, 189, 226, 0.42) !important;
+}
+
+body.dark-theme .mat-mdc-input-element::placeholder {
+  color: rgba(196, 217, 235, 0.76);
+}
+
+body.dark-theme .dashboard-nav-link {
+  color: rgba(230, 243, 255, 0.82);
+}
+
+body.dark-theme .dashboard-nav-link.is-active,
+body.dark-theme .dashboard-nav-link:hover { /* NUEVO: estado activo con mayor contraste visual en dark. */
+  background: rgba(129, 192, 241, 0.22);
+  color: #f7fbff;
+}
+
+body.dark-theme .theme-toggle,
+body.dark-theme .theme-toggle .mdc-label { /* NUEVO: evita texto negro en el label del switch en dark mode. */
+  color: #eaf4ff !important;
+}
+
+body.dark-theme .dashboard-userbox span { /* NUEVO: mejora legibilidad del rol bajo el nombre de usuario. */
+  color: #bcd3e7;
+}
+
+body.dark-theme .product-card p,
+body.dark-theme .empty-state,
+body.dark-theme .category-chip,
+body.dark-theme .stock-badge,
+body.dark-theme .status-pill,
+body.dark-theme .mat-mdc-card-subtitle { /* NUEVO: corrige textos de cards/chips que quedaban demasiado apagados. */
+  color: var(--app-text-secondary);
+}
+
+body.dark-theme .category-chip { /* NUEVO: chip de categoria con fondo dark y color de acento visible. */
+  background: rgba(54, 156, 231, 0.2);
+  color: #8dd0ff;
+}
+
+body.dark-theme .stock-badge { /* NUEVO: chip de stock alto con verde mas legible en fondo oscuro. */
+  background: rgba(45, 172, 102, 0.2);
+  color: #7ef0b4;
+}
+
+body.dark-theme .stock-badge-low { /* NUEVO: chip de stock bajo con naranja de alto contraste. */
+  background: rgba(255, 171, 64, 0.22);
+  color: #ffd08f;
+}
+
+body.dark-theme .product-card .mat-mdc-button:not(.product-delete-button),
+body.dark-theme .table-card .mat-mdc-icon-button,
+body.dark-theme .table-card .mat-mdc-button { /* NUEVO: corrige botones de accion que se veian negros en dark. */
+  color: #e8f3ff !important;
+}
+
+body.dark-theme .table-card .mat-mdc-icon-button:hover,
+body.dark-theme .product-card .mat-mdc-button:hover { /* NUEVO: agrega feedback visual claro al hover en dark. */
+  background: rgba(129, 192, 241, 0.14);
 }
 
 @media (max-width: 640px) {
@@ -556,18 +953,24 @@ body {
   .auth-frame {
     width: min(100%, calc(100% - 28px));
     grid-template-columns: 1fr;
-    padding: 18px 0;
+    padding: 0; /* NUEVO: sin padding extra para que la card principal mantenga forma limpia. */
+    border-radius: 22px; /* NUEVO: radio mas contenido en pantallas chicas. */
   }
 
   .brand-panel,
   .form-panel {
     min-height: auto;
-    padding: 32px 24px;
+    padding: 26px 20px; /* NUEVO: reduce altura total de la card en mobile. */
   }
 
   .form-panel {
     border-left: 0;
-    border-top: 1px solid var(--auth-line);
+    border-top: 0; /* NUEVO: en mobile se mantiene solo el encuadre de cards, sin divisor extra. */
+  }
+
+  .brand-panel {
+    border-right: 0; /* NUEVO: en mobile se quita divisor vertical para layout apilado. */
+    border-bottom: 1px solid var(--auth-line); /* NUEVO: divisor horizontal sutil entre bloques apilados. */
   }
 
   .brand-copy,

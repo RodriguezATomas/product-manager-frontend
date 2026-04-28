@@ -5,14 +5,14 @@
     <aside class="brand-panel">
       <div class="brand-copy">
         <img
-          src="assets/images/esueldos-logo.png"
+          [src]="isDarkTheme ? 'assets/images/esueldos-logo.png' : 'assets/images/esueldos-logo-azul.png'"
           alt="e-Sueldos"
-          class="brand-logo">
+          class="brand-logo"> <!-- NUEVO: en register logo azul en light-mode y blanco en dark-mode -->
 
         <span class="brand-kicker">Nueva cuenta</span>
-        <h1>Empieza con una alta simple y visualmente clara</h1>
+        <h1>Unete a la comunidad de e-Sueldos</h1>
         <p>
-          Reinterpretamos el layout de la referencia para que el registro mantenga la misma estetica corporativa.
+        Nuestra plataforma está diseñada para ofrecerte una experiencia intuitiva y eficiente desde el primer momento. 
         </p>
       </div>
     </aside>

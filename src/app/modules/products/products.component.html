@@ -4,7 +4,7 @@
   <div class="dashboard-frame">
     <header class="dashboard-topbar">
       <a routerLink="/products" class="dashboard-brand">
-        <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="dashboard-brand-logo">
+        <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="dashboard-brand-logo"> <!-- NUEVO: en products se usa logo blanco fijo -->
       </a>
 
       <nav class="dashboard-nav">
@@ -14,6 +14,9 @@
       </nav>
 
       <div class="dashboard-userbox">
+        <mat-slide-toggle class="theme-toggle" [checked]="isDarkTheme" (change)="toggleTheme()">
+          {{ isDarkTheme ? 'Modo noche' : 'Modo Dia' }}
+        </mat-slide-toggle> <!-- NUEVO: etiqueta dinamica segun tema activo -->
         <div>
           <strong>{{ currentUserName }}</strong>
           <span>{{ currentUserRoleLabel }}</span>

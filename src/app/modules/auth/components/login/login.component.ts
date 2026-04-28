@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ThemeService } from 'src/app/core/services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private themeService: ThemeService, // NUEVO: permite elegir logo segun tema activo.
     private snackBar: MatSnackBar,
     private router: Router
   ) {
@@ -23,6 +25,10 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  get isDarkTheme(): boolean {
+    return this.themeService.isDarkTheme; // NUEVO: expone estado del tema al template.
   }
 
   onSubmit(): void {

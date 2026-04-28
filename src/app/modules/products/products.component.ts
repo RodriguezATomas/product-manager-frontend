@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ThemeService } from 'src/app/core/services/theme.service';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
 import { Product, ProductPayload } from './models/product.model';
@@ -20,6 +21,7 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private themeService: ThemeService, // NUEVO: servicio de tema para alternar modo oscuro/claro.
     private productsService: ProductsService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -36,6 +38,10 @@ export class ProductsComponent implements OnInit {
 
   get currentUserRoleLabel(): string {
     return this.isAdmin ? 'Administrador' : 'Usuario';
+  }
+
+  get isDarkTheme(): boolean {
+    return this.themeService.isDarkTheme; // NUEVO: expone estado del tema al template.
   }
 
   ngOnInit(): void {
@@ -126,6 +132,10 @@ export class ProductsComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme(); // NUEVO: cambia tema y lo persiste en localStorage.
   }
 
   trackByProduct(_: number, product: Product): string {

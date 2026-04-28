@@ -5,14 +5,14 @@
     <aside class="brand-panel">
       <div class="brand-copy">
         <img
-          src="assets/images/esueldos-logo.png"
+          [src]="isDarkTheme ? 'assets/images/esueldos-logo.png' : 'assets/images/esueldos-logo-azul.png'"
           alt="e-Sueldos"
-          class="brand-logo">
+          class="brand-logo"> <!-- NUEVO: en login logo azul en light-mode y blanco en dark-mode -->
 
         <span class="brand-kicker">Gestion inteligente</span>
         <h1>Ingresa a tu espacio de trabajo</h1>
         <p>
-          Un acceso claro, corporativo y simple, inspirado en la referencia visual que compartiste.
+        Gestiona tus proyectos, tareas y equipos de manera eficiente.
         </p>
       </div>
     </aside>
