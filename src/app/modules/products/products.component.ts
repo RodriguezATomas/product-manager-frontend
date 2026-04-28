@@ -18,6 +18,7 @@ import { ProductsService } from './services/products.service';
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   loading = false;
+  readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png'; // NUEVO: imagen de respaldo si la miniatura falla o no existe.
 
   constructor(
     private authService: AuthService,
@@ -140,6 +141,19 @@ export class ProductsComponent implements OnInit {
 
   trackByProduct(_: number, product: Product): string {
     return product.id;
+  }
+
+  getProductStatusLabel(product: Product): string {
+    return product.stock > 0 ? 'Disponible' : 'Sin stock'; // NUEVO: etiqueta visible junto al badge de pulso del producto.
+  }
+
+  getProductImage(product: Product): string {
+    return product.imageUrl || this.fallbackProductImage; // NUEVO: resuelve la imagen principal de la card con fallback local.
+  }
+
+  handleProductImageError(event: Event): void {
+    const imageElement = event.target as HTMLImageElement;
+    imageElement.src = this.fallbackProductImage; // NUEVO: reemplaza imagen rota por una portada segura.
   }
 
   private loadProducts(): void {

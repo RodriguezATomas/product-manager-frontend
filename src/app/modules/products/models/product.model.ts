@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   category: string;
   stock: number;
+  imageUrl?: string; // NUEVO: URL opcional de miniatura para mostrar una portada en cada card.
 }
 
 export interface ProductPayload {
@@ -13,4 +14,5 @@ export interface ProductPayload {
   price: number;
   category: string;
   stock: number;
+  imageUrl?: string; // NUEVO: permite persistir la imagen del producto desde el formulario.
 }

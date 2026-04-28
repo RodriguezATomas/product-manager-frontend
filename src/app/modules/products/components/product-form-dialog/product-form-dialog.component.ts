@@ -27,7 +27,8 @@ export class ProductFormDialogComponent implements OnInit {
       description: [this.data?.description ?? '', [Validators.required, Validators.minLength(10)]],
       price: [this.data?.price ?? 0, [Validators.required, Validators.min(0)]],
       category: [this.data?.category ?? '', [Validators.required]],
-      stock: [this.data?.stock ?? 0, [Validators.required, Validators.min(0)]]
+      stock: [this.data?.stock ?? 0, [Validators.required, Validators.min(0)]],
+      imageUrl: [this.data?.imageUrl ?? ''] // NUEVO: captura la miniatura del producto para usarla en la card.
     });
   }
 
@@ -41,7 +42,8 @@ export class ProductFormDialogComponent implements OnInit {
       description: this.form.value.description,
       price: Number(this.form.value.price),
       category: this.form.value.category,
-      stock: Number(this.form.value.stock)
+      stock: Number(this.form.value.stock),
+      imageUrl: String(this.form.value.imageUrl ?? '').trim() || undefined // NUEVO: evita enviar strings vacios como URL de imagen.
     };
 
     this.dialogRef.close(payload);

@@ -49,6 +49,28 @@
     <section class="dashboard-section">
       <div *ngIf="!loading; else loadingState" class="products-grid">
         <mat-card class="product-card" *ngFor="let product of products; trackBy: trackByProduct">
+          <div class="product-image-shell">
+            <img
+              class="product-image"
+              [src]="getProductImage(product)"
+              [alt]="product.name"
+              (error)="handleProductImageError($event)" /> <!-- NUEVO: portada del producto con fallback local -->
+
+            <div class="product-status-indicator" [class.product-status-indicator-out]="product.stock <= 0">
+              <span class="status-pulse" [class.status-pulse-off]="product.stock <= 0"></span> <!-- NUEVO: pulso visual para stock disponible -->
+              <span>{{ getProductStatusLabel(product) }}</span>
+            </div>
+
+            <div class="card-quick-actions" *ngIf="isAdmin">
+              <button mat-mini-fab type="button" aria-label="Editar producto" (click)="openEditDialog(product)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-mini-fab color="warn" type="button" aria-label="Eliminar producto" (click)="confirmDelete(product)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div> <!-- NUEVO: acciones rapidas que aparecen suavemente al hacer hover -->
+          </div>
+
           <div class="product-top">
             <span class="category-chip">{{ product.category }}</span>
             <span class="stock-badge" [class.stock-badge-low]="product.stock <= 5">
@@ -65,7 +87,7 @@
             <p>{{ product.description }}</p>
           </mat-card-content>
 
-          <mat-card-actions align="end" *ngIf="isAdmin">
+          <mat-card-actions align="end" *ngIf="isAdmin" class="product-actions">
             <button mat-button type="button" (click)="openEditDialog(product)">Editar</button>
             <button mat-flat-button type="button" class="product-delete-button" (click)="confirmDelete(product)">Eliminar</button>
           </mat-card-actions>

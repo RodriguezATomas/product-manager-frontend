@@ -69,7 +69,8 @@
 
       <mat-card class="table-card">
         <div class="table-shell" *ngIf="!loading; else loadingState">
-          <div class="table-wrapper">
+          <div class="table-panel">
+            <div class="table-wrapper">
             <table
               mat-table
               [dataSource]="users"
@@ -128,6 +129,15 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
+            </div>
+
+            <mat-paginator
+              [length]="totalUsers"
+              [pageIndex]="pageIndex"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="[5, 10, 20]"
+              (page)="onPageChange($event)">
+            </mat-paginator>
           </div>
 
           <div class="empty-state" *ngIf="!users.length">
@@ -135,14 +145,6 @@
             <h2>No hay usuarios para mostrar</h2>
             <p>Proba ajustar filtros o crear un nuevo usuario.</p>
           </div>
-
-          <mat-paginator
-            [length]="totalUsers"
-            [pageIndex]="pageIndex"
-            [pageSize]="pageSize"
-            [pageSizeOptions]="[5, 10, 20]"
-            (page)="onPageChange($event)">
-          </mat-paginator>
         </div>
       </mat-card>
     </section>

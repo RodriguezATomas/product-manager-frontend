@@ -49,7 +49,8 @@ export class ProductsService {
       description: String(source?.description ?? ''),
       price: Number(source?.price ?? 0),
       category: String(source?.category ?? 'Sin categoría'),
-      stock: Number(source?.stock ?? 0)
+      stock: Number(source?.stock ?? 0),
+      imageUrl: this.normalizeImageUrl(source?.imageUrl ?? source?.thumbnail ?? source?.photoUrl) // NUEVO: soporta varias claves de imagen al normalizar la respuesta.
     };
   }
 
@@ -64,5 +65,10 @@ export class ProductsService {
 
   private asArray(value: unknown): any[] {
     return Array.isArray(value) ? value : [];
+  }
+
+  private normalizeImageUrl(value: unknown): string | undefined {
+    const normalizedValue = String(value ?? '').trim();
+    return normalizedValue || undefined;
   }
 }

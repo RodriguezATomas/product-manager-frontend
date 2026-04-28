@@ -43,10 +43,18 @@
 
 .table-shell {
   overflow: hidden;
+  padding: 14px; /* NUEVO: crea un margen interno para que la tabla no pegue tan duro contra el card grande. */
+}
+
+.table-panel {
+  border-radius: 18px;
+  overflow: hidden; /* NUEVO: une tabla y paginador en una sola superficie redondeada. */
 }
 
 .table-wrapper {
   overflow-x: auto;
+  background: transparent; /* AJUSTE: en modo claro evita sumar otra caja visual dentro del card grande. */
+  border: 0; /* AJUSTE: elimina el contorno visible que se seguia notando en light mode. */
 }
 
 table {
@@ -140,6 +148,35 @@ table {
 .skeleton-row {
   height: 64px;
   margin-bottom: 14px;
+}
+
+:host ::ng-deep .mat-mdc-paginator {
+  background: transparent; /* NUEVO: evita que el fondo del paginador compita con la superficie unificada. */
+}
+
+:host ::ng-deep .mat-mdc-paginator-page-size,
+:host ::ng-deep .mat-mdc-paginator-range-actions {
+  align-items: center;
+}
+
+:host ::ng-deep .mat-mdc-paginator .mat-mdc-text-field-wrapper {
+  border-radius: 16px !important; /* NUEVO: redondea el selector de 'Items per page' en ambos temas. */
+  overflow: hidden;
+}
+
+:host ::ng-deep .mat-mdc-paginator .mdc-notched-outline__leading {
+  border-top-left-radius: 16px !important;
+  border-bottom-left-radius: 16px !important;
+  min-width: 16px;
+}
+
+:host ::ng-deep .mat-mdc-paginator .mdc-notched-outline__trailing {
+  border-top-right-radius: 16px !important;
+  border-bottom-right-radius: 16px !important;
+}
+
+:host ::ng-deep .mat-mdc-paginator .mat-mdc-icon-button {
+  border-radius: 999px;
 }
 
 @keyframes pulse {

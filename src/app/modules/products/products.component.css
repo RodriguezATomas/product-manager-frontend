@@ -4,24 +4,109 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, minmax(255px, 275px)); /* AJUSTE: fija 4 cards por fila en desktop para un catalogo mas ordenado. */
+  gap: 16px;
+  justify-content: center; /* AJUSTE: centra la grilla dentro del contenedor cuando sobran espacios laterales. */
 }
 
 .product-card,
 .skeleton-card {
-  border-radius: 22px;
+  position: relative; /* NUEVO: prepara la card para overlays y efectos de hover. */
+  display: flex; /* AJUSTE: estructura la card para que todas puedan cerrar igual. */
+  flex-direction: column;
+  min-height: 344px; /* AJUSTE: compacta un poco mas la card sin perder aire visual. */
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(42, 126, 192, 0.18);
   box-shadow: 0 20px 50px rgba(14, 88, 146, 0.14);
+  overflow: hidden; /* NUEVO: recorta la imagen y las capas internas dentro del borde redondeado. */
+}
+
+.product-card {
+  transition: transform 220ms ease, box-shadow 220ms ease; /* NUEVO: suaviza la elevacion al pasar el mouse. */
+}
+
+.product-card:hover {
+  transform: translateY(-6px); /* NUEVO: eleva la card en hover para hacerla mas dinamica. */
+  box-shadow: 0 24px 60px rgba(14, 88, 146, 0.22); /* NUEVO: simula una elevacion tipo z8. */
+}
+
+.product-image-shell {
+  position: relative;
+  height: 138px; /* AJUSTE: portada mas baja para acortar visualmente la card. */
+  display: flex; /* NUEVO: centra la imagen dentro de un marco consistente. */
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(13, 123, 196, 0.12), rgba(100, 181, 246, 0.18));
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* AJUSTE: evita recortes agresivos y hace que productos distintos se vean mas proporcionados. */
+  display: block;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9); /* NUEVO: marco claro para unificar imagenes de distintas proporciones. */
+}
+
+.product-status-indicator {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.58);
+  color: #ffffff;
+  backdrop-filter: blur(10px); /* NUEVO: separa el badge de la imagen con una capa suave. */
+  font-size: 0.8rem;
+}
+
+.product-status-indicator-out {
+  background: rgba(127, 29, 29, 0.65); /* NUEVO: diferencia visual cuando no hay stock. */
+}
+
+.card-quick-actions {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(10px); /* NUEVO: prepara la transicion de entrada al hover. */
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.product-card:hover .card-quick-actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto; /* NUEVO: habilita clicks solo cuando las acciones son visibles. */
+}
+
+.status-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  animation: statusPulse 1.8s infinite; /* NUEVO: pulso para items activos o con stock. */
+}
+
+.status-pulse-off {
+  background: #f97316;
+  box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.45); /* NUEVO: avisa visualmente cuando el stock no esta disponible. */
 }
 
 .product-top {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
-  padding: 18px 18px 0;
+  padding: 14px 14px 0;
 }
 
 .category-chip,
@@ -29,9 +114,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 999px;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 700;
 }
 
@@ -50,9 +135,39 @@
   color: #ef6c00;
 }
 
+:host ::ng-deep .product-card .mat-mdc-card-header {
+  padding: 12px 14px 0;
+  min-height: 52px; /* AJUSTE: bloque de titulo aun mas compacto. */
+}
+
+:host ::ng-deep .product-card .mat-mdc-card-title {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+:host ::ng-deep .product-card .mat-mdc-card-subtitle {
+  font-size: 0.88rem;
+}
+
+:host ::ng-deep .product-card .mat-mdc-card-content {
+  padding: 0 14px 2px;
+  min-height: 34px; /* AJUSTE: acerca un poco mas las acciones a la descripcion. */
+}
+
 .product-card p {
   color: #4e647a;
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: 0.92rem;
+  margin: 0;
+  display: -webkit-box; /* NUEVO: mantiene descripciones uniformes entre cards. */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-actions {
+  padding: 0 8px 4px; /* AJUSTE: termina de acercar las acciones al bloque de contenido. */
+  margin-top: auto; /* AJUSTE: alinea las acciones al fondo y vuelve pareja la altura de las cards. */
 }
 
 .product-delete-button {
@@ -63,6 +178,23 @@
 
 .product-delete-button .mdc-button__label {
   color: #ffffff !important;
+}
+
+:host ::ng-deep .product-card .mat-mdc-card-title,
+:host ::ng-deep .product-card .mat-mdc-card-subtitle {
+  display: -webkit-box; /* NUEVO: limita variaciones grandes de alto por textos largos. */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+:host ::ng-deep .product-card .mat-mdc-card-title {
+  -webkit-line-clamp: 2;
+  min-height: 2.4em; /* AJUSTE: iguala el espacio del titulo con una altura moderada. */
+}
+
+:host ::ng-deep .product-card .mat-mdc-card-subtitle {
+  -webkit-line-clamp: 1;
+  min-height: 1.35em; /* AJUSTE: evita pequeños saltos entre cards por precios/subtitulos. */
 }
 
 .empty-state {
@@ -82,7 +214,7 @@
 }
 
 .skeleton-card {
-  min-height: 260px;
+  min-height: 344px;
   background: linear-gradient(90deg, rgba(201, 224, 242, 0.9) 25%, rgba(243, 249, 253, 1) 50%, rgba(201, 224, 242, 0.9) 75%);
   background-size: 200% 100%;
   animation: pulse 1.4s ease-in-out infinite;
@@ -91,4 +223,28 @@
 @keyframes pulse {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+@keyframes statusPulse {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+@media (max-width: 1199px) {
+  .products-grid {
+    grid-template-columns: repeat(3, minmax(255px, 275px));
+  }
+}
+
+@media (max-width: 899px) {
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(255px, 275px));
+  }
+}
+
+@media (max-width: 599px) {
+  .products-grid {
+    grid-template-columns: minmax(255px, 275px);
+  }
 }
