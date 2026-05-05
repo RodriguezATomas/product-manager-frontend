@@ -10,6 +10,17 @@ import { Product, ProductPayload } from '../../models/product.model';
 })
 export class ProductFormDialogComponent implements OnInit {
   form!: FormGroup;
+  readonly defaultCategories = [
+    'Perifericos',
+    'Monitores',
+    'Notebooks',
+    'Componentes',
+    'Almacenamiento',
+    'Redes',
+    'Impresoras',
+    'Accesorios',
+    'Software'
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Product | null,
@@ -19,6 +30,16 @@ export class ProductFormDialogComponent implements OnInit {
 
   get isEditMode(): boolean {
     return Boolean(this.data);
+  }
+
+  get categoryOptions(): string[] {
+    const currentCategory = this.data?.category?.trim();
+
+    if (currentCategory && !this.defaultCategories.includes(currentCategory)) {
+      return [currentCategory, ...this.defaultCategories];
+    }
+
+    return this.defaultCategories;
   }
 
   ngOnInit(): void {
