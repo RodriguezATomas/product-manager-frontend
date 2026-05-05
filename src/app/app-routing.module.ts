@@ -9,6 +9,11 @@ const routes: Routes = [
     loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule)
   },
   {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule)
+  },
+  {
     path: 'users',
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['admin'] },

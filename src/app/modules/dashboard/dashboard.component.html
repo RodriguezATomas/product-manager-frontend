@@ -1,0 +1,56 @@
+<section class="dashboard-shell">
+  <div class="dashboard-backdrop"></div>
+
+  <div class="dashboard-frame">
+    <header class="dashboard-topbar">
+      <a routerLink="/dashboard" class="dashboard-brand">
+        <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="dashboard-brand-logo">
+      </a>
+
+      <nav class="dashboard-nav">
+        <a routerLink="/dashboard" routerLinkActive="is-active" class="dashboard-nav-link">Inicio</a>
+        <a routerLink="/products" routerLinkActive="is-active" class="dashboard-nav-link">Productos</a>
+        <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="is-active" class="dashboard-nav-link">Usuarios</a>
+        <a routerLink="/profile" routerLinkActive="is-active" class="dashboard-nav-link">Perfil</a>
+      </nav>
+
+      <div class="dashboard-userbox">
+        <mat-slide-toggle class="theme-toggle" [checked]="isDarkTheme" (change)="toggleTheme()">
+          {{ isDarkTheme ? 'Modo noche' : 'Modo Dia' }}
+        </mat-slide-toggle>
+        <div>
+          <strong>{{ currentUserName }}</strong>
+          <span>{{ currentUserRoleLabel }}</span>
+        </div>
+        <button mat-stroked-button type="button" class="dashboard-logout-button" (click)="logout()">Salir</button>
+      </div>
+    </header>
+
+    <section class="dashboard-hero main-dashboard-hero">
+      <div class="dashboard-hero-copy">
+        <span class="dashboard-eyebrow">Panel principal</span>
+        <h1>Hola, {{ currentUserName }}</h1>
+        <p>Accede rapido a las areas principales de e-Sueldos desde una vista central simple y clara.</p>
+      </div>
+
+      <div class="dashboard-hero-side">
+        <div class="dashboard-highlight-card">
+          <span class="dashboard-highlight-label">Acceso actual</span>
+          <strong>{{ currentUserRoleLabel }}</strong>
+          <p>{{ isAdmin ? 'Tenes permisos completos de administracion.' : 'Tenes acceso a tus datos y consultas habilitadas.' }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-section">
+      <div class="main-dashboard-grid">
+        <mat-card class="main-dashboard-card" *ngFor="let shortcut of shortcuts" [routerLink]="shortcut.route">
+          <mat-icon>{{ shortcut.icon }}</mat-icon>
+          <h2>{{ shortcut.title }}</h2>
+          <p>{{ shortcut.description }}</p>
+          <span>Entrar</span>
+        </mat-card>
+      </div>
+    </section>
+  </div>
+</section>
