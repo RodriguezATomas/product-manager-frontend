@@ -25,6 +25,27 @@ const routes: Routes = [
     loadChildren: () => import('./modules/products/products.module').then((m) => m.ProductsModule)
   },
   {
+    path: 'cart',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./modules/cart/cart.module').then((m) => m.CartModule)
+  },
+  {
+    path: 'checkout',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./modules/checkout/checkout.module').then((m) => m.CheckoutModule)
+  },
+  {
+    path: 'orders',
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['admin'] },
+    loadChildren: () => import('./modules/orders/orders.module').then((m) => m.OrdersModule)
+  },
+  {
+    path: 'favorites',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./modules/favorites/favorites.module').then((m) => m.FavoritesModule)
+  },
+  {
     path: 'profile',
     canActivate: [AuthGuard],
     loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule)

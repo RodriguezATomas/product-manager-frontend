@@ -1,0 +1,92 @@
+<section class="dashboard-shell">
+  <div class="dashboard-backdrop"></div>
+
+  <div class="dashboard-frame">
+    <header class="dashboard-topbar">
+      <a routerLink="/products" class="dashboard-brand">
+        <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="dashboard-brand-logo">
+      </a>
+
+      <nav class="dashboard-nav">
+        <a routerLink="/dashboard" routerLinkActive="is-active" class="dashboard-nav-link">Inicio</a>
+        <a routerLink="/products" routerLinkActive="is-active" class="dashboard-nav-link">Productos</a>
+        <a routerLink="/orders" routerLinkActive="is-active" class="dashboard-nav-link">Compras</a>
+        <a routerLink="/users" routerLinkActive="is-active" class="dashboard-nav-link">Usuarios</a>
+        <a routerLink="/profile" routerLinkActive="is-active" class="dashboard-nav-link">Perfil</a>
+      </nav>
+
+      <div class="dashboard-userbox">
+        <mat-slide-toggle class="theme-toggle" [checked]="isDarkTheme" (change)="toggleTheme()">
+          {{ isDarkTheme ? 'Modo noche' : 'Modo Dia' }}
+        </mat-slide-toggle>
+        <div>
+          <strong>{{ currentUserName }}</strong>
+          <span>{{ currentUserRoleLabel }}</span>
+        </div>
+        <button mat-stroked-button type="button" class="dashboard-logout-button" (click)="logout()">Salir</button>
+      </div>
+    </header>
+
+    <section class="dashboard-hero">
+      <div class="dashboard-hero-copy">
+        <span class="dashboard-eyebrow">Administración</span>
+        <h1>Historial de compras</h1>
+        <p>Acá tenés las órdenes creadas desde el checkout del frontend, listas para que después las reemplaces por datos del backend.</p>
+      </div>
+
+      <div class="dashboard-hero-side">
+        <div class="dashboard-highlight-card">
+          <span class="dashboard-highlight-label">Órdenes registradas</span>
+          <strong>{{ orders.length }}</strong>
+          <p>El admin ya no ve carrito ni flujo de compra: desde acá controla el historial.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-section">
+      <div *ngIf="orders.length; else emptyOrders" class="orders-grid">
+        <mat-card class="order-card" *ngFor="let order of orders">
+          <div class="order-card-top">
+            <div>
+              <span class="order-label">Orden</span>
+              <h2>{{ order.id }}</h2>
+            </div>
+            <span class="order-status" [class.order-status-approved]="order.payment.status === 'approved'" [class.order-status-rejected]="order.payment.status === 'failed' || order.payment.status === 'cancelled'">
+              {{ getStatusLabel(order.payment.status) }}
+            </span>
+          </div>
+
+          <div class="order-meta">
+            <div>
+              <span>Usuario</span>
+              <strong>{{ order.user || 'N/D' }}</strong>
+            </div>
+            <div>
+              <span>Estado</span>
+              <strong>{{ order.status }}</strong>
+            </div>
+            <div>
+              <span>Total</span>
+              <strong>{{ order.total | currency:'USD':'symbol':'1.0-2' }}</strong>
+            </div>
+          </div>
+
+          <div class="order-items">
+            <div class="order-item" *ngFor="let item of order.items">
+              <span>{{ item.productName }} x{{ item.quantity }}</span>
+              <strong>{{ item.subtotal | currency:'USD':'symbol':'1.0-2' }}</strong>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </section>
+  </div>
+</section>
+
+<ng-template #emptyOrders>
+  <div class="empty-orders">
+    <mat-icon>receipt_long</mat-icon>
+    <h2>Todavía no hay compras registradas</h2>
+    <p>Cuando un cliente complete el checkout, la orden va a aparecer acá.</p>
+  </div>
+</ng-template>

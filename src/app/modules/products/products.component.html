@@ -10,6 +10,10 @@
       <nav class="dashboard-nav">
         <a routerLink="/dashboard" routerLinkActive="is-active" class="dashboard-nav-link">Inicio</a>
         <a routerLink="/products" routerLinkActive="is-active" class="dashboard-nav-link">Productos</a>
+        <a *ngIf="!isAdmin" routerLink="/favorites" routerLinkActive="is-active" class="dashboard-nav-link">Favoritos</a>
+        <a *ngIf="!isAdmin" routerLink="/cart" routerLinkActive="is-active" class="dashboard-nav-link">Carrito</a>
+        <a *ngIf="!isAdmin" routerLink="/checkout" routerLinkActive="is-active" class="dashboard-nav-link">Checkout</a>
+        <a *ngIf="isAdmin" routerLink="/orders" routerLinkActive="is-active" class="dashboard-nav-link">Compras</a>
         <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="is-active" class="dashboard-nav-link">Usuarios</a>
         <a routerLink="/profile" routerLinkActive="is-active" class="dashboard-nav-link">Perfil</a>
       </nav>
@@ -35,14 +39,22 @@
 
       <div class="dashboard-hero-side">
         <div class="dashboard-highlight-card">
-          <span class="dashboard-highlight-label">Acceso actual</span>
-          <strong>{{ isAdmin ? 'Administracion completa' : 'Consulta habilitada' }}</strong>
-          <p>{{ isAdmin ? 'Podes crear, editar y eliminar productos.' : 'Podes ver el catalogo sin permisos de gestion.' }}</p>
+          <span class="dashboard-highlight-label">{{ isAdmin ? 'Acceso actual' : 'Tu carrito' }}</span>
+          <strong>{{ isAdmin ? 'Administracion completa' : cartItemsCount + ' productos agregados' }}</strong>
+          <p>{{ isAdmin ? 'Podes crear, editar y eliminar productos.' : 'Agregá productos al carrito o guardalos en favoritos para verlos después.' }}</p>
         </div>
 
         <button *ngIf="isAdmin" mat-flat-button type="button" class="dashboard-primary-button" (click)="openCreateDialog()">
           <mat-icon>inventory_2</mat-icon>
           Nuevo producto
+        </button>
+        <button *ngIf="isAdmin" mat-flat-button type="button" class="dashboard-primary-button" routerLink="/orders">
+          <mat-icon>receipt_long</mat-icon>
+          Ver historial
+        </button>
+        <button *ngIf="!isAdmin" mat-flat-button type="button" class="dashboard-primary-button" routerLink="/cart">
+          <mat-icon>shopping_cart</mat-icon>
+          Ver carrito
         </button>
       </div>
     </section>
@@ -88,9 +100,20 @@
             <p>{{ product.description }}</p>
           </mat-card-content>
 
-          <mat-card-actions align="end" *ngIf="isAdmin" class="product-actions">
-            <button mat-button type="button" (click)="openEditDialog(product)">Editar</button>
-            <button mat-flat-button type="button" class="product-delete-button" (click)="confirmDelete(product)">Eliminar</button>
+          <mat-card-actions align="end" class="product-actions">
+            <ng-container *ngIf="isAdmin; else shopperActions">
+              <button mat-button type="button" (click)="openEditDialog(product)">Editar</button>
+              <button mat-flat-button type="button" class="product-delete-button" (click)="confirmDelete(product)">Eliminar</button>
+            </ng-container>
+            <ng-template #shopperActions>
+              <button mat-icon-button type="button" class="favorite-toggle-button" [class.favorite-toggle-button-active]="isFavorite(product.id)" (click)="toggleFavorite(product)" aria-label="Favorito">
+                <mat-icon>{{ isFavorite(product.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+              </button>
+              <button mat-stroked-button type="button" class="dashboard-secondary-button" routerLink="/cart">Ir al carrito</button>
+              <button mat-flat-button type="button" class="product-buy-button" (click)="addToCart(product)" [disabled]="!canAddToCart(product)">
+                {{ canAddToCart(product) ? 'Agregar al carrito' : 'Sin stock' }}
+              </button>
+            </ng-template>
           </mat-card-actions>
         </mat-card>
 

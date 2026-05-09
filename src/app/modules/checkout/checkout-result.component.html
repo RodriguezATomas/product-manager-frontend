@@ -1,0 +1,64 @@
+<section class="dashboard-shell">
+  <div class="dashboard-backdrop"></div>
+
+  <div class="dashboard-frame">
+    <header class="dashboard-topbar">
+      <a routerLink="/products" class="dashboard-brand">
+        <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="dashboard-brand-logo">
+      </a>
+
+      <nav class="dashboard-nav">
+        <a routerLink="/dashboard" routerLinkActive="is-active" class="dashboard-nav-link">Inicio</a>
+        <a routerLink="/products" routerLinkActive="is-active" class="dashboard-nav-link">Productos</a>
+        <a routerLink="/favorites" routerLinkActive="is-active" class="dashboard-nav-link">Favoritos</a>
+        <a routerLink="/cart" routerLinkActive="is-active" class="dashboard-nav-link">Carrito</a>
+        <a routerLink="/checkout" routerLinkActive="is-active" class="dashboard-nav-link">Checkout</a>
+        <a routerLink="/profile" routerLinkActive="is-active" class="dashboard-nav-link">Perfil</a>
+      </nav>
+
+      <div class="dashboard-userbox">
+        <mat-slide-toggle class="theme-toggle" [checked]="isDarkTheme" (change)="toggleTheme()">
+          {{ isDarkTheme ? 'Modo noche' : 'Modo Dia' }}
+        </mat-slide-toggle>
+        <div>
+          <strong>{{ currentUserName }}</strong>
+          <span>{{ currentUserRoleLabel }}</span>
+        </div>
+        <button mat-stroked-button type="button" class="dashboard-logout-button" (click)="logout()">Salir</button>
+      </div>
+    </header>
+
+    <section class="dashboard-section">
+      <div class="result-card" [class.result-card-approved]="status === 'approved'" [class.result-card-rejected]="status === 'failed' || status === 'cancelled'">
+        <mat-icon>{{ status === 'approved' ? 'task_alt' : status === 'failed' || status === 'cancelled' ? 'cancel' : 'hourglass_top' }}</mat-icon>
+        <span class="dashboard-eyebrow">Resultado</span>
+        <h1>{{ title }}</h1>
+        <p>{{ description }}</p>
+
+        <div class="result-summary" *ngIf="order">
+          <div>
+            <span>Orden</span>
+            <strong>{{ order.id }}</strong>
+          </div>
+          <div>
+            <span>Total</span>
+            <strong>{{ order.total | currency:'USD':'symbol':'1.0-2' }}</strong>
+          </div>
+          <div>
+            <span>Cliente</span>
+            <strong>{{ currentUserName }}</strong>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button mat-flat-button type="button" class="dashboard-primary-button" routerLink="/products">
+            Seguir comprando
+          </button>
+          <button mat-stroked-button type="button" class="dashboard-secondary-button" routerLink="/cart" *ngIf="status !== 'approved'">
+            Volver al carrito
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
