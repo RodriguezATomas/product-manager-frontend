@@ -4,8 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { CartService } from 'src/app/core/services/cart.service';
-import { FavoritesService } from 'src/app/core/services/favorites.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
@@ -20,14 +18,10 @@ import { ProductsService } from './services/products.service';
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   loading = false;
-  cartItemsCount = 0;
-  favoriteIds = new Set<string>();
   readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png'; // NUEVO: imagen de respaldo si la miniatura falla o no existe.
 
   constructor(
     private authService: AuthService,
-    private cartService: CartService,
-    private favoritesService: FavoritesService,
     private themeService: ThemeService, // NUEVO: servicio de tema para alternar modo oscuro/claro.
     private productsService: ProductsService,
     private dialog: MatDialog,
@@ -52,32 +46,7 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.isAdmin) {
-      this.favoriteIds = new Set(this.favoritesService.items.map((item) => item.id));
-      this.favoritesService.favorites$.subscribe((items) => {
-        this.favoriteIds = new Set(items.map((item) => item.id));
-      });
-    }
     this.loadProducts();
-  }
-
-  addToCart(product: Product): void {
-    if (product.stock <= 0) {
-      this.snackBar.open('Este producto no tiene stock disponible.', 'Cerrar', { duration: 3200 });
-      return;
-    }
-
-    this.cartService.addProduct(product);
-    this.snackBar.open(`${product.name} se agregó al carrito.`, 'Cerrar', { duration: 2800 });
-  }
-
-  toggleFavorite(product: Product): void {
-    const added = this.favoritesService.toggleFavorite(product);
-    this.snackBar.open(
-      added ? `${product.name} se agregó a favoritos.` : `${product.name} se quitó de favoritos.`,
-      'Cerrar',
-      { duration: 2600 }
-    );
   }
 
   openCreateDialog(): void {
@@ -176,14 +145,6 @@ export class ProductsComponent implements OnInit {
 
   getProductStatusLabel(product: Product): string {
     return product.stock > 0 ? 'Disponible' : 'Sin stock'; // NUEVO: etiqueta visible junto al badge de pulso del producto.
-  }
-
-  canAddToCart(product: Product): boolean {
-    return product.stock > 0;
-  }
-
-  isFavorite(productId: string): boolean {
-    return this.favoriteIds.has(productId);
   }
 
   getProductImage(product: Product): string {
