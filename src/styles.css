@@ -989,3 +989,58 @@ body.dark-theme .product-card .mat-mdc-button:hover { /* NUEVO: agrega feedback 
     grid-template-columns: 1fr;
   }
 }
+
+.dashboard-panel {
+  padding: 20px;
+  border-radius: 16px;
+  background: #0d1b2a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-primary-button {
+  border-radius: 14px !important;
+  background: #1677ff !important;
+  color: #fff !important;
+}
+
+.dashboard-primary-button .mdc-button__label {
+  color: #fff !important;
+}
+
+.dashboard-secondary-button {
+  border-radius: 14px !important;
+  color: #f4f7fb !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+}
+
+.users-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.users-toolbar h2 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  color: #f4f7fb;
+}
+
+.users-toolbar p {
+  margin: 0;
+  color: #9db0c3;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .users-toolbar,
+  .toolbar-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

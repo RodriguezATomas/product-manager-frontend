@@ -1,108 +1,140 @@
-<section class="dashboard-shell">
-  <div class="dashboard-backdrop"></div>
+<ng-container *ngIf="isAdmin; else userStorefront">
+  <section class="products-toolbar">
+    <div>
+      
+      <p>Gestioná el catálogo, precios y stock.</p>
+    </div>
 
-  <div class="dashboard-frame">
-    <header class="dashboard-topbar">
-      <a routerLink="/products" class="dashboard-brand">
-        <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="dashboard-brand-logo"> <!-- NUEVO: en products se usa logo blanco fijo -->
-      </a>
+    <button
+      *ngIf="isAdmin"
+      mat-flat-button
+      type="button"
+      class="dashboard-primary-button"
+      (click)="openCreateDialog()">
+      <mat-icon>inventory_2</mat-icon>
+      Nuevo producto
+    </button>
+  </section>
 
-      <nav class="dashboard-nav">
-        <a routerLink="/dashboard" routerLinkActive="is-active" class="dashboard-nav-link">Inicio</a>
-        <a routerLink="/products" routerLinkActive="is-active" class="dashboard-nav-link">Productos</a>
-        <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="is-active" class="dashboard-nav-link">Usuarios</a>
-        <a routerLink="/profile" routerLinkActive="is-active" class="dashboard-nav-link">Perfil</a>
-      </nav>
+  <section class="dashboard-panel">
+    <div *ngIf="!loading; else loadingState" class="products-grid">
+      <mat-card class="product-card" *ngFor="let product of products; trackBy: trackByProduct">
+        <div class="product-image-shell">
+          <img
+            class="product-image"
+            [src]="getProductImage(product)"
+            [alt]="product.name"
+            (error)="handleProductImageError($event)" />
 
-      <div class="dashboard-userbox">
-        <mat-slide-toggle class="theme-toggle" [checked]="isDarkTheme" (change)="toggleTheme()">
-          {{ isDarkTheme ? 'Modo noche' : 'Modo Dia' }}
-        </mat-slide-toggle> <!-- NUEVO: etiqueta dinamica segun tema activo -->
-        <div>
-          <strong>{{ currentUserName }}</strong>
-          <span>{{ currentUserRoleLabel }}</span>
-        </div>
-        <button mat-stroked-button type="button" class="dashboard-logout-button" (click)="logout()">Salir</button>
-      </div>
-    </header>
-
-    <section class="dashboard-hero">
-      <div class="dashboard-hero-copy">
-        <span class="dashboard-eyebrow">Catalogo</span>
-        <h1>Panel de productos</h1>
-        <p>La vista principal mantiene la misma atmosfera visual del acceso, ahora aplicada a la operacion diaria dentro de e-Sueldos.</p>
-      </div>
-
-      <div class="dashboard-hero-side">
-        <div class="dashboard-highlight-card">
-          <span class="dashboard-highlight-label">Acceso actual</span>
-          <strong>{{ isAdmin ? 'Administracion completa' : 'Consulta habilitada' }}</strong>
-          <p>{{ isAdmin ? 'Podes crear, editar y eliminar productos.' : 'Podes ver el catalogo sin permisos de gestion.' }}</p>
-        </div>
-
-        <button *ngIf="isAdmin" mat-flat-button type="button" class="dashboard-primary-button" (click)="openCreateDialog()">
-          <mat-icon>inventory_2</mat-icon>
-          Nuevo producto
-        </button>
-      </div>
-    </section>
-
-    <section class="dashboard-section">
-      <div *ngIf="!loading; else loadingState" class="products-grid">
-        <mat-card class="product-card" *ngFor="let product of products; trackBy: trackByProduct">
-          <div class="product-image-shell">
-            <img
-              class="product-image"
-              [src]="getProductImage(product)"
-              [alt]="product.name"
-              (error)="handleProductImageError($event)" /> <!-- NUEVO: portada del producto con fallback local -->
-
-            <div class="product-status-indicator" [class.product-status-indicator-out]="product.stock <= 0">
-              <span class="status-pulse" [class.status-pulse-off]="product.stock <= 0"></span> <!-- NUEVO: pulso visual para stock disponible -->
-              <span>{{ getProductStatusLabel(product) }}</span>
-            </div>
-
-            <div class="card-quick-actions" *ngIf="isAdmin">
-              <button mat-mini-fab type="button" aria-label="Editar producto" (click)="openEditDialog(product)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-mini-fab color="warn" type="button" aria-label="Eliminar producto" (click)="confirmDelete(product)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div> <!-- NUEVO: acciones rapidas que aparecen suavemente al hacer hover -->
+          <div class="product-status-indicator" [class.product-status-indicator-out]="product.stock <= 0">
+            <span class="status-pulse" [class.status-pulse-off]="product.stock <= 0"></span>
+            <span>{{ getProductStatusLabel(product) }}</span>
           </div>
 
-          <div class="product-top">
-            <span class="category-chip">{{ product.category }}</span>
-            <span class="stock-badge" [class.stock-badge-low]="product.stock <= 5">
-              Stock: {{ product.stock }}
-            </span>
+          <div class="card-quick-actions" *ngIf="isAdmin">
+            <button mat-mini-fab type="button" aria-label="Editar producto" (click)="openEditDialog(product)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-mini-fab color="warn" type="button" aria-label="Eliminar producto" (click)="confirmDelete(product)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
-
-          <mat-card-header>
-            <mat-card-title>{{ product.name }}</mat-card-title>
-            <mat-card-subtitle>{{ product.price | currency:'USD':'symbol':'1.0-2' }}</mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content>
-            <p>{{ product.description }}</p>
-          </mat-card-content>
-
-          <mat-card-actions align="end" *ngIf="isAdmin" class="product-actions">
-            <button mat-button type="button" (click)="openEditDialog(product)">Editar</button>
-            <button mat-flat-button type="button" class="product-delete-button" (click)="confirmDelete(product)">Eliminar</button>
-          </mat-card-actions>
-        </mat-card>
-
-        <div class="empty-state" *ngIf="!products.length">
-          <mat-icon>inventory</mat-icon>
-          <h2>No hay productos para mostrar</h2>
-          <p>{{ isAdmin ? 'Podes crear el primer producto desde esta pantalla.' : 'Todavia no hay productos cargados en el catalogo.' }}</p>
         </div>
+
+        <div class="product-top">
+          <span class="category-chip">{{ product.category }}</span>
+
+          <span class="stock-badge" [class.stock-badge-low]="product.stock <= 5">
+            Stock: {{ product.stock }}
+          </span>
+        </div>
+
+        <mat-card-header>
+          <mat-card-title>{{ product.name }}</mat-card-title>
+          <mat-card-subtitle>{{ product.price | currency:'USD':'symbol':'1.0-2' }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>{{ product.description }}</p>
+        </mat-card-content>
+
+        <mat-card-actions align="end" *ngIf="isAdmin" class="product-actions">
+          <button mat-button type="button" (click)="openEditDialog(product)">
+            Editar
+          </button>
+
+          <button mat-flat-button type="button" class="product-delete-button" (click)="confirmDelete(product)">
+            Eliminar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <div class="empty-state" *ngIf="!products.length">
+        <mat-icon>inventory</mat-icon>
+        <h2>No hay productos para mostrar</h2>
+        <p>{{ isAdmin ? 'Podés crear el primer producto desde esta pantalla.' : 'Todavía no hay productos cargados en el catálogo.' }}</p>
       </div>
-    </section>
-  </div>
-</section>
+    </div>
+  </section>
+</ng-container>
+
+<ng-template #userStorefront>
+  <section class="store-hero">
+    <div class="store-hero-copy">
+      <h1>Tecnología para todos</h1>
+      <p>Los mejores productos, servicio técnico y asesoramiento.</p>
+      <a mat-flat-button href="#featured-products" class="store-primary-button">Ver productos</a>
+    </div>
+
+    <div class="store-hero-visual">
+      <img src="assets/images/esueldos-logo-azul.png" alt="Colección e-Sueldos" class="store-hero-image" />
+    </div>
+  </section>
+
+  <section class="store-benefits">
+    <article class="store-benefit" *ngFor="let benefit of storeBenefits">
+      <mat-icon>{{ benefit.icon }}</mat-icon>
+      <div>
+        <strong>{{ benefit.title }}</strong>
+        <span>{{ benefit.description }}</span>
+      </div>
+    </article>
+  </section>
+
+  <section class="store-section" id="featured-products">
+    <div class="store-section-header">
+      <h2>Productos destacados</h2>
+    </div>
+
+    <div *ngIf="!loading; else loadingState" class="storefront-grid">
+      <mat-card class="storefront-card" *ngFor="let product of featuredProducts; trackBy: trackByProduct">
+        <span class="storefront-badge">{{ getProductStatusLabel(product) }}</span>
+
+        <div class="storefront-image-shell">
+          <img
+            class="storefront-image"
+            [src]="getProductImage(product)"
+            [alt]="product.name"
+            (error)="handleProductImageError($event)" />
+        </div>
+
+        <div class="storefront-copy">
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.price | currency:'USD':'symbol':'1.0-2' }}</p>
+        </div>
+
+        <button mat-flat-button type="button" class="store-primary-button">Agregar al carrito</button>
+      </mat-card>
+
+      <div class="empty-state" *ngIf="!products.length">
+        <mat-icon>inventory</mat-icon>
+        <h2>No hay productos para mostrar</h2>
+        <p>Todavía no hay productos cargados en el catálogo.</p>
+      </div>
+    </div>
+  </section>
+</ng-template>
 
 <ng-template #loadingState>
   <div class="products-grid">

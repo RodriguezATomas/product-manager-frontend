@@ -1,56 +1,79 @@
-<section class="dashboard-shell">
-  <div class="dashboard-backdrop"></div>
+<section class="stats-grid">
+  <article class="stat-card" *ngFor="let stat of stats">
+    <div class="stat-card-icon">
+      <mat-icon>{{ stat.icon }}</mat-icon>
+    </div>
 
-  <div class="dashboard-frame">
-    <header class="dashboard-topbar">
-      <a routerLink="/dashboard" class="dashboard-brand">
-        <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="dashboard-brand-logo">
-      </a>
+    <div class="stat-card-content">
+      <span>{{ stat.label }}</span>
+      <strong>{{ stat.value }}</strong>
+      <small>{{ stat.helper }}</small>
+    </div>
+  </article>
+</section>
 
-      <nav class="dashboard-nav">
-        <a routerLink="/dashboard" routerLinkActive="is-active" class="dashboard-nav-link">Inicio</a>
-        <a routerLink="/products" routerLinkActive="is-active" class="dashboard-nav-link">Productos</a>
-        <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="is-active" class="dashboard-nav-link">Usuarios</a>
-        <a routerLink="/profile" routerLinkActive="is-active" class="dashboard-nav-link">Perfil</a>
-      </nav>
+<section class="quick-actions-panel">
+  <h2>Gestión rápida</h2>
 
-      <div class="dashboard-userbox">
-        <mat-slide-toggle class="theme-toggle" [checked]="isDarkTheme" (change)="toggleTheme()">
-          {{ isDarkTheme ? 'Modo noche' : 'Modo Dia' }}
-        </mat-slide-toggle>
-        <div>
-          <strong>{{ currentUserName }}</strong>
-          <span>{{ currentUserRoleLabel }}</span>
-        </div>
-        <button mat-stroked-button type="button" class="dashboard-logout-button" (click)="logout()">Salir</button>
-      </div>
-    </header>
-
-    <section class="dashboard-hero main-dashboard-hero">
-      <div class="dashboard-hero-copy">
-        <span class="dashboard-eyebrow">Panel principal</span>
-        <h1>Hola, {{ currentUserName }}</h1>
-        <p>Accede rapido a las areas principales de e-Sueldos desde una vista central simple y clara.</p>
-      </div>
-
-      <div class="dashboard-hero-side">
-        <div class="dashboard-highlight-card">
-          <span class="dashboard-highlight-label">Acceso actual</span>
-          <strong>{{ currentUserRoleLabel }}</strong>
-          <p>{{ isAdmin ? 'Tenes permisos completos de administracion.' : 'Tenes acceso a tus datos y consultas habilitadas.' }}</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="dashboard-section">
-      <div class="main-dashboard-grid">
-        <mat-card class="main-dashboard-card" *ngFor="let shortcut of shortcuts" [routerLink]="shortcut.route">
-          <mat-icon>{{ shortcut.icon }}</mat-icon>
-          <h2>{{ shortcut.title }}</h2>
-          <p>{{ shortcut.description }}</p>
-          <span>Entrar</span>
-        </mat-card>
-      </div>
-    </section>
+  <div class="quick-actions-grid">
+    <button
+      type="button"
+      class="quick-action-button"
+      *ngFor="let action of quickActions"
+      [routerLink]="action.route">
+      <mat-icon>{{ action.icon }}</mat-icon>
+      <span>{{ action.label }}</span>
+    </button>
   </div>
+</section>
+
+<section class="dashboard-panels">
+  <article class="dashboard-panel">
+    <div class="panel-header">
+      <h2>Últimas ventas</h2>
+    </div>
+
+    <table class="sales-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let sale of recentSales">
+          <td>{{ sale.id }}</td>
+          <td>{{ sale.user }}</td>
+          <td>{{ sale.total }}</td>
+          <td>{{ sale.status }}</td>
+          <td>{{ sale.date }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <span class="panel-link">Ver todas las ventas</span>
+  </article>
+
+  <article class="dashboard-panel">
+    <div class="panel-header">
+      <h2>Stock bajo</h2>
+    </div>
+
+    <div class="low-stock-list">
+      <div class="low-stock-item" *ngFor="let item of lowStockProducts">
+        <div class="low-stock-info">
+          <mat-icon>inventory</mat-icon>
+          <span>{{ item.name }}</span>
+        </div>
+
+        <strong>Stock: {{ item.stock }}</strong>
+      </div>
+    </div>
+
+    <a routerLink="/products" class="panel-link">Ver todos los productos</a>
+  </article>
 </section>

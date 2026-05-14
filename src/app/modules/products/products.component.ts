@@ -10,6 +10,12 @@ import { ProductFormDialogComponent } from './components/product-form-dialog/pro
 import { Product, ProductPayload } from './models/product.model';
 import { ProductsService } from './services/products.service';
 
+interface StoreBenefit {
+  icon: string;
+  title: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -19,6 +25,12 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
   loading = false;
   readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png'; // NUEVO: imagen de respaldo si la miniatura falla o no existe.
+  readonly storeBenefits: StoreBenefit[] = [
+    { icon: 'local_shipping', title: 'Envíos rápidos', description: 'A todo el país' },
+    { icon: 'verified_user', title: 'Garantía oficial', description: 'Productos 100% originales' },
+    { icon: 'support_agent', title: 'Soporte técnico', description: 'Asistencia especializada' },
+    { icon: 'shield', title: 'Compras seguras', description: 'Métodos de pago protegidos' }
+  ];
 
   constructor(
     private authService: AuthService,
@@ -43,6 +55,10 @@ export class ProductsComponent implements OnInit {
 
   get isDarkTheme(): boolean {
     return this.themeService.isDarkTheme; // NUEVO: expone estado del tema al template.
+  }
+
+  get featuredProducts(): Product[] {
+    return this.products.slice(0, 4);
   }
 
   ngOnInit(): void {

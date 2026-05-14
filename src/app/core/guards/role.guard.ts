@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanMatch, Route, Router, UrlSegment } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
-export class RoleGuard implements CanActivate {
+export class RoleGuard implements CanActivate, CanMatch {
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const allowedRoles = route.data['roles'] as string[] | undefined;
+    return this.hasAccess(route.data['roles'] as string[] | undefined, true);
+  }
 
+  canMatch(route: Route, _segments: UrlSegment[]): boolean {
+    return this.hasAccess(route.data?.['roles'] as string[] | undefined, false);
+  }
+
+  private hasAccess(allowedRoles: string[] | undefined, shouldRedirect: boolean): boolean {
     if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/auth']);
+      if (shouldRedirect) {
+        this.router.navigate(['/auth']);
+      }
       return false;
     }
 
@@ -21,7 +29,9 @@ export class RoleGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['/products']);
+    if (shouldRedirect) {
+      this.router.navigate(['/products']);
+    }
     return false;
   }
 }

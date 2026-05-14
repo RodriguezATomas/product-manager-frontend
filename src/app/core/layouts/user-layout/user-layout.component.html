@@ -1,0 +1,44 @@
+<section class="user-layout">
+  <header class="user-topbar">
+    <a [routerLink]="userHomeRoute" class="user-brand">
+      <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="user-brand-logo" />
+    </a>
+
+    <nav class="user-nav">
+      <a [routerLink]="userHomeRoute" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+      <a routerLink="/products" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Productos</a>
+      <span>Reparaciones</span>
+      <span>Armá tu PC</span>
+      <span>Mis pedidos</span>
+    </nav>
+
+    <div class="user-actions">
+      <button mat-icon-button type="button" aria-label="Buscar">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-icon-button type="button" aria-label="Favoritos">
+        <mat-icon>favorite_border</mat-icon>
+      </button>
+      <button mat-icon-button type="button" aria-label="Carrito">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+
+      <button mat-button [routerLink]="userHomeRoute" class="user-account-button">
+        <mat-icon>person</mat-icon>
+        {{ currentUserName }}
+      </button>
+
+      <mat-slide-toggle [checked]="isDarkTheme" (change)="toggleTheme()">
+        {{ isDarkTheme ? 'Modo noche' : 'Modo día' }}
+      </mat-slide-toggle>
+
+      <button mat-stroked-button type="button" (click)="logout()">
+        Salir
+      </button>
+    </div>
+  </header>
+
+  <main class="user-main">
+    <router-outlet></router-outlet>
+  </main>
+</section>
