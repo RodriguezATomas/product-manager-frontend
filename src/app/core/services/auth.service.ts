@@ -74,7 +74,7 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/auth/login`, credentials).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/v1/auth/login`, credentials).pipe(
       map((response) => {
         this.persistSession(response);
         return response;
@@ -83,7 +83,7 @@ export class AuthService {
   }
 
   register(userData: { email: string; password: string; name?: string }): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/auth/register`, userData).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/v1/auth/register`, userData).pipe(
       map((response) => {
         this.persistSession(response);
         return response;

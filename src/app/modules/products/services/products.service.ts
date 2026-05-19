@@ -11,25 +11,25 @@ export class ProductsService {
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<unknown>(`${environment.apiUrl}/products`).pipe(
+    return this.http.get<unknown>(`${environment.apiUrl}/v1/products`).pipe(
       map((response) => this.normalizeProductsResponse(response))
     );
   }
 
   createProduct(payload: ProductPayload): Observable<Product> {
-    return this.http.post<unknown>(`${environment.apiUrl}/products`, payload).pipe(
+    return this.http.post<unknown>(`${environment.apiUrl}/v1/products`, payload).pipe(
       map((response) => this.normalizeProduct(this.extractEntity(response)))
     );
   }
 
   updateProduct(productId: string, payload: ProductPayload): Observable<Product> {
-    return this.http.patch<unknown>(`${environment.apiUrl}/products/${productId}`, payload).pipe(
+    return this.http.patch<unknown>(`${environment.apiUrl}/v1/products/${productId}`, payload).pipe(
       map((response) => this.normalizeProduct(this.extractEntity(response)))
     );
   }
 
   deleteProduct(productId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/products/${productId}`);
+    return this.http.delete<void>(`${environment.apiUrl}/v1/products/${productId}`);
   }
 
   private normalizeProductsResponse(response: unknown): Product[] {
@@ -44,7 +44,7 @@ export class ProductsService {
 
   private normalizeProduct(source: any): Product {
     return {
-      id: String(source?.id ?? source?._id ?? ''),
+      _id: String(source?.id ?? source?._id ?? ''),
       name: String(source?.name ?? 'Sin nombre'),
       description: String(source?.description ?? ''),
       price: Number(source?.price ?? 0),

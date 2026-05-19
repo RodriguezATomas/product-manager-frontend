@@ -37,31 +37,31 @@ export class UsersService {
       params = params.set('role', query.role.trim());
     }
 
-    return this.http.get<unknown>(`${environment.apiUrl}/users`, { params }).pipe(
+    return this.http.get<unknown>(`${environment.apiUrl}/v1/users`, { params }).pipe(
       map((response) => this.normalizeUsersResponse(response, query))
     );
   }
 
   createUser(payload: UserPayload): Observable<User> {
-    return this.http.post<unknown>(`${environment.apiUrl}/users`, payload).pipe(
+    return this.http.post<unknown>(`${environment.apiUrl}/v1/users`, payload).pipe(
       map((response) => this.normalizeUser(this.extractEntity(response)))
     );
   }
 
   updateUser(userId: string, payload: UserPayload): Observable<User> {
-    return this.http.patch<unknown>(`${environment.apiUrl}/users/${userId}`, payload).pipe(
+    return this.http.patch<unknown>(`${environment.apiUrl}/v1/users/${userId}`, payload).pipe(
       map((response) => this.normalizeUser(this.extractEntity(response)))
     );
   }
 
   deleteUser(userId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/users/${userId}`);
+    return this.http.delete<void>(`${environment.apiUrl}/v1/users/${userId}`);
   }
 
   getProfile(): Observable<User> {
     const currentUserId = this.getCurrentUserId();
 
-    return this.http.get<unknown>(`${environment.apiUrl}/users/${currentUserId}`).pipe(
+    return this.http.get<unknown>(`${environment.apiUrl}/v1/users/${currentUserId}`).pipe(
       map((response) => this.normalizeUser(this.extractEntity(response))),
       catchError(() => {
         const storedUser = this.authService.currentUserData;
@@ -78,7 +78,7 @@ export class UsersService {
   updateProfile(payload: ProfilePayload): Observable<User> {
     const currentUserId = this.getCurrentUserId();
 
-    return this.http.patch<unknown>(`${environment.apiUrl}/users/${currentUserId}`, payload).pipe(
+    return this.http.patch<unknown>(`${environment.apiUrl}/v1/users/${currentUserId}`, payload).pipe(
       map((response) => this.normalizeUser(this.extractEntity(response))),
       map((user) => {
         this.authService.updateStoredUser(user);

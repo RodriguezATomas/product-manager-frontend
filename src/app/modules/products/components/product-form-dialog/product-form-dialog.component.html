@@ -1,57 +1,139 @@
-<h2 mat-dialog-title>{{ isEditMode ? 'Editar producto' : 'Crear producto' }}</h2>
+<h2 mat-dialog-title>
+  {{ isEditMode ? 'Editar producto' : 'Crear producto' }}
+</h2>
 
 <mat-dialog-content>
   <form [formGroup]="form" class="dialog-form">
+
     <mat-form-field appearance="outline">
       <mat-label>Nombre</mat-label>
+
       <input matInput formControlName="name" />
-      <mat-error *ngIf="form.get('name')?.hasError('required')">El nombre es obligatorio.</mat-error>
-      <mat-error *ngIf="form.get('name')?.hasError('minlength')">IngresÃ¡ al menos 3 caracteres.</mat-error>
+
+      <mat-error *ngIf="form.get('name')?.hasError('required')">
+        El nombre es obligatorio.
+      </mat-error>
+
+      <mat-error *ngIf="form.get('name')?.hasError('minlength')">
+        Ingresá al menos 3 caracteres.
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>DescripciÃ³n</mat-label>
-      <textarea matInput rows="4" formControlName="description"></textarea>
-      <mat-error *ngIf="form.get('description')?.hasError('required')">La descripciÃ³n es obligatoria.</mat-error>
-      <mat-error *ngIf="form.get('description')?.hasError('minlength')">IngresÃ¡ al menos 10 caracteres.</mat-error>
+      <mat-label>Descripción</mat-label>
+
+      <textarea
+        matInput
+        rows="4"
+        formControlName="description">
+      </textarea>
+
+      <mat-error *ngIf="form.get('description')?.hasError('required')">
+        La descripción es obligatoria.
+      </mat-error>
+
+      <mat-error *ngIf="form.get('description')?.hasError('minlength')">
+        Ingresá al menos 10 caracteres.
+      </mat-error>
     </mat-form-field>
 
     <div class="dialog-grid">
+
       <mat-form-field appearance="outline">
         <mat-label>Precio</mat-label>
-        <input matInput type="number" min="0" formControlName="price" />
-        <mat-error *ngIf="form.get('price')?.hasError('required')">El precio es obligatorio.</mat-error>
-        <mat-error *ngIf="form.get('price')?.hasError('min')">El precio no puede ser negativo.</mat-error>
+
+        <input
+          matInput
+          type="number"
+          min="0"
+          formControlName="price" />
+
+        <mat-error *ngIf="form.get('price')?.hasError('required')">
+          El precio es obligatorio.
+        </mat-error>
+
+        <mat-error *ngIf="form.get('price')?.hasError('min')">
+          El precio no puede ser negativo.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Stock</mat-label>
-        <input matInput type="number" min="0" formControlName="stock" />
-        <mat-error *ngIf="form.get('stock')?.hasError('required')">El stock es obligatorio.</mat-error>
-        <mat-error *ngIf="form.get('stock')?.hasError('min')">El stock no puede ser negativo.</mat-error>
+
+        <input
+          matInput
+          type="number"
+          min="0"
+          formControlName="stock" />
+
+        <mat-error *ngIf="form.get('stock')?.hasError('required')">
+          El stock es obligatorio.
+        </mat-error>
+
+        <mat-error *ngIf="form.get('stock')?.hasError('min')">
+          El stock no puede ser negativo.
+        </mat-error>
       </mat-form-field>
+
     </div>
 
     <mat-form-field appearance="outline">
-      <mat-label>CategorÃ­a</mat-label>
+      <mat-label>Categoría</mat-label>
+
       <mat-select formControlName="category">
-        <mat-option *ngFor="let category of categoryOptions" [value]="category">
+        <mat-option
+          *ngFor="let category of categoryOptions"
+          [value]="category">
+
           {{ category }}
+
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="form.get('category')?.hasError('required')">La categorÃ­a es obligatoria.</mat-error>
+
+      <mat-error *ngIf="form.get('category')?.hasError('required')">
+        La categoría es obligatoria.
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>URL de la imagen</mat-label> <!-- NUEVO: campo para guardar la miniatura que alimenta la card dinamica -->
-      <input matInput formControlName="imageUrl" placeholder="https://..." />
-    </mat-form-field>
+    <!-- NUEVO INPUT FILE -->
+
+    <div class="upload-field">
+
+      <label class="upload-label">
+        Imagen del producto
+      </label>
+
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event)" />
+
+    </div>
+
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="dialog-actions-row">
-  <button mat-stroked-button type="button" class="dialog-secondary-button" mat-dialog-close>Cancelar</button>
-  <button mat-flat-button type="button" class="dialog-primary-button" [disabled]="form.invalid" (click)="save()">
-    {{ isEditMode ? 'Guardar cambios' : 'Crear producto' }}
+
+  <button
+    mat-stroked-button
+    type="button"
+    class="dialog-secondary-button"
+    mat-dialog-close>
+
+    Cancelar
+
   </button>
+
+  <button
+    mat-flat-button
+    type="button"
+    class="dialog-primary-button"
+    [disabled]="form.invalid"
+    (click)="save()">
+
+    {{ isEditMode ? 'Guardar cambios' : 'Crear producto' }}
+
+  </button>
+
 </mat-dialog-actions>

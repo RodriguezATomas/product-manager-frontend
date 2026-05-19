@@ -9,6 +9,8 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
 import { Product, ProductPayload } from './models/product.model';
 import { ProductsService } from './services/products.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 interface StoreBenefit {
   icon: string;
@@ -38,7 +40,8 @@ export class ProductsComponent implements OnInit {
     private productsService: ProductsService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   get isAdmin(): boolean {
@@ -65,31 +68,110 @@ export class ProductsComponent implements OnInit {
     this.loadProducts();
   }
 
-  openCreateDialog(): void {
-    if (!this.isAdmin) {
-      this.snackBar.open('No tenés permisos para crear productos.', 'Cerrar', { duration: 4000 });
+openCreateDialog(): void {
+  if (!this.isAdmin) {
+    this.snackBar.open(
+      'No tenés permisos para crear productos.',
+      'Cerrar',
+      { duration: 4000 }
+    );
+
+    return;
+  }
+
+  const dialogRef = this.dialog.open(
+    ProductFormDialogComponent,
+    {
+      width: '600px',
+      data: null
+    }
+  );
+
+  dialogRef.afterClosed().subscribe((result) => {
+
+    if (!result) {
       return;
     }
 
-    const dialogRef = this.dialog.open(ProductFormDialogComponent, {
-      width: '600px',
-      data: null
-    });
+    const { payload, file } = result;
 
-    dialogRef.afterClosed().subscribe((payload?: ProductPayload) => {
-      if (!payload) {
-        return;
+    // SI NO hay imagen
+    if (!file) {
+
+      this.productsService
+        .createProduct(payload)
+        .subscribe({
+          next: () => {
+            this.snackBar.open(
+              'Producto creado correctamente.',
+              'Cerrar',
+              { duration: 3000 }
+            );
+
+            this.loadProducts();
+          },
+
+          error: (error) =>
+            this.showRequestError(
+              error,
+              'No se pudo crear el producto.'
+            )
+        });
+
+      return;
+    }
+
+    // subir imagen
+    const formData = new FormData();
+
+    formData.append('image', file);
+
+    this.http.post<any>(
+    `${environment.apiUrl}/v1/upload`,
+      formData
+    )
+    .subscribe({
+
+      next: (uploadResponse) => {
+
+        const productPayload = {
+          ...payload,
+          imageUrl: uploadResponse.imageUrl
+        };
+
+        // crear producto
+        this.productsService
+          .createProduct(productPayload)
+          .subscribe({
+
+            next: () => {
+
+              this.snackBar.open(
+                'Producto creado correctamente.',
+                'Cerrar',
+                { duration: 3000 }
+              );
+
+              this.loadProducts();
+            },
+
+            error: (error) =>
+              this.showRequestError(
+                error,
+                'No se pudo crear el producto.'
+              )
+          });
+      },
+
+      error: (error) => {
+        this.showRequestError(
+          error,
+          'No se pudo subir la imagen.'
+        );
       }
-
-      this.productsService.createProduct(payload).subscribe({
-        next: () => {
-          this.snackBar.open('Producto creado correctamente.', 'Cerrar', { duration: 3000 });
-          this.loadProducts();
-        },
-        error: (error) => this.showRequestError(error, 'No se pudo crear el producto.')
-      });
     });
-  }
+  });
+}
 
   openEditDialog(product: Product): void {
     if (!this.isAdmin) {
@@ -102,12 +184,16 @@ export class ProductsComponent implements OnInit {
       data: product
     });
 
-    dialogRef.afterClosed().subscribe((payload?: ProductPayload) => {
-      if (!payload) {
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
         return;
       }
 
-      this.productsService.updateProduct(product.id, payload).subscribe({
+      const { payload } = result;
+
+
+
+      this.productsService.updateProduct(product._id, payload).subscribe({
         next: () => {
           this.snackBar.open('Producto actualizado correctamente.', 'Cerrar', { duration: 3000 });
           this.loadProducts();
@@ -136,7 +222,7 @@ export class ProductsComponent implements OnInit {
         return;
       }
 
-      this.productsService.deleteProduct(product.id).subscribe({
+      this.productsService.deleteProduct(product._id).subscribe({
         next: () => {
           this.snackBar.open('Producto eliminado correctamente.', 'Cerrar', { duration: 3000 });
           this.loadProducts();
@@ -156,16 +242,21 @@ export class ProductsComponent implements OnInit {
   }
 
   trackByProduct(_: number, product: Product): string {
-    return product.id;
+    return product._id;
   }
 
   getProductStatusLabel(product: Product): string {
     return product.stock > 0 ? 'Disponible' : 'Sin stock'; // NUEVO: etiqueta visible junto al badge de pulso del producto.
   }
 
-  getProductImage(product: Product): string {
-    return product.imageUrl || this.fallbackProductImage; // NUEVO: resuelve la imagen principal de la card con fallback local.
+getProductImage(product: Product): string {
+
+  if (!product.imageUrl) {
+    return this.fallbackProductImage;
   }
+
+  return `${environment.apiUrl}${product.imageUrl}`;
+}
 
   handleProductImageError(event: Event): void {
     const imageElement = event.target as HTMLImageElement;
