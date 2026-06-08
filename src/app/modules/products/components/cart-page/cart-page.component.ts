@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { CartItem, CartService } from '../../services/cart.service';
+import { CartItem, CartService, Purchase } from '../../services/cart.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -10,9 +12,14 @@ import { CartItem, CartService } from '../../services/cart.service';
 export class CartPageComponent {
   readonly shippingCost = 5000;
   readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png';
-  paymentMethod = 'mercado-pago';
+  paymentMethod = 'cash';
+  confirmedPurchase: Purchase | null = null;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private authService: AuthService,
+    private cartService: CartService,
+    private snackBar: MatSnackBar
+  ) {}
 
   get cartItems(): CartItem[] {
     return this.cartService.getItems();
@@ -52,5 +59,21 @@ export class CartPageComponent {
     }
 
     return `${environment.apiUrl}${item.product.imageUrl}`;
+  }
+
+  finishPurchase(): void {
+    const purchase = this.cartService.completePurchase(
+      this.authService.currentUserData?.name || 'Usuario',
+      this.paymentMethod,
+      this.shippingCost
+    );
+
+    if (!purchase) {
+      this.snackBar.open('Selecciona efectivo para confirmar la compra.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    this.confirmedPurchase = purchase;
+    this.snackBar.open(`Compra ${purchase.id} confirmada.`, 'Cerrar', { duration: 3000 });
   }
 }

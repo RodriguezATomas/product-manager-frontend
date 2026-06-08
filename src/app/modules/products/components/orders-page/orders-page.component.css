@@ -1,0 +1,94 @@
+.orders-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.orders-page-title {
+  margin: 0 0 20px;
+  text-align: center;
+  color: #f2f8ff;
+  font-size: 1.9rem;
+  letter-spacing: 0.04em;
+}
+
+.orders-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 18px;
+}
+
+.orders-card {
+  border-radius: 18px;
+  background: #102439;
+  border: 1px solid rgba(61, 130, 194, 0.22);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+  color: #dfeeff;
+}
+
+.orders-section-title {
+  margin: 0 0 18px;
+  color: #f2f8ff;
+  font-weight: 700;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 12px 8px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.orders-table th {
+  color: #8ea3b8;
+  font-weight: 600;
+}
+
+.orders-table td {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.orders-link-button {
+  border: 0;
+  background: transparent;
+  color: #4ea1ff;
+  cursor: pointer;
+}
+
+.orders-detail-head,
+.orders-detail-list {
+  display: grid;
+  gap: 10px;
+}
+
+.orders-detail-head {
+  margin-bottom: 16px;
+}
+
+.orders-detail-item,
+.orders-total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.orders-detail-item {
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.orders-total-row {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 899px) {
+  .orders-page-grid {
+    grid-template-columns: 1fr;
+  }
+}

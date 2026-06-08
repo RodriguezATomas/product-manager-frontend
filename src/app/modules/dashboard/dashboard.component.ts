@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
+import { CartService, Purchase } from '../products/services/cart.service';
 
 interface DashboardStat {
   label: string;
@@ -19,9 +20,9 @@ interface QuickAction {
 interface RecentSale {
   id: string;
   user: string;
-  total: string;
   status: string;
   date: string;
+  purchase: Purchase;
 }
 
 interface LowStockProduct {
@@ -85,36 +86,7 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
-  recentSales: RecentSale[] = [
-    {
-      id: '#1024',
-      user: 'Juan Pérez',
-      total: '$120,000',
-      status: 'Pagado',
-      date: '10/05/2026'
-    },
-    {
-      id: '#1023',
-      user: 'María Gómez',
-      total: '$85,000',
-      status: 'Pagado',
-      date: '10/05/2026'
-    },
-    {
-      id: '#1022',
-      user: 'Carlos López',
-      total: '$210,000',
-      status: 'Pendiente',
-      date: '10/05/2026'
-    },
-    {
-      id: '#1021',
-      user: 'Ana Torres',
-      total: '$60,000',
-      status: 'Pagado',
-      date: '09/05/2026'
-    }
-  ];
+  selectedPurchase: Purchase | null = null;
 
   lowStockProducts: LowStockProduct[] = [
     {
@@ -138,6 +110,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private themeService: ThemeService,
+    private cartService: CartService,
     private router: Router
   ) {}
 
@@ -157,10 +130,22 @@ export class DashboardComponent implements OnInit {
     return this.themeService.isDarkTheme;
   }
 
+  get recentSales(): RecentSale[] {
+    return this.cartService.getPurchases().map((purchase) => ({
+      id: purchase.id,
+      user: purchase.user,
+      status: purchase.status,
+      date: purchase.date,
+      purchase
+    }));
+  }
+
   ngOnInit(): void {
     if (!this.isAdmin) {
       this.router.navigate(['/products']);
+      return;
     }
+
   }
 
   logout(): void {
@@ -170,5 +155,9 @@ export class DashboardComponent implements OnInit {
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  selectPurchase(purchase: Purchase): void {
+    this.selectedPurchase = purchase;
   }
 }

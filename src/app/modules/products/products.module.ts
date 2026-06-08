@@ -16,12 +16,14 @@ import { CartPageComponent } from './components/cart-page/cart-page.component';
 import { ProductsComponent } from './products.component';
 import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { OrdersPageComponent } from './components/orders-page/orders-page.component';
 
 
 @NgModule({
   declarations: [
     ProductsComponent,
     CartPageComponent,
+    OrdersPageComponent,
     ProductFormDialogComponent,
     ConfirmDialogComponent
   ],

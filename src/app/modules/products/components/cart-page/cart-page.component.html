@@ -64,17 +64,24 @@
           </label>
 
           <label class="cart-payment-option">
-            <input type="radio" name="paymentMethod" value="mercado-pago" [(ngModel)]="paymentMethod" />
-            <span>Mercado Pago</span>
+            <input type="radio" name="paymentMethod" value="mercado-pago" [(ngModel)]="paymentMethod" disabled />
+            <span>Mercado Pago (próximamente)</span>
           </label>
         </div>
 
-        <button mat-flat-button type="button" class="store-primary-button cart-checkout-button">
+        <button mat-flat-button type="button" class="store-primary-button cart-checkout-button" (click)="finishPurchase()">
           Finalizar compra
         </button>
       </mat-card-content>
     </mat-card>
   </div>
+
+  <mat-card class="cart-confirmation-card" *ngIf="confirmedPurchase">
+    <mat-card-content>
+      <p class="cart-section-title">Compra confirmada</p>
+      <p>Tu compra {{ confirmedPurchase.id }} fue confirmada para pagar en efectivo.</p>
+    </mat-card-content>
+  </mat-card>
 </section>
 
 <ng-template #emptyCart>

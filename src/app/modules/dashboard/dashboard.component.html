@@ -41,6 +41,7 @@
           <th>Total</th>
           <th>Estado</th>
           <th>Fecha</th>
+          <th>Acciones</th>
         </tr>
       </thead>
 
@@ -48,14 +49,52 @@
         <tr *ngFor="let sale of recentSales">
           <td>{{ sale.id }}</td>
           <td>{{ sale.user }}</td>
-          <td>{{ sale.total }}</td>
+          <td>{{ sale.purchase.total | currency:'USD':'symbol':'1.0-2' }}</td>
           <td>{{ sale.status }}</td>
           <td>{{ sale.date }}</td>
+          <td>
+            <button type="button" class="panel-link-button" (click)="selectPurchase(sale.purchase)">Ver detalle</button>
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <span class="panel-link">Ver todas las ventas</span>
+    <p class="empty-dashboard-text" *ngIf="!recentSales.length">Todavía no hay compras confirmadas.</p>
+  </article>
+
+  <article class="dashboard-panel" *ngIf="selectedPurchase">
+    <div class="panel-header">
+      <h2>Detalle de compra</h2>
+    </div>
+
+    <ng-container *ngIf="selectedPurchase; else emptyPurchaseDetail">
+      <div class="purchase-detail-head">
+        <strong>Orden {{ selectedPurchase.id }}</strong>
+        <span>Fecha: {{ selectedPurchase.date }}</span>
+        <span>Estado: {{ selectedPurchase.status }}</span>
+        <span>Método: {{ selectedPurchase.paymentMethod }}</span>
+      </div>
+
+      <div class="low-stock-list">
+        <div class="low-stock-item" *ngFor="let item of selectedPurchase.items">
+          <div class="low-stock-info">
+            <mat-icon>shopping_bag</mat-icon>
+            <span>{{ item.product.name }} x{{ item.quantity }}</span>
+          </div>
+
+          <strong>{{ item.product.price * item.quantity | currency:'USD':'symbol':'1.0-2' }}</strong>
+        </div>
+      </div>
+
+      <div class="purchase-total-row">
+        <span>Total</span>
+        <strong>{{ selectedPurchase.total | currency:'USD':'symbol':'1.0-2' }}</strong>
+      </div>
+    </ng-container>
+
+    <ng-template #emptyPurchaseDetail>
+      <p class="empty-dashboard-text">Seleccioná una compra para ver el detalle.</p>
+    </ng-template>
   </article>
 
   <article class="dashboard-panel">

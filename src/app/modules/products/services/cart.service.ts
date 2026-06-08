@@ -6,10 +6,23 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface Purchase {
+  id: string;
+  user: string;
+  date: string;
+  status: string;
+  paymentMethod: string;
+  items: CartItem[];
+  subtotal: number;
+  shippingCost: number;
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  private readonly purchasesStorageKey = 'esueldos-purchases';
   private items: CartItem[] = [];
 
   getItems(): CartItem[] {
@@ -64,5 +77,43 @@ export class CartService {
 
   getSubtotal(): number {
     return this.items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  }
+
+  completePurchase(user: string, paymentMethod: string, shippingCost: number): Purchase | null {
+    if (!this.items.length || paymentMethod !== 'cash') {
+      return null;
+    }
+
+    const purchase: Purchase = {
+      id: `#${Date.now().toString().slice(-6)}`,
+      user,
+      date: new Date().toLocaleDateString('es-AR'),
+      status: 'Confirmada',
+      paymentMethod: 'Efectivo',
+      items: this.getItems(),
+      subtotal: this.getSubtotal(),
+      shippingCost,
+      total: this.getSubtotal() + shippingCost
+    };
+
+    const purchases = [purchase, ...this.getPurchases()];
+    localStorage.setItem(this.purchasesStorageKey, JSON.stringify(purchases));
+    this.items = [];
+
+    return purchase;
+  }
+
+  getPurchases(): Purchase[] {
+    const savedPurchases = localStorage.getItem(this.purchasesStorageKey);
+
+    if (!savedPurchases) {
+      return [];
+    }
+
+    try {
+      return JSON.parse(savedPurchases) as Purchase[];
+    } catch {
+      return [];
+    }
   }
 }
