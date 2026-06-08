@@ -1,16 +1,10 @@
 <ng-container *ngIf="isAdmin; else userStorefront">
   <section class="products-toolbar">
     <div>
-      
       <p>Gestioná el catálogo, precios y stock.</p>
     </div>
 
-    <button
-      *ngIf="isAdmin"
-      mat-flat-button
-      type="button"
-      class="dashboard-primary-button"
-      (click)="openCreateDialog()">
+    <button *ngIf="isAdmin" mat-flat-button type="button" class="dashboard-primary-button" (click)="openCreateDialog()">
       <mat-icon>inventory_2</mat-icon>
       Nuevo producto
     </button>
@@ -18,14 +12,10 @@
 
   <section class="dashboard-panel">
     <div *ngIf="!loading; else loadingState" class="products-grid">
+      
       <mat-card class="product-card" *ngFor="let product of products; trackBy: trackByProduct">
         <div class="product-image-shell">
-          <img
-            class="product-image"
-            [src]="getProductImage(product)"
-            [alt]="product.name"
-            (error)="handleProductImageError($event)" />
-
+          <img class="product-image" [src]="getProductImage(product)" [alt]="product.name" (error)="handleProductImageError($event)" />
           <div class="product-status-indicator" [class.product-status-indicator-out]="product.stock <= 0">
             <span class="status-pulse" [class.status-pulse-off]="product.stock <= 0"></span>
             <span>{{ getProductStatusLabel(product) }}</span>
@@ -44,7 +34,6 @@
 
         <div class="product-top">
           <span class="category-chip">{{ product.category }}</span>
-
           <span class="stock-badge" [class.stock-badge-low]="product.stock <= 5">
             Stock: {{ product.stock }}
           </span>
@@ -102,21 +91,26 @@
     </article>
   </section>
 
+  <section class="store-section">
+    <div class="store-section-header">
+      <button mat-stroked-button type="button" class="dashboard-secondary-button" (click)="openCartPage()">
+        <mat-icon>shopping_cart</mat-icon>
+        Ver carrito ({{ cartItemsCount }})
+      </button>
+    </div>
+  </section>
+
   <section class="store-section" id="featured-products">
     <div class="store-section-header">
       <h2>Productos destacados</h2>
     </div>
 
     <div *ngIf="!loading; else loadingState" class="storefront-grid">
-      <mat-card class="storefront-card" *ngFor="let product of featuredProducts; trackBy: trackByProduct">
+      <mat-card class="storefront-card" *ngFor="let product of products; trackBy: trackByProduct">
         <span class="storefront-badge">{{ getProductStatusLabel(product) }}</span>
 
         <div class="storefront-image-shell">
-          <img
-            class="storefront-image"
-            [src]="getProductImage(product)"
-            [alt]="product.name"
-            (error)="handleProductImageError($event)" />
+          <img class="storefront-image" [src]="getProductImage(product)" [alt]="product.name" (error)="handleProductImageError($event)" />
         </div>
 
         <div class="storefront-copy">
@@ -124,7 +118,9 @@
           <p>{{ product.price | currency:'USD':'symbol':'1.0-2' }}</p>
         </div>
 
-        <button mat-flat-button type="button" class="store-primary-button">Agregar al carrito</button>
+        <button mat-flat-button type="button" class="store-primary-button" [disabled]="product.stock <= 0" (click)="addToCart(product)">
+           Agregar al carrito
+        </button>
       </mat-card>
 
       <div class="empty-state" *ngIf="!products.length">

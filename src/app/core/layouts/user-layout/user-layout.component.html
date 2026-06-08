@@ -19,7 +19,7 @@
       <button mat-icon-button type="button" aria-label="Favoritos">
         <mat-icon>favorite_border</mat-icon>
       </button>
-      <button mat-icon-button type="button" aria-label="Carrito">
+      <button mat-icon-button type="button" aria-label="Carrito" routerLink="/products/cart">
         <mat-icon>shopping_cart</mat-icon>
       </button>
 
@@ -27,11 +27,6 @@
         <mat-icon>person</mat-icon>
         {{ currentUserName }}
       </button>
-
-      <mat-slide-toggle [checked]="isDarkTheme" (change)="toggleTheme()">
-        {{ isDarkTheme ? 'Modo noche' : 'Modo día' }}
-      </mat-slide-toggle>
-
       <button mat-stroked-button type="button" (click)="logout()">
         Salir
       </button>

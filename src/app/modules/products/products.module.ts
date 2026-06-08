@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ProductsRoutingModule } from './products-routing.module';
+import { CartPageComponent } from './components/cart-page/cart-page.component';
 import { ProductsComponent } from './products.component';
 import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
@@ -20,11 +21,13 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 @NgModule({
   declarations: [
     ProductsComponent,
+    CartPageComponent,
     ProductFormDialogComponent,
     ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -34,7 +37,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     MatInputModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatSlideToggleModule, // NUEVO: habilita el componente mat-slide-toggle para el switch de tema.
+    MatSlideToggleModule,
     ProductsRoutingModule
   ]
 })

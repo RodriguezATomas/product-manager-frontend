@@ -1,16 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ThemeService } from 'src/app/core/services/theme.service';
+import { environment } from 'src/environments/environment';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
 import { Product, ProductPayload } from './models/product.model';
+import { CartService } from './services/cart.service';
 import { ProductsService } from './services/products.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 interface StoreBenefit {
   icon: string;
@@ -26,18 +26,18 @@ interface StoreBenefit {
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   loading = false;
-  readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png'; // NUEVO: imagen de respaldo si la miniatura falla o no existe.
+  readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png';
   readonly storeBenefits: StoreBenefit[] = [
-    { icon: 'local_shipping', title: 'Envíos rápidos', description: 'A todo el país' },
-    { icon: 'verified_user', title: 'Garantía oficial', description: 'Productos 100% originales' },
-    { icon: 'support_agent', title: 'Soporte técnico', description: 'Asistencia especializada' },
-    { icon: 'shield', title: 'Compras seguras', description: 'Métodos de pago protegidos' }
+    { icon: 'local_shipping', title: 'Envios rapidos', description: 'A todo el pais' },
+    { icon: 'verified_user', title: 'Garantia oficial', description: 'Productos 100% originales' },
+    { icon: 'support_agent', title: 'Soporte tecnico', description: 'Asistencia especializada' },
+    { icon: 'shield', title: 'Compras seguras', description: 'Metodos de pago protegidos' }
   ];
 
   constructor(
     private authService: AuthService,
-    private themeService: ThemeService, // NUEVO: servicio de tema para alternar modo oscuro/claro.
     private productsService: ProductsService,
+    private cartService: CartService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router,
@@ -56,126 +56,76 @@ export class ProductsComponent implements OnInit {
     return this.isAdmin ? 'Administrador' : 'Usuario';
   }
 
-  get isDarkTheme(): boolean {
-    return this.themeService.isDarkTheme; // NUEVO: expone estado del tema al template.
-  }
-
   get featuredProducts(): Product[] {
     return this.products.slice(0, 4);
+  }
+
+  get cartItemsCount(): number {
+    return this.cartService.getItemsCount();
   }
 
   ngOnInit(): void {
     this.loadProducts();
   }
 
-openCreateDialog(): void {
-  if (!this.isAdmin) {
-    this.snackBar.open(
-      'No tenés permisos para crear productos.',
-      'Cerrar',
-      { duration: 4000 }
-    );
+  openCreateDialog(): void {
+    if (!this.isAdmin) {
+      this.snackBar.open('No tenes permisos para crear productos.', 'Cerrar', { duration: 4000 });
+      return;
+    }
 
-    return;
-  }
-
-  const dialogRef = this.dialog.open(
-    ProductFormDialogComponent,
-    {
+    const dialogRef = this.dialog.open(ProductFormDialogComponent, {
       width: '600px',
       data: null
-    }
-  );
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
 
-    if (!result) {
-      return;
-    }
+      const { payload, file } = result;
 
-    const { payload, file } = result;
-
-    // SI NO hay imagen
-    if (!file) {
-
-      this.productsService
-        .createProduct(payload)
-        .subscribe({
+      if (!file) {
+        this.productsService.createProduct(payload).subscribe({
           next: () => {
-            this.snackBar.open(
-              'Producto creado correctamente.',
-              'Cerrar',
-              { duration: 3000 }
-            );
-
+            this.snackBar.open('Producto creado correctamente.', 'Cerrar', { duration: 3000 });
             this.loadProducts();
           },
-
-          error: (error) =>
-            this.showRequestError(
-              error,
-              'No se pudo crear el producto.'
-            )
+          error: (error) => this.showRequestError(error, 'No se pudo crear el producto.')
         });
 
-      return;
-    }
+        return;
+      }
 
-    // subir imagen
-    const formData = new FormData();
+      const formData = new FormData();
+      formData.append('image', file);
 
-    formData.append('image', file);
+      this.http.post<any>(`${environment.apiUrl}/v1/upload`, formData).subscribe({
+        next: (uploadResponse) => {
+          const productPayload = {
+            ...payload,
+            imageUrl: uploadResponse.imageUrl
+          };
 
-    this.http.post<any>(
-    `${environment.apiUrl}/v1/upload`,
-      formData
-    )
-    .subscribe({
-
-      next: (uploadResponse) => {
-
-        const productPayload = {
-          ...payload,
-          imageUrl: uploadResponse.imageUrl
-        };
-
-        // crear producto
-        this.productsService
-          .createProduct(productPayload)
-          .subscribe({
-
+          this.productsService.createProduct(productPayload).subscribe({
             next: () => {
-
-              this.snackBar.open(
-                'Producto creado correctamente.',
-                'Cerrar',
-                { duration: 3000 }
-              );
-
+              this.snackBar.open('Producto creado correctamente.', 'Cerrar', { duration: 3000 });
               this.loadProducts();
             },
-
-            error: (error) =>
-              this.showRequestError(
-                error,
-                'No se pudo crear el producto.'
-              )
+            error: (error) => this.showRequestError(error, 'No se pudo crear el producto.')
           });
-      },
-
-      error: (error) => {
-        this.showRequestError(
-          error,
-          'No se pudo subir la imagen.'
-        );
-      }
+        },
+        error: (error) => {
+          this.showRequestError(error, 'No se pudo subir la imagen.');
+        }
+      });
     });
-  });
-}
+  }
 
   openEditDialog(product: Product): void {
     if (!this.isAdmin) {
-      this.snackBar.open('No tenés permisos para editar productos.', 'Cerrar', { duration: 4000 });
+      this.snackBar.open('No tenes permisos para editar productos.', 'Cerrar', { duration: 4000 });
       return;
     }
 
@@ -191,8 +141,6 @@ openCreateDialog(): void {
 
       const { payload } = result;
 
-
-
       this.productsService.updateProduct(product._id, payload).subscribe({
         next: () => {
           this.snackBar.open('Producto actualizado correctamente.', 'Cerrar', { duration: 3000 });
@@ -205,7 +153,7 @@ openCreateDialog(): void {
 
   confirmDelete(product: Product): void {
     if (!this.isAdmin) {
-      this.snackBar.open('No tenés permisos para eliminar productos.', 'Cerrar', { duration: 4000 });
+      this.snackBar.open('No tenes permisos para eliminar productos.', 'Cerrar', { duration: 4000 });
       return;
     }
 
@@ -213,7 +161,7 @@ openCreateDialog(): void {
       width: '420px',
       data: {
         title: 'Eliminar producto',
-        message: `¿Estás seguro que deseás eliminar ${product.name}?`
+        message: `Estas seguro que deseas eliminar ${product.name}?`
       }
     });
 
@@ -237,30 +185,45 @@ openCreateDialog(): void {
     this.router.navigate(['/auth/login']);
   }
 
-  toggleTheme(): void {
-    this.themeService.toggleTheme(); // NUEVO: cambia tema y lo persiste en localStorage.
-  }
-
   trackByProduct(_: number, product: Product): string {
     return product._id;
   }
 
   getProductStatusLabel(product: Product): string {
-    return product.stock > 0 ? 'Disponible' : 'Sin stock'; // NUEVO: etiqueta visible junto al badge de pulso del producto.
+    return product.stock > 0 ? 'Disponible' : 'Sin stock';
   }
 
-getProductImage(product: Product): string {
+  getProductImage(product: Product): string {
+    if (!product.imageUrl) {
+      return this.fallbackProductImage;
+    }
 
-  if (!product.imageUrl) {
-    return this.fallbackProductImage;
+    return `${environment.apiUrl}${product.imageUrl}`;
   }
-
-  return `${environment.apiUrl}${product.imageUrl}`;
-}
 
   handleProductImageError(event: Event): void {
     const imageElement = event.target as HTMLImageElement;
-    imageElement.src = this.fallbackProductImage; // NUEVO: reemplaza imagen rota por una portada segura.
+    imageElement.src = this.fallbackProductImage;
+  }
+
+  openCartPage(): void {
+    this.router.navigate(['/products/cart']);
+  }
+
+  addToCart(product: Product): void {
+    const result = this.cartService.addProduct(product);
+
+    if (result === 'out_of_stock') {
+      this.snackBar.open('No hay stock disponible para este producto.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    if (result === 'max_stock') {
+      this.snackBar.open('No podes agregar mas unidades que el stock disponible.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    this.snackBar.open('Producto agregado al carrito.', 'Cerrar', { duration: 2500 });
   }
 
   private loadProducts(): void {
@@ -282,7 +245,7 @@ getProductImage(product: Product): string {
 
   private showRequestError(error: any, fallbackMessage: string): void {
     if (error?.status === 403) {
-      this.snackBar.open('No tenés permisos para realizar esta acción.', 'Cerrar', { duration: 4500 });
+      this.snackBar.open('No tenes permisos para realizar esta accion.', 'Cerrar', { duration: 4500 });
       return;
     }
 

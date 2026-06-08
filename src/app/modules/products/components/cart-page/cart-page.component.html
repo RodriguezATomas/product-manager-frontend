@@ -1,0 +1,87 @@
+<section class="cart-page">
+  <h1 class="cart-page-title">CARRITO DE COMPRAS</h1>
+
+  <div class="cart-page-grid" *ngIf="cartItems.length; else emptyCart">
+    <mat-card class="cart-items-card">
+      <mat-card-content>
+        <p class="cart-section-title">Tu carrito</p>
+
+        <article class="cart-item" *ngFor="let item of cartItems">
+          <img
+            class="cart-item-image"
+            [src]="getProductImage(item)"
+            [alt]="item.product.name" />
+
+          <div class="cart-item-copy">
+            <strong>{{ item.product.name }}</strong>
+            <span>{{ item.product.price | currency:'USD':'symbol':'1.0-2' }}</span>
+          </div>
+
+          <div class="cart-item-quantity">
+            <button mat-icon-button type="button" (click)="decreaseQuantity(item)">
+              <mat-icon>remove</mat-icon>
+            </button>
+
+            <span>{{ item.quantity }}</span>
+
+            <button mat-icon-button type="button" (click)="increaseQuantity(item)">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <button mat-icon-button type="button" color="warn" (click)="removeProduct(item.product._id)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </article>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="cart-summary-card">
+      <mat-card-content>
+        <p class="cart-section-title">Resumen del pedido</p>
+
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <strong>{{ subtotal | currency:'USD':'symbol':'1.0-2' }}</strong>
+        </div>
+
+        <div class="cart-summary-row">
+          <span>Envío</span>
+          <strong>{{ shippingCost | currency:'USD':'symbol':'1.0-2' }}</strong>
+        </div>
+
+        <div class="cart-summary-row cart-summary-total">
+          <span>Total</span>
+          <strong>{{ total | currency:'USD':'symbol':'1.0-2' }}</strong>
+        </div>
+
+        <div class="cart-payment-box">
+          <p class="cart-payment-title">Método de pago</p>
+
+          <label class="cart-payment-option">
+            <input type="radio" name="paymentMethod" value="cash" [(ngModel)]="paymentMethod" />
+            <span>Efectivo</span>
+          </label>
+
+          <label class="cart-payment-option">
+            <input type="radio" name="paymentMethod" value="mercado-pago" [(ngModel)]="paymentMethod" />
+            <span>Mercado Pago</span>
+          </label>
+        </div>
+
+        <button mat-flat-button type="button" class="store-primary-button cart-checkout-button">
+          Finalizar compra
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+
+<ng-template #emptyCart>
+  <mat-card class="cart-items-card">
+    <mat-card-content>
+      <p class="cart-section-title">Tu carrito</p>
+      <p>El carrito está vacío.</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
