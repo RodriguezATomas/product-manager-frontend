@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit {
     {
       label: 'Turnos del día',
       icon: 'event',
-      route: '/dashboard/appointments'
+      route: '/dashboard'
     }
   ];
 
@@ -179,7 +179,7 @@ export class DashboardComponent implements OnInit {
   private formatCurrency(value: number): string {
     return new Intl.NumberFormat('es-AR', {
       style: 'currency',
-      currency: 'ARS',
+      currency: 'USD',
       maximumFractionDigits: 0
     }).format(value);
   }
