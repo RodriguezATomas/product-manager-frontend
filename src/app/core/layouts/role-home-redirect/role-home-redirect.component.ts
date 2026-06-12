@@ -13,6 +13,6 @@ export class RoleHomeRedirectComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.router.navigate([this.authService.isAdmin() ? '/dashboard' : '/products']);
+    this.router.navigate([this.authService.isAdmin() ? '/dashboard' : '/products/home']);
   }
 }

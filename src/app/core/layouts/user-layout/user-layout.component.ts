@@ -24,7 +24,7 @@ export class UserLayoutComponent {
   }
 
   get userHomeRoute(): string {
-    return this.authService.isAdmin() ? '/dashboard' : '/products';
+    return this.authService.isAdmin() ? '/dashboard' : '/products/home';
   }
 
   logout(): void {

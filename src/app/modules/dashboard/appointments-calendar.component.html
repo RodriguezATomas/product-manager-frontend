@@ -1,0 +1,28 @@
+<section class="dashboard-panels">
+  <article class="dashboard-panel">
+    <div class="panel-header">
+      <h2>Turnos del dia</h2>
+      <a routerLink="/dashboard" class="panel-link-button">Volver</a>
+    </div>
+
+    <div class="purchase-detail-head">
+      <strong>{{ currentMonth | titlecase }}</strong>
+      <span>Reparaciones: 0</span>
+    </div>
+
+    <table class="sales-table">
+      <thead>
+        <tr>
+          <th *ngFor="let weekDay of weekDays">{{ weekDay }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of [0, 1, 2, 3, 4, 5]">
+          <td *ngFor="let day of calendarDays.slice(row * 7, row * 7 + 7)">
+            <strong *ngIf="day.day">{{ day.day }}</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+</section>

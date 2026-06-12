@@ -73,7 +73,14 @@ export class CartPageComponent {
       return;
     }
 
-    this.confirmedPurchase = purchase;
-    this.snackBar.open(`Compra ${purchase.id} confirmada.`, 'Cerrar', { duration: 3000 });
+    purchase.subscribe({
+      next: (confirmedPurchase) => {
+        this.confirmedPurchase = confirmedPurchase;
+        this.snackBar.open(`Compra ${confirmedPurchase.id} confirmada.`, 'Cerrar', { duration: 3000 });
+      },
+      error: () => {
+        this.snackBar.open('No se pudo confirmar la compra.', 'Cerrar', { duration: 3000 });
+      }
+    });
   }
 }

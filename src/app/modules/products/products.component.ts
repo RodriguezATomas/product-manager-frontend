@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { environment } from 'src/environments/environment';
@@ -26,6 +26,7 @@ interface StoreBenefit {
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   loading = false;
+  storeHome = false;
   readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png';
   readonly storeBenefits: StoreBenefit[] = [
     { icon: 'local_shipping', title: 'Envios rapidos', description: 'A todo el pais' },
@@ -41,6 +42,7 @@ export class ProductsComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router,
+    private route: ActivatedRoute,
     private http: HttpClient
   ) {}
 
@@ -57,7 +59,11 @@ export class ProductsComponent implements OnInit {
   }
 
   get featuredProducts(): Product[] {
-    return this.products.slice(0, 4);
+    return this.products.slice(0, 5);
+  }
+
+  get visibleStoreProducts(): Product[] {
+    return this.storeHome ? this.featuredProducts : this.products;
   }
 
   get cartItemsCount(): number {
@@ -65,6 +71,7 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.storeHome = Boolean(this.route.snapshot.data['storeHome']);
     this.loadProducts();
   }
 

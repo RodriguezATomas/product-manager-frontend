@@ -1,0 +1,79 @@
+<section class="dashboard-panels">
+  <article class="dashboard-panel">
+    <div class="panel-header">
+      <h2>Todas las compras</h2>
+    </div>
+
+    <table class="sales-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let purchase of pagedPurchases">
+          <td>{{ purchase.id }}</td>
+          <td>{{ purchase.user }}</td>
+          <td>{{ purchase.total | currency:'USD':'symbol':'1.0-2' }}</td>
+          <td>{{ purchase.status }}</td>
+          <td>{{ purchase.date }}</td>
+          <td>
+            <button type="button" class="panel-link-button" (click)="selectPurchase(purchase)">Ver detalle</button>
+            <button type="button" class="panel-link-button" (click)="deletePurchase(purchase)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="purchase-total-row" *ngIf="purchases.length > pageSize">
+      <button type="button" class="panel-link-button" (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+      <span>Pagina {{ currentPage }} de {{ totalPages }}</span>
+      <button type="button" class="panel-link-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+    </div>
+
+    <p class="empty-dashboard-text" *ngIf="!purchases.length">Todavía no hay compras confirmadas.</p>
+  </article>
+
+  <article class="dashboard-panel" *ngIf="selectedPurchase">
+    <div class="panel-header">
+      <h2>Detalle de compra</h2>
+      <button type="button" class="panel-link-button" (click)="backToList()">Volver</button>
+    </div>
+
+    <div class="purchase-detail-head">
+      <strong>Orden {{ selectedPurchase.id }}</strong>
+      <span>Fecha: {{ selectedPurchase.date }}</span>
+      <span>Metodo: {{ selectedPurchase.paymentMethod }}</span>
+      <label>
+        Estado:
+        <select [(ngModel)]="selectedStatus">
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="low-stock-list">
+      <div class="low-stock-item" *ngFor="let item of selectedPurchase.items">
+        <div class="low-stock-info">
+          <mat-icon>shopping_bag</mat-icon>
+          <span>{{ item.product.name }} x{{ item.quantity }}</span>
+        </div>
+
+        <strong>{{ item.product.price * item.quantity | currency:'USD':'symbol':'1.0-2' }}</strong>
+      </div>
+    </div>
+
+    <div class="purchase-total-row">
+      <span>Total</span>
+      <strong>{{ selectedPurchase.total | currency:'USD':'symbol':'1.0-2' }}</strong>
+    </div>
+
+    <button type="button" class="panel-link-button" (click)="savePurchase()">Guardar cambios</button>
+  </article>
+</section>

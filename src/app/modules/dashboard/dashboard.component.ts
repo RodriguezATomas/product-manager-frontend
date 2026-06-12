@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
+import { UsersService } from '../users/services/users.service';
 import { CartService, Purchase } from '../products/services/cart.service';
+import { ProductsService } from '../products/services/products.service';
 
 interface DashboardStat {
   label: string;
@@ -39,25 +41,25 @@ export class DashboardComponent implements OnInit {
   stats: DashboardStat[] = [
     {
       label: 'Productos',
-      value: '128',
+      value: '0',
       helper: 'Total en catálogo',
       icon: 'inventory_2'
     },
     {
       label: 'Usuarios',
-      value: '246',
+      value: '0',
       helper: 'Registrados',
       icon: 'group'
     },
     {
       label: 'Ventas',
-      value: '$2,450,000',
+      value: '$0',
       helper: 'Total ingresos',
       icon: 'shopping_cart'
     },
     {
       label: 'Reparaciones',
-      value: '18',
+      value: '0',
       helper: 'En proceso',
       icon: 'build'
     }
@@ -72,7 +74,7 @@ export class DashboardComponent implements OnInit {
     {
       label: 'Ver compras',
       icon: 'shopping_bag',
-      route: '/dashboard'
+      route: '/dashboard/purchases'
     },
     {
       label: 'Ver reparaciones',
@@ -82,35 +84,21 @@ export class DashboardComponent implements OnInit {
     {
       label: 'Turnos del día',
       icon: 'event',
-      route: '/dashboard'
+      route: '/dashboard/appointments'
     }
   ];
 
   selectedPurchase: Purchase | null = null;
+  private recentSalesData: RecentSale[] = [];
 
-  lowStockProducts: LowStockProduct[] = [
-    {
-      name: 'Teclado Mecánico',
-      stock: 5
-    },
-    {
-      name: 'Mouse Gamer',
-      stock: 3
-    },
-    {
-      name: 'Auriculares RGB',
-      stock: 2
-    },
-    {
-      name: 'Monitor 24"',
-      stock: 1
-    }
-  ];
+  lowStockProducts: LowStockProduct[] = [];
 
   constructor(
     private authService: AuthService,
     private themeService: ThemeService,
     private cartService: CartService,
+    private productsService: ProductsService,
+    private usersService: UsersService,
     private router: Router
   ) {}
 
@@ -131,13 +119,7 @@ export class DashboardComponent implements OnInit {
   }
 
   get recentSales(): RecentSale[] {
-    return this.cartService.getPurchases().map((purchase) => ({
-      id: purchase.id,
-      user: purchase.user,
-      status: purchase.status,
-      date: purchase.date,
-      purchase
-    }));
+    return this.recentSalesData;
   }
 
   ngOnInit(): void {
@@ -146,6 +128,31 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
+    this.cartService.getPurchases(this.currentUserName).subscribe((purchases) => {
+      this.recentSalesData = purchases.slice(0, 5).map((purchase) => ({
+        id: purchase.id,
+        user: purchase.user,
+        status: purchase.status,
+        date: purchase.date,
+        purchase
+      }));
+      this.updateStat('Ventas', this.formatCurrency(purchases.reduce((total, purchase) => total + purchase.total, 0)));
+    });
+
+    this.productsService.getProducts().subscribe((products) => {
+      this.updateStat('Productos', String(products.length));
+      this.lowStockProducts = products
+        .filter((product) => product.stock <= 10)
+        .sort((firstProduct, secondProduct) => firstProduct.stock - secondProduct.stock)
+        .map((product) => ({
+          name: product.name,
+          stock: product.stock
+        }));
+    });
+
+    this.usersService.getUsers({ pageIndex: 0, pageSize: 1 }).subscribe((users) => {
+      this.updateStat('Usuarios', String(users.total));
+    });
   }
 
   logout(): void {
@@ -159,5 +166,21 @@ export class DashboardComponent implements OnInit {
 
   selectPurchase(purchase: Purchase): void {
     this.selectedPurchase = purchase;
+  }
+
+  backToSales(): void {
+    this.selectedPurchase = null;
+  }
+
+  private updateStat(label: string, value: string): void {
+    this.stats = this.stats.map((stat) => (stat.label === label ? { ...stat, value } : stat));
+  }
+
+  private formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+      maximumFractionDigits: 0
+    }).format(value);
   }
 }

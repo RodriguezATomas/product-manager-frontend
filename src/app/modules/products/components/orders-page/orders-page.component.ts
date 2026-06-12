@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Purchase, CartService } from '../../services/cart.service';
 
@@ -7,7 +7,8 @@ import { Purchase, CartService } from '../../services/cart.service';
   templateUrl: './orders-page.component.html',
   styleUrls: ['./orders-page.component.css']
 })
-export class OrdersPageComponent {
+export class OrdersPageComponent implements OnInit {
+  purchases: Purchase[] = [];
   selectedPurchase: Purchase | null = null;
 
   constructor(
@@ -15,12 +16,23 @@ export class OrdersPageComponent {
     private cartService: CartService
   ) {}
 
-  get purchases(): Purchase[] {
+  ngOnInit(): void {
     const currentUserName = this.authService.currentUserData?.name || 'Usuario';
-    return this.cartService.getPurchases().filter((purchase) => purchase.user === currentUserName);
+    this.cartService.getPurchases(currentUserName).subscribe({
+      next: (purchases) => {
+        this.purchases = purchases;
+      },
+      error: () => {
+        this.purchases = [];
+      }
+    });
   }
 
   selectPurchase(purchase: Purchase): void {
     this.selectedPurchase = purchase;
+  }
+
+  backToOrders(): void {
+    this.selectedPurchase = null;
   }
 }

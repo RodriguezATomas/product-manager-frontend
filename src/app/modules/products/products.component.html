@@ -69,7 +69,7 @@
 </ng-container>
 
 <ng-template #userStorefront>
-  <section class="store-hero">
+  <section class="store-hero" *ngIf="storeHome">
     <div class="store-hero-copy">
       <h1>Tecnología para todos</h1>
       <p>Los mejores productos, servicio técnico y asesoramiento.</p>
@@ -81,7 +81,7 @@
     </div>
   </section>
 
-  <section class="store-benefits">
+  <section class="store-benefits" *ngIf="storeHome">
     <article class="store-benefit" *ngFor="let benefit of storeBenefits">
       <mat-icon>{{ benefit.icon }}</mat-icon>
       <div>
@@ -91,7 +91,7 @@
     </article>
   </section>
 
-  <section class="store-section">
+  <section class="store-section" *ngIf="storeHome">
     <div class="store-section-header">
       <button mat-stroked-button type="button" class="dashboard-secondary-button" (click)="openCartPage()">
         <mat-icon>shopping_cart</mat-icon>
@@ -102,11 +102,11 @@
 
   <section class="store-section" id="featured-products">
     <div class="store-section-header">
-      <h2>Productos destacados</h2>
+      <h2>{{ storeHome ? 'Productos destacados' : 'Productos' }}</h2>
     </div>
 
     <div *ngIf="!loading; else loadingState" class="storefront-grid">
-      <mat-card class="storefront-card" *ngFor="let product of products; trackBy: trackByProduct">
+      <mat-card class="storefront-card" *ngFor="let product of visibleStoreProducts; trackBy: trackByProduct">
         <span class="storefront-badge">{{ getProductStatusLabel(product) }}</span>
 
         <div class="storefront-image-shell">
@@ -123,7 +123,7 @@
         </button>
       </mat-card>
 
-      <div class="empty-state" *ngIf="!products.length">
+      <div class="empty-state" *ngIf="!visibleStoreProducts.length">
         <mat-icon>inventory</mat-icon>
         <h2>No hay productos para mostrar</h2>
         <p>Todavía no hay productos cargados en el catálogo.</p>

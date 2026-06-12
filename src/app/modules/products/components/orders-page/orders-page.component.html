@@ -35,6 +35,7 @@
     <mat-card class="orders-card" *ngIf="selectedPurchase">
       <mat-card-content>
         <p class="orders-section-title">Detalle de compra</p>
+        <button type="button" class="orders-link-button" (click)="backToOrders()">Volver</button>
 
         <div class="orders-detail-head">
           <strong>Orden {{ selectedPurchase.id }}</strong>

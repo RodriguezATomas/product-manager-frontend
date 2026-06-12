@@ -30,7 +30,7 @@ export class RoleGuard implements CanActivate, CanMatch {
     }
 
     if (shouldRedirect) {
-      this.router.navigate(['/products']);
+      this.router.navigate(['/products/home']);
     }
     return false;
   }
