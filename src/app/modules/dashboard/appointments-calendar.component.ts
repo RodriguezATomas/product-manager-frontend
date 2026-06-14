@@ -28,6 +28,16 @@ export class AppointmentsCalendarComponent implements OnInit {
     return this.activeRepairs.filter((repair) => this.isSameDay(new Date(repair.appointmentDate), this.currentDate));
   }
 
+  get monthRepairsCount(): number {
+    return this.activeRepairs.filter((repair) => {
+      const appointmentDate = new Date(repair.appointmentDate);
+      return (
+        appointmentDate.getFullYear() === this.currentDate.getFullYear() &&
+        appointmentDate.getMonth() === this.currentDate.getMonth()
+      );
+    }).length;
+  }
+
   get selectedDateRepairs(): Repair[] {
     return this.activeRepairs.filter((repair) => this.isSameDay(new Date(repair.appointmentDate), this.selectedDate));
   }

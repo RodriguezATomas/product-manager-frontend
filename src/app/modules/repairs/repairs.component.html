@@ -198,13 +198,6 @@
                 Avisar lista
               </button>
               <button
-                *ngIf="isAdmin && repair.status !== 'completed'"
-                type="button"
-                class="repairs-action-button"
-                (click)="markRepairReady(repair)">
-                Avisar lista
-              </button>
-              <button
                 *ngIf="isAdmin"
                 type="button"
                 class="repairs-action-button"
