@@ -27,7 +27,23 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
   loading = false;
   storeHome = false;
+  storeFavorites = false;
+  selectedStoreCategory = '';
+  favoriteProductIds: string[] = [];
   readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png';
+  private readonly favoritesStorageKey = 'favoriteProductIds';
+  readonly storeCategories = [
+    'procesadores',
+    'placas madres',
+    'memorias RAM',
+    'coolers',
+    'placas de video',
+    'gabinetes',
+    'monitores',
+    'perifericos',
+    'fuentes',
+    'discos solidos'
+  ];
   readonly storeBenefits: StoreBenefit[] = [
     { icon: 'local_shipping', title: 'Envios rapidos', description: 'A todo el pais' },
     { icon: 'verified_user', title: 'Garantia oficial', description: 'Productos 100% originales' },
@@ -63,7 +79,15 @@ export class ProductsComponent implements OnInit {
   }
 
   get visibleStoreProducts(): Product[] {
-    return this.storeHome ? this.featuredProducts : this.products;
+    const products = this.storeFavorites
+      ? this.products.filter((product) => this.isFavorite(product))
+      : this.storeHome ? this.featuredProducts : this.products;
+
+    if (!this.selectedStoreCategory) {
+      return products;
+    }
+
+    return products.filter((product) => product.category.toLowerCase() === this.selectedStoreCategory.toLowerCase());
   }
 
   get cartItemsCount(): number {
@@ -72,6 +96,8 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.storeHome = Boolean(this.route.snapshot.data['storeHome']);
+    this.storeFavorites = Boolean(this.route.snapshot.data['storeFavorites']);
+    this.favoriteProductIds = JSON.parse(localStorage.getItem(this.favoritesStorageKey) || '[]');
     this.loadProducts();
   }
 
@@ -231,6 +257,17 @@ export class ProductsComponent implements OnInit {
     }
 
     this.snackBar.open('Producto agregado al carrito.', 'Cerrar', { duration: 2500 });
+  }
+
+  isFavorite(product: Product): boolean {
+    return this.favoriteProductIds.includes(product._id);
+  }
+
+  toggleFavorite(product: Product): void {
+    this.favoriteProductIds = this.isFavorite(product)
+      ? this.favoriteProductIds.filter((productId) => productId !== product._id)
+      : [...this.favoriteProductIds, product._id];
+    localStorage.setItem(this.favoritesStorageKey, JSON.stringify(this.favoriteProductIds));
   }
 
   private loadProducts(): void {

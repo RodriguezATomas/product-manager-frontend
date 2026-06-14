@@ -1,7 +1,7 @@
 <section class="user-layout">
   <header class="user-topbar">
     <a [routerLink]="userHomeRoute" class="user-brand">
-      <img src="assets/images/esueldos-logo.png" alt="e-Sueldos" class="user-brand-logo" />
+      <img src="assets/images/logo.png" alt="e-Sueldos" class="user-brand-logo" />
     </a>
 
     <nav class="user-nav">
@@ -16,7 +16,7 @@
       <button mat-icon-button type="button" aria-label="Buscar">
         <mat-icon>search</mat-icon>
       </button>
-      <button mat-icon-button type="button" aria-label="Favoritos">
+      <button mat-icon-button type="button" aria-label="Favoritos" routerLink="/products/favorites">
         <mat-icon>favorite_border</mat-icon>
       </button>
       <button mat-icon-button type="button" aria-label="Carrito" routerLink="/products/cart">

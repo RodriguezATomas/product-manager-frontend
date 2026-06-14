@@ -7,7 +7,7 @@
     <table class="sales-table">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Producto</th>
           <th>Usuario</th>
           <th>Total</th>
           <th>Estado</th>
@@ -18,7 +18,7 @@
 
       <tbody>
         <tr *ngFor="let purchase of pagedPurchases">
-          <td>{{ purchase.id }}</td>
+          <td>{{ purchase.items[0].product.name }}</td>
           <td>{{ purchase.user }}</td>
           <td>{{ purchase.total | currency:'USD':'symbol':'1.0-2' }}</td>
           <td>{{ purchase.status }}</td>

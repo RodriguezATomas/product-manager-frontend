@@ -73,11 +73,11 @@
     <div class="store-hero-copy">
       <h1>Tecnología para todos</h1>
       <p>Los mejores productos, servicio técnico y asesoramiento.</p>
-      <a mat-flat-button href="#featured-products" class="store-primary-button">Ver productos</a>
+      <a mat-flat-button routerLink="/products" class="store-primary-button">Ver productos</a>
     </div>
 
     <div class="store-hero-visual">
-      <img src="assets/images/esueldos-logo-azul.png" alt="Colección e-Sueldos" class="store-hero-image" />
+      <img src="assets/images/fondo.png" alt="Colección e-Sueldos" class="store-hero-image" />
     </div>
   </section>
 
@@ -102,7 +102,11 @@
 
   <section class="store-section" id="featured-products">
     <div class="store-section-header">
-      <h2>{{ storeHome ? 'Productos destacados' : 'Productos' }}</h2>
+      <h2>{{ storeFavorites ? 'Favoritos' : storeHome ? 'Productos destacados' : 'Productos' }}</h2>
+      <div class="store-category-filters" *ngIf="!storeHome && !storeFavorites">
+        <button type="button" class="store-category-chip" [class.is-active]="!selectedStoreCategory" (click)="selectedStoreCategory = ''">Todas</button>
+        <button type="button" class="store-category-chip" *ngFor="let category of storeCategories" [class.is-active]="selectedStoreCategory === category" (click)="selectedStoreCategory = category">{{ category }}</button>
+      </div>
     </div>
 
     <div *ngIf="!loading; else loadingState" class="storefront-grid">
@@ -118,9 +122,14 @@
           <p>{{ product.price | currency:'USD':'symbol':'1.0-2' }}</p>
         </div>
 
-        <button mat-flat-button type="button" class="store-primary-button" [disabled]="product.stock <= 0" (click)="addToCart(product)">
-           Agregar al carrito
-        </button>
+        <div class="storefront-actions">
+          <button mat-flat-button type="button" class="store-primary-button" [disabled]="product.stock <= 0" (click)="addToCart(product)">
+            Agregar al carrito
+          </button>
+          <button mat-icon-button type="button" class="storefront-favorite-button" [class.is-active]="isFavorite(product)" (click)="toggleFavorite(product)">
+            <mat-icon>{{ isFavorite(product) ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+        </div>
       </mat-card>
 
       <div class="empty-state" *ngIf="!visibleStoreProducts.length">

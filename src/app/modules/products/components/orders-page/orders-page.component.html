@@ -9,7 +9,7 @@
         <table class="orders-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Producto</th>
               <th>Fecha</th>
               <th>Total</th>
               <th>Estado</th>
@@ -19,7 +19,7 @@
 
           <tbody>
             <tr *ngFor="let purchase of purchases">
-              <td>{{ purchase.id }}</td>
+              <td>{{ purchase.items[0].product.name }}</td>
               <td>{{ purchase.date }}</td>
               <td>{{ purchase.total | currency:'USD':'symbol':'1.0-2' }}</td>
               <td>{{ purchase.status }}</td>
