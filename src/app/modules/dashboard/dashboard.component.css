@@ -163,6 +163,20 @@
 .empty-dashboard-text {
   color: #9db0c3;
 }
+
+.calendar-day-count {
+  display: block;
+  margin-top: 4px;
+  color: #4ea1ff;
+  font-size: 12px;
+}
+
+.calendar-view-button {
+  display: block;
+  margin-top: 6px;
+  padding: 0;
+  font-size: 12px;
+}
 @media (max-width: 1100px) {
   .stats-grid,
   .quick-actions-grid,

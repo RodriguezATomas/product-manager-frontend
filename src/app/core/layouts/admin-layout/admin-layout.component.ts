@@ -68,6 +68,11 @@ export class AdminLayoutComponent {
       return;
     }
 
+    if (currentUrl.includes('/repairs')) {
+      this.pageTitle = 'Reparaciones';
+      return;
+    }
+
     if (currentUrl.includes('/profile')) {
       this.pageTitle = 'Perfil';
       return;

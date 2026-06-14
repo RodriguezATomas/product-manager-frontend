@@ -7,7 +7,7 @@
 
     <div class="purchase-detail-head">
       <strong>{{ currentMonth | titlecase }}</strong>
-      <span>Reparaciones: 0</span>
+      <span>Reparaciones: {{ todayRepairs.length }}</span>
     </div>
 
     <table class="sales-table">
@@ -20,9 +20,42 @@
         <tr *ngFor="let row of [0, 1, 2, 3, 4, 5]">
           <td *ngFor="let day of calendarDays.slice(row * 7, row * 7 + 7)">
             <strong *ngIf="day.day">{{ day.day }}</strong>
+            <span class="calendar-day-count" *ngIf="day.appointmentsCount">{{ day.appointmentsCount }} turno(s)</span>
+            <button
+              *ngIf="day.appointmentsCount"
+              type="button"
+              class="panel-link-button calendar-view-button"
+              (click)="selectDay(day)">
+              Ver turno
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </article>
+
+  <article class="dashboard-panel">
+    <div class="panel-header">
+      <h2>Turnos del dia seleccionado</h2>
+    </div>
+
+    <div class="purchase-detail-head">
+      <strong>{{ selectedDateLabel | titlecase }}</strong>
+    </div>
+
+    <div class="low-stock-list" *ngIf="selectedDateRepairs.length; else emptySelectedDateRepairs">
+      <div class="low-stock-item" *ngFor="let repair of selectedDateRepairs">
+        <div class="low-stock-info">
+          <mat-icon>build</mat-icon>
+          <span>{{ repair.customer.name }} - {{ repair.product.type }} {{ repair.product.brand }} {{ repair.product.model }}</span>
+        </div>
+
+        <strong>{{ formatDate(repair.appointmentDate) }}</strong>
+      </div>
+    </div>
+  </article>
 </section>
+
+<ng-template #emptySelectedDateRepairs>
+  <p class="empty-dashboard-text">No hay turnos para el dia seleccionado.</p>
+</ng-template>

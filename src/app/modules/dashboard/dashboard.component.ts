@@ -5,6 +5,7 @@ import { ThemeService } from 'src/app/core/services/theme.service';
 import { UsersService } from '../users/services/users.service';
 import { CartService, Purchase } from '../products/services/cart.service';
 import { ProductsService } from '../products/services/products.service';
+import { RepairsService } from '../repairs/services/repairs.service';
 
 interface DashboardStat {
   label: string;
@@ -79,7 +80,7 @@ export class DashboardComponent implements OnInit {
     {
       label: 'Ver reparaciones',
       icon: 'build_circle',
-      route: '/dashboard'
+      route: '/repairs'
     },
     {
       label: 'Turnos del día',
@@ -99,6 +100,7 @@ export class DashboardComponent implements OnInit {
     private cartService: CartService,
     private productsService: ProductsService,
     private usersService: UsersService,
+    private repairsService: RepairsService,
     private router: Router
   ) {}
 
@@ -152,6 +154,11 @@ export class DashboardComponent implements OnInit {
 
     this.usersService.getUsers({ pageIndex: 0, pageSize: 1 }).subscribe((users) => {
       this.updateStat('Usuarios', String(users.total));
+    });
+
+    this.repairsService.getRepairs().subscribe((repairs) => {
+      const activeRepairs = repairs.filter((repair) => repair.status !== 'completed' && repair.status !== 'cancelled');
+      this.updateStat('Reparaciones', String(activeRepairs.length));
     });
   }
 

@@ -37,6 +37,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
       {
+        path: 'repairs',
+        loadChildren: () => import('./modules/repairs/repairs.module').then((m) => m.RepairsModule)
+      },
+      {
         path: 'users',
         canActivate: [RoleGuard],
         data: { roles: ['admin'] },
@@ -56,6 +60,10 @@ const routes: Routes = [
       {
         path: 'profile',
         loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule)
+      },
+      {
+        path: 'repairs',
+        loadChildren: () => import('./modules/repairs/repairs.module').then((m) => m.RepairsModule)
       }
     ]
   },

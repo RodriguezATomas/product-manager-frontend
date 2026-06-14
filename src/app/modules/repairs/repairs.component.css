@@ -1,0 +1,288 @@
+.repairs-page {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.repairs-page-title {
+  margin: 0 0 20px;
+  text-align: center;
+  color: #f2f8ff;
+  font-size: 1.9rem;
+  letter-spacing: 0.04em;
+}
+
+.repairs-page-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.repairs-card {
+  border-radius: 18px;
+  background: #102439;
+  border: 1px solid rgba(61, 130, 194, 0.22);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+  color: #dfeeff;
+}
+
+.repairs-section-title {
+  margin: 0 0 18px;
+  color: #f2f8ff;
+  font-weight: 700;
+}
+
+.repairs-form {
+  display: grid;
+  gap: 14px;
+}
+
+.repairs-form mat-form-field {
+  width: 100%;
+}
+
+.repairs-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.repair-confirmation {
+  display: grid;
+  gap: 10px;
+}
+
+.repair-ready-card {
+  border-color: rgba(34, 198, 207, 0.55);
+  background: rgba(34, 198, 207, 0.08);
+}
+
+.appointment-picker {
+  display: grid;
+  gap: 14px;
+}
+
+.appointment-picker-title {
+  margin: 0;
+  color: #f2f8ff;
+  font-weight: 700;
+}
+
+.appointment-picker-panel {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1fr);
+  gap: 24px;
+  padding: 18px;
+  border: 1px solid #2d7be8;
+  border-radius: 12px;
+  background: rgba(4, 20, 38, 0.5);
+}
+
+.calendar-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.calendar-header,
+.selected-appointment {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-header {
+  justify-content: space-between;
+}
+
+.calendar-header strong,
+.time-panel strong {
+  color: #f2f8ff;
+}
+
+.calendar-header strong {
+  text-transform: capitalize;
+}
+
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.calendar-weekdays span {
+  color: #8ea3b8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calendar-day {
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: #dfeeff;
+  cursor: pointer;
+  font: inherit;
+}
+
+.calendar-day.is-selected {
+  background: #1f6fe5;
+  color: #ffffff;
+}
+
+.calendar-day:not(.is-disabled):hover {
+  border-color: #2d7be8;
+}
+
+.calendar-day.is-disabled {
+  color: rgba(223, 238, 255, 0.35);
+  cursor: not-allowed;
+}
+
+.available-days-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8ea3b8;
+  font-size: 13px;
+}
+
+.available-days-label span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c6cf;
+}
+
+.time-panel {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.time-panel-helper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8ea3b8;
+}
+
+.time-panel-helper mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.time-button {
+  min-height: 42px;
+  border: 1px solid rgba(61, 130, 194, 0.38);
+  border-radius: 8px;
+  background: rgba(16, 36, 57, 0.75);
+  color: #dfeeff;
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+}
+
+.time-button.is-selected {
+  background: #1f6fe5;
+  border-color: #1f6fe5;
+  color: #ffffff;
+}
+
+.time-button:disabled {
+  color: rgba(223, 238, 255, 0.35);
+  cursor: not-allowed;
+}
+
+.selected-appointment {
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #2d7be8;
+  border-radius: 12px;
+  background: rgba(31, 111, 229, 0.12);
+}
+
+.selected-appointment mat-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #1f6fe5;
+}
+
+.selected-appointment div {
+  display: grid;
+  gap: 4px;
+}
+
+.selected-appointment span {
+  color: #8ea3b8;
+}
+
+.selected-appointment strong {
+  color: #f2f8ff;
+}
+
+.repairs-form > button[type="submit"] {
+  justify-self: center;
+  min-width: 280px;
+  min-height: 48px;
+}
+
+.repairs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.repairs-table th,
+.repairs-table td {
+  padding: 12px 8px;
+  text-align: left;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.repairs-table th {
+  color: #8ea3b8;
+  font-weight: 600;
+}
+
+.repairs-table td {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.repairs-action-button {
+  border: 0;
+  background: transparent;
+  color: #4ea1ff;
+  cursor: pointer;
+}
+
+.repairs-action-button.is-danger {
+  color: #ff6b6b;
+}
+
+.empty-repairs-text {
+  margin: 0;
+}
+
+@media (max-width: 899px) {
+  .repairs-page-grid,
+  .repairs-form-grid,
+  .appointment-picker-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .time-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

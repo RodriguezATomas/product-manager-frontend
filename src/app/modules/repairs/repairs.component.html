@@ -1,0 +1,231 @@
+<section class="repairs-page">
+  <h1 class="repairs-page-title">{{ isAdmin ? 'TURNOS DE REPARACIONES' : 'RESERVAR TURNO DE REPARACION' }}</h1>
+
+  <div class="repairs-page-grid" *ngIf="!isAdmin">
+    <mat-card class="repairs-card repair-ready-card" *ngIf="readyRepairs.length">
+      <mat-card-content>
+        <p class="repairs-section-title">Reparacion lista</p>
+        <div class="repair-confirmation" *ngFor="let repair of readyRepairs">
+          <span>Tu reparacion de {{ repair.product.type }} {{ repair.product.brand }} {{ repair.product.model }} ya esta lista.</span>
+          <span>Fecha del turno: {{ formatDate(repair.appointmentDate) }}</span>
+          <button type="button" class="repairs-action-button" (click)="dismissReadyMessage(repair)">
+            Limpiar mensaje
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="repairs-card">
+      <mat-card-content>
+        <p class="repairs-section-title">Datos del turno</p>
+
+        <form class="repairs-form" [formGroup]="repairForm" (ngSubmit)="submitRepair()">
+          <div class="repairs-form-grid" formGroupName="customer">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Telefono</mat-label>
+              <input matInput formControlName="phone" />
+            </mat-form-field>
+          </div>
+
+          <div class="repairs-form-grid" formGroupName="product">
+            <mat-form-field appearance="outline">
+              <mat-label>Producto</mat-label>
+              <input matInput formControlName="type" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Marca</mat-label>
+              <input matInput formControlName="brand" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Modelo</mat-label>
+              <input matInput formControlName="model" />
+            </mat-form-field>
+          </div>
+
+          <div formGroupName="product">
+            <mat-form-field appearance="outline">
+              <mat-label>Problema</mat-label>
+              <textarea matInput rows="4" formControlName="problemDescription"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="appointment-picker">
+            <p class="appointment-picker-title">Fecha y hora disponible*</p>
+
+            <div class="appointment-picker-panel">
+              <div class="calendar-panel">
+                <div class="calendar-header">
+                  <button mat-icon-button type="button" (click)="previousMonth()" aria-label="Mes anterior">
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <strong>{{ currentMonthLabel }}</strong>
+                  <button mat-icon-button type="button" (click)="nextMonth()" aria-label="Mes siguiente">
+                    <mat-icon>chevron_right</mat-icon>
+                  </button>
+                </div>
+
+                <div class="calendar-weekdays">
+                  <span>LUN</span>
+                  <span>MAR</span>
+                  <span>MIE</span>
+                  <span>JUE</span>
+                  <span>VIE</span>
+                  <span>SAB</span>
+                  <span>DOM</span>
+                </div>
+
+                <div class="calendar-days">
+                  <button
+                    type="button"
+                    *ngFor="let day of availableDates"
+                    class="calendar-day"
+                    [class.is-selected]="isSelectedDate(day)"
+                    [class.is-disabled]="day.disabled"
+                    [disabled]="day.disabled"
+                    (click)="selectDate(day)">
+                    {{ day.day }}
+                  </button>
+                </div>
+
+                <div class="available-days-label">
+                  <span></span>
+                  Dias disponibles
+                </div>
+              </div>
+
+              <div class="time-panel">
+                <strong>{{ selectedDateLabel }}</strong>
+                <span class="time-panel-helper">
+                  <mat-icon>schedule</mat-icon>
+                  Selecciona un horario
+                </span>
+
+                <div class="time-grid">
+                  <button
+                    type="button"
+                    *ngFor="let time of availableTimeSlots"
+                    class="time-button"
+                    [class.is-selected]="selectedTime === time"
+                    [disabled]="!selectedDate"
+                    (click)="selectTime(time)">
+                    {{ formatTime(time) }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="selected-appointment">
+              <mat-icon>event_available</mat-icon>
+              <div>
+                <span>Turno seleccionado:</span>
+                <strong>{{ selectedAppointmentLabel }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <button mat-raised-button color="primary" type="submit" [disabled]="saving">
+            Reservar turno
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="repairs-card" *ngIf="confirmedRepair">
+      <mat-card-content>
+        <p class="repairs-section-title">Turno confirmado</p>
+        <div class="repair-confirmation">
+          <span>Cliente: {{ confirmedRepair.customer.name }}</span>
+          <span>Email: {{ confirmedRepair.customer.email }}</span>
+          <span>Telefono: {{ confirmedRepair.customer.phone }}</span>
+          <span>Producto: {{ confirmedRepair.product.type }} {{ confirmedRepair.product.brand }} {{ confirmedRepair.product.model }}</span>
+          <span>Fecha: {{ formatDate(confirmedRepair.appointmentDate) }}</span>
+          <span>Estado: {{ confirmedRepair.status }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="repairs-card">
+    <mat-card-content>
+      <p class="repairs-section-title">{{ isAdmin ? 'Turnos pedidos' : 'Mis turnos' }}</p>
+
+      <table class="repairs-table" *ngIf="visibleRepairs.length; else emptyRepairs">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Contacto</th>
+            <th>Producto</th>
+            <th>Problema</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let repair of visibleRepairs; trackBy: trackByRepair">
+            <td>{{ repair.customer.name }}</td>
+            <td>{{ repair.customer.email }} - {{ repair.customer.phone }}</td>
+            <td>{{ repair.product.type }} {{ repair.product.brand }} {{ repair.product.model }}</td>
+            <td>{{ repair.product.problemDescription }}</td>
+            <td>{{ formatDate(repair.appointmentDate) }}</td>
+            <td>{{ repair.status }}</td>
+            <td>
+              <button
+                *ngIf="!isAdmin && repair.status !== 'cancelled'"
+                type="button"
+                class="repairs-action-button"
+                (click)="cancelRepair(repair)">
+                Cancelar
+              </button>
+              <button
+                *ngIf="isAdmin && repair.status !== 'completed'"
+                type="button"
+                class="repairs-action-button"
+                (click)="markRepairReady(repair)">
+                Avisar lista
+              </button>
+              <button
+                *ngIf="isAdmin && repair.status !== 'completed'"
+                type="button"
+                class="repairs-action-button"
+                (click)="markRepairReady(repair)">
+                Avisar lista
+              </button>
+              <button
+                *ngIf="isAdmin"
+                type="button"
+                class="repairs-action-button"
+                (click)="archiveRepair(repair)">
+                Limpiar
+              </button>
+              <button
+                *ngIf="isAdmin"
+                type="button"
+                class="repairs-action-button is-danger"
+                (click)="deleteRepair(repair)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<ng-template #emptyRepairs>
+  <p class="empty-repairs-text">{{ loading ? 'Cargando turnos...' : 'Todavia no hay turnos cargados.' }}</p>
+</ng-template>
