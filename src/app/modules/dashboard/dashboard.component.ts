@@ -144,7 +144,7 @@ export class DashboardComponent implements OnInit {
     this.productsService.getProducts().subscribe((products) => {
       this.updateStat('Productos', String(products.length));
       this.lowStockProducts = products
-        .filter((product) => product.stock <= 10)
+        .filter((product) => product.stock <= 5)
         .sort((firstProduct, secondProduct) => firstProduct.stock - secondProduct.stock)
         .map((product) => ({
           name: product.name,

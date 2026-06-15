@@ -1,0 +1,42 @@
+<section class="products-toolbar">
+  <div>
+    <p>Gestiona las categorias del catalogo.</p>
+  </div>
+
+  <a mat-stroked-button routerLink="/products" class="dashboard-secondary-button">
+    Volver a productos
+  </a>
+</section>
+
+<section class="dashboard-panel">
+  <div class="category-form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Categoria</mat-label>
+      <input matInput [(ngModel)]="categoryName" />
+    </mat-form-field>
+
+    <button mat-flat-button type="button" class="dashboard-primary-button" (click)="saveCategory()">
+      {{ editingCategoryId ? 'Guardar cambios' : 'Agregar categoria' }}
+    </button>
+
+    <button mat-stroked-button type="button" class="dashboard-secondary-button" *ngIf="editingCategoryId" (click)="resetForm()">
+      Cancelar
+    </button>
+  </div>
+
+  <div class="category-list">
+    <div class="category-row" *ngFor="let category of categories">
+      <span>{{ category.name }}</span>
+
+      <div>
+        <button mat-button type="button" (click)="editCategory(category)">
+          Editar
+        </button>
+
+        <button mat-flat-button type="button" class="product-delete-button" (click)="deleteCategory(category)">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

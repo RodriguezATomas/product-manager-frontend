@@ -3,6 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Product, ProductPayload } from '../../models/product.model';
 
+interface ProductFormDialogData {
+  product: Product | null;
+  categories: string[];
+}
+
 @Component({
   selector: 'app-product-form-dialog',
   templateUrl: './product-form-dialog.component.html',
@@ -13,62 +18,51 @@ export class ProductFormDialogComponent implements OnInit {
 
   selectedFile!: File;
 
-  readonly defaultCategories = [
-    'Perifericos',
-    'Monitores',
-    'Notebooks',
-    'Componentes',
-    'Almacenamiento',
-    'Redes',
-    'Impresoras',
-    'Accesorios',
-    'Software'
-  ];
-
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Product | null,
+    @Inject(MAT_DIALOG_DATA) public data: ProductFormDialogData,
     private dialogRef: MatDialogRef<ProductFormDialogComponent>,
     private fb: FormBuilder
   ) {}
 
   get isEditMode(): boolean {
-    return Boolean(this.data);
+    return Boolean(this.data.product);
   }
 
   get categoryOptions(): string[] {
-    const currentCategory = this.data?.category?.trim();
+    const currentCategory = this.data.product?.category?.trim();
+    const categories = this.data.categories;
 
-    if (currentCategory && !this.defaultCategories.includes(currentCategory)) {
-      return [currentCategory, ...this.defaultCategories];
+    if (currentCategory && !categories.includes(currentCategory)) {
+      return [currentCategory, ...categories];
     }
 
-    return this.defaultCategories;
+    return categories;
   }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [
-        this.data?.name ?? '',
+        this.data.product?.name ?? '',
         [Validators.required, Validators.minLength(3)]
       ],
 
       description: [
-        this.data?.description ?? '',
+        this.data.product?.description ?? '',
         [Validators.required, Validators.minLength(10)]
       ],
 
       price: [
-        this.data?.price ?? 0,
+        this.data.product?.price ?? 0,
         [Validators.required, Validators.min(0)]
       ],
 
       category: [
-        this.data?.category ?? '',
+        this.data.product?.category ?? '',
         [Validators.required]
       ],
 
       stock: [
-        this.data?.stock ?? 0,
+        this.data.product?.stock ?? 0,
         [Validators.required, Validators.min(0)]
       ]
     });

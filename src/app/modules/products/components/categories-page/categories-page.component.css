@@ -1,0 +1,24 @@
+.products-toolbar {
+  margin-bottom: 28px;
+}
+
+.category-form-row,
+.category-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-form-row mat-form-field {
+  width: min(520px, 100%);
+}
+
+.category-row {
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.product-delete-button {
+  background: #dc4d63 !important;
+  color: #fff !important;
+}

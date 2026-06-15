@@ -27,6 +27,14 @@
   gap: 18px;
 }
 
+.category-form-row mat-form-field {
+  flex: 1;
+}
+
+:host ::ng-deep .mat-mdc-paginator {
+  margin-top: 18px;
+}
+
 .product-card,
 .skeleton-card {
   position: relative;

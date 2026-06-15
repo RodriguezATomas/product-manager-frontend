@@ -4,16 +4,22 @@
       <p>Gestioná el catálogo, precios y stock.</p>
     </div>
 
-    <button *ngIf="isAdmin" mat-flat-button type="button" class="dashboard-primary-button" (click)="openCreateDialog()">
-      <mat-icon>inventory_2</mat-icon>
-      Nuevo producto
-    </button>
+    <div *ngIf="isAdmin">
+      <button mat-stroked-button type="button" class="dashboard-secondary-button" routerLink="/products/categories">
+        Ver categorias
+      </button>
+
+      <button mat-flat-button type="button" class="dashboard-primary-button" style="margin-left: 14px;" (click)="openCreateDialog()">
+        <mat-icon>inventory_2</mat-icon>
+        Nuevo producto
+      </button>
+    </div>
   </section>
 
   <section class="dashboard-panel">
     <div *ngIf="!loading; else loadingState" class="products-grid">
       
-      <mat-card class="product-card" *ngFor="let product of products; trackBy: trackByProduct">
+      <mat-card class="product-card" *ngFor="let product of pagedProducts; trackBy: trackByProduct">
         <div class="product-image-shell">
           <img class="product-image" [src]="getProductImage(product)" [alt]="product.name" (error)="handleProductImageError($event)" />
           <div class="product-status-indicator" [class.product-status-indicator-out]="product.stock <= 0">
@@ -65,6 +71,15 @@
         <p>{{ isAdmin ? 'Podés crear el primer producto desde esta pantalla.' : 'Todavía no hay productos cargados en el catálogo.' }}</p>
       </div>
     </div>
+
+    <mat-paginator
+      *ngIf="!loading && products.length > pageSize"
+      [length]="products.length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [hidePageSize]="true"
+      (page)="changePage($event)">
+    </mat-paginator>
   </section>
 </ng-container>
 
@@ -104,13 +119,13 @@
     <div class="store-section-header">
       <h2>{{ storeFavorites ? 'Favoritos' : storeHome ? 'Productos destacados' : 'Productos' }}</h2>
       <div class="store-category-filters" *ngIf="!storeHome && !storeFavorites">
-        <button type="button" class="store-category-chip" [class.is-active]="!selectedStoreCategory" (click)="selectedStoreCategory = ''">Todas</button>
-        <button type="button" class="store-category-chip" *ngFor="let category of storeCategories" [class.is-active]="selectedStoreCategory === category" (click)="selectedStoreCategory = category">{{ category }}</button>
+        <button type="button" class="store-category-chip" [class.is-active]="!selectedStoreCategory" (click)="selectStoreCategory('')">Todas</button>
+        <button type="button" class="store-category-chip" *ngFor="let category of storeCategories" [class.is-active]="selectedStoreCategory === category.name" (click)="selectStoreCategory(category.name)">{{ category.name }}</button>
       </div>
     </div>
 
     <div *ngIf="!loading; else loadingState" class="storefront-grid">
-      <mat-card class="storefront-card" *ngFor="let product of visibleStoreProducts; trackBy: trackByProduct">
+      <mat-card class="storefront-card" *ngFor="let product of pagedVisibleStoreProducts; trackBy: trackByProduct">
         <span class="storefront-badge">{{ getProductStatusLabel(product) }}</span>
 
         <div class="storefront-image-shell">
@@ -138,6 +153,15 @@
         <p>Todavía no hay productos cargados en el catálogo.</p>
       </div>
     </div>
+
+    <mat-paginator
+      *ngIf="!loading && visibleStoreProducts.length > pageSize"
+      [length]="visibleStoreProducts.length"
+      [pageIndex]="storePageIndex"
+      [pageSize]="pageSize"
+      [hidePageSize]="true"
+      (page)="changeStorePage($event)">
+    </mat-paginator>
   </section>
 </ng-template>
 

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -8,8 +9,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
+import { ProductCategory } from './models/product-category.model';
 import { Product, ProductPayload } from './models/product.model';
 import { CartService } from './services/cart.service';
+import { ProductCategoriesService } from './services/product-categories.service';
 import { ProductsService } from './services/products.service';
 
 interface StoreBenefit {
@@ -30,20 +33,12 @@ export class ProductsComponent implements OnInit {
   storeFavorites = false;
   selectedStoreCategory = '';
   favoriteProductIds: string[] = [];
+  pageIndex = 0;
+  storePageIndex = 0;
+  readonly pageSize = 12;
   readonly fallbackProductImage = 'assets/images/esueldos-logo-azul.png';
   private readonly favoritesStorageKey = 'favoriteProductIds';
-  readonly storeCategories = [
-    'procesadores',
-    'placas madres',
-    'memorias RAM',
-    'coolers',
-    'placas de video',
-    'gabinetes',
-    'monitores',
-    'perifericos',
-    'fuentes',
-    'discos solidos'
-  ];
+  storeCategories: ProductCategory[] = [];
   readonly storeBenefits: StoreBenefit[] = [
     { icon: 'local_shipping', title: 'Envios rapidos', description: 'A todo el pais' },
     { icon: 'verified_user', title: 'Garantia oficial', description: 'Productos 100% originales' },
@@ -54,6 +49,7 @@ export class ProductsComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private productsService: ProductsService,
+    private productCategoriesService: ProductCategoriesService,
     private cartService: CartService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -75,7 +71,12 @@ export class ProductsComponent implements OnInit {
   }
 
   get featuredProducts(): Product[] {
-    return this.products.slice(0, 5);
+    return this.products.slice(0, 4);
+  }
+
+  get pagedProducts(): Product[] {
+    const startIndex = this.pageIndex * this.pageSize;
+    return this.products.slice(startIndex, startIndex + this.pageSize);
   }
 
   get visibleStoreProducts(): Product[] {
@@ -90,6 +91,15 @@ export class ProductsComponent implements OnInit {
     return products.filter((product) => product.category.toLowerCase() === this.selectedStoreCategory.toLowerCase());
   }
 
+  get pagedVisibleStoreProducts(): Product[] {
+    const startIndex = this.storePageIndex * this.pageSize;
+    return this.visibleStoreProducts.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get categoryNames(): string[] {
+    return this.storeCategories.map((category) => category.name);
+  }
+
   get cartItemsCount(): number {
     return this.cartService.getItemsCount();
   }
@@ -98,6 +108,7 @@ export class ProductsComponent implements OnInit {
     this.storeHome = Boolean(this.route.snapshot.data['storeHome']);
     this.storeFavorites = Boolean(this.route.snapshot.data['storeFavorites']);
     this.favoriteProductIds = JSON.parse(localStorage.getItem(this.favoritesStorageKey) || '[]');
+    this.loadCategories();
     this.loadProducts();
   }
 
@@ -109,7 +120,10 @@ export class ProductsComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ProductFormDialogComponent, {
       width: '600px',
-      data: null
+      data: {
+        product: null,
+        categories: this.categoryNames
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -164,7 +178,10 @@ export class ProductsComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ProductFormDialogComponent, {
       width: '600px',
-      data: product
+      data: {
+        product,
+        categories: this.categoryNames
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -243,6 +260,19 @@ export class ProductsComponent implements OnInit {
     this.router.navigate(['/products/cart']);
   }
 
+  changePage(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+  }
+
+  changeStorePage(event: PageEvent): void {
+    this.storePageIndex = event.pageIndex;
+  }
+
+  selectStoreCategory(category: string): void {
+    this.selectedStoreCategory = category;
+    this.storePageIndex = 0;
+  }
+
   addToCart(product: Product): void {
     const result = this.cartService.addProduct(product);
 
@@ -279,11 +309,22 @@ export class ProductsComponent implements OnInit {
     ).subscribe({
       next: (products) => {
         this.products = products;
+        this.pageIndex = 0;
+        this.storePageIndex = 0;
       },
       error: (error) => {
         this.products = [];
         this.showRequestError(error, 'No se pudo cargar la lista de productos.');
       }
+    });
+  }
+
+  private loadCategories(): void {
+    this.productCategoriesService.getCategories().subscribe({
+      next: (categories) => {
+        this.storeCategories = categories;
+      },
+      error: (error) => this.showRequestError(error, 'No se pudo cargar la lista de categorias.')
     });
   }
 
