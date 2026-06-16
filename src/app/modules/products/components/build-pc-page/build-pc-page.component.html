@@ -44,6 +44,9 @@
       <mat-icon>inventory</mat-icon>
       <h2>No hay componentes para {{ currentStep.label }}</h2>
       <p>No hay productos cargados en esta categoria.</p>
+      <button mat-stroked-button type="button" class="dashboard-secondary-button" (click)="loadProducts()">
+        Recargar
+      </button>
     </div>
   </div>
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { finalize } from 'rxjs';
+import { finalize, retry } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
@@ -76,8 +76,13 @@ export class BuildPcPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
     this.loading = true;
     this.productsService.getProducts().pipe(
+      retry({ count: 2, delay: 1000 }),
       finalize(() => {
         this.loading = false;
       })
