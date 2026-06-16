@@ -19,6 +19,7 @@ import { ProductFormDialogComponent } from './components/product-form-dialog/pro
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { OrdersPageComponent } from './components/orders-page/orders-page.component';
 import { CategoriesPageComponent } from './components/categories-page/categories-page.component';
+import { BuildPcPageComponent } from './components/build-pc-page/build-pc-page.component';
 
 export function getPaginatorIntl(): MatPaginatorIntl {
   const paginatorIntl = new MatPaginatorIntl();
@@ -42,6 +43,7 @@ export function getPaginatorIntl(): MatPaginatorIntl {
     CartPageComponent,
     OrdersPageComponent,
     CategoriesPageComponent,
+    BuildPcPageComponent,
     ProductFormDialogComponent,
     ConfirmDialogComponent
   ],

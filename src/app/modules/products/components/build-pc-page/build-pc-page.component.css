@@ -1,0 +1,60 @@
+.build-pc-page {
+  display: grid;
+  gap: 28px;
+}
+
+.build-pc-step-card {
+  margin-bottom: 0;
+}
+
+.build-pc-page .storefront-grid {
+  row-gap: 28px;
+}
+
+.build-pc-page .storefront-card.is-selected {
+  border-color: #1c7dff;
+}
+
+.build-pc-navigation {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding-top: 8px;
+}
+
+.build-pc-navigation button {
+  min-width: 150px;
+  border-radius: 12px;
+}
+
+.build-pc-selected-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  color: #f2f8ff;
+}
+
+.build-pc-selected-row > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.build-pc-selected-row span {
+  color: #95b8dc;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.build-pc-selected-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.build-pc-selected-actions button {
+  min-width: 92px;
+  border-radius: 10px;
+}

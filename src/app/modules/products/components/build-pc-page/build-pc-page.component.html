@@ -1,0 +1,90 @@
+<section class="store-section build-pc-page">
+  <div class="store-section-header">
+    <h2>Armar PC</h2>
+  </div>
+
+  <mat-card class="cart-summary-card build-pc-step-card">
+    <mat-card-content>
+      <p class="cart-section-title">Paso {{ currentStepIndex + 1 }} de {{ steps.length }}: {{ currentStep.label }}</p>
+
+      <div class="store-category-filters">
+        <button
+          type="button"
+          class="store-category-chip"
+          *ngFor="let step of steps; let index = index"
+          [class.is-active]="index === currentStepIndex"
+          (click)="currentStepIndex = index">
+          {{ step.label }}
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="!loading; else loadingState" class="storefront-grid">
+    <mat-card class="storefront-card" [class.is-selected]="isSelected(product)" *ngFor="let product of currentStepProducts">
+      <span class="storefront-badge">{{ product.stock > 0 ? 'Disponible' : 'Sin stock' }}</span>
+
+      <div class="storefront-image-shell">
+        <img class="storefront-image" [src]="getProductImage(product)" [alt]="product.name" (error)="handleProductImageError($event)" />
+      </div>
+
+      <div class="storefront-copy">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price | currency:'USD':'symbol':'1.0-2' }}</p>
+      </div>
+
+      <div class="storefront-actions">
+        <button mat-flat-button type="button" class="store-primary-button" [disabled]="product.stock <= 0" (click)="selectProduct(product)">
+          {{ isSelected(product) ? 'Seleccionado' : 'Elegir' }}
+        </button>
+      </div>
+    </mat-card>
+
+    <div class="empty-state" *ngIf="!currentStepProducts.length">
+      <mat-icon>inventory</mat-icon>
+      <h2>No hay componentes para {{ currentStep.label }}</h2>
+      <p>No hay productos cargados en esta categoria.</p>
+    </div>
+  </div>
+
+  <mat-card class="cart-summary-card">
+    <mat-card-content>
+      <p class="cart-section-title">Componentes elegidos</p>
+
+      <div class="build-pc-selected-row" *ngFor="let entry of selectedEntries">
+        <div>
+          <span>{{ entry.step.label }}</span>
+          <strong>{{ entry.product.name }}</strong>
+        </div>
+
+        <div class="build-pc-selected-actions">
+          <strong>{{ entry.product.price | currency:'USD':'symbol':'1.0-2' }}</strong>
+          <button mat-stroked-button type="button" (click)="clearSelection(entry.step.key)">
+            Quitar
+          </button>
+        </div>
+      </div>
+
+      <div class="cart-summary-row cart-summary-total">
+        <span>Total</span>
+        <strong>{{ selectedTotal | currency:'USD':'symbol':'1.0-2' }}</strong>
+      </div>
+
+      <div class="storefront-actions build-pc-navigation">
+        <button mat-stroked-button type="button" class="dashboard-secondary-button" [disabled]="currentStepIndex === 0" (click)="previousStep()">
+          Anterior
+        </button>
+
+        <button mat-flat-button type="button" class="store-primary-button" (click)="nextStep()">
+          {{ isLastStep ? 'Ir al metodo de pago' : 'Siguiente' }}
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<ng-template #loadingState>
+  <div class="products-grid">
+    <div class="skeleton-card" *ngFor="let card of [1, 2, 3, 4, 5, 6]"></div>
+  </div>
+</ng-template>
