@@ -7,7 +7,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './profile.component';
 
@@ -22,7 +21,6 @@ import { ProfileComponent } from './profile.component';
     MatIconModule,
     MatInputModule,
     MatSnackBarModule,
-    MatSlideToggleModule, // NUEVO: habilita el componente mat-slide-toggle para el switch de tema.
     ProfileRoutingModule
   ]
 })

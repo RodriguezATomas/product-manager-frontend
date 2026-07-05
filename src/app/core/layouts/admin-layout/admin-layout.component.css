@@ -7,8 +7,8 @@
   display: grid;
   grid-template-columns: 260px 1fr;
   min-height: 100vh;
-  background: #07111f;
-  color: #f4f7fb;
+  background: #f7f8ff;
+  color: #081329;
 }
 
 .dashboard-sidebar {
@@ -16,8 +16,8 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 24px 16px;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  background: #081524;
+  border-right: 1px solid rgba(73, 55, 255, 0.12);
+  background: #06152c;
 }
 
 .sidebar-brand {
@@ -43,14 +43,14 @@
   gap: 12px;
   padding: 12px 14px;
   border-radius: 10px;
-  color: #c8d4e3;
+  color: #dbe4ff;
   text-decoration: none;
   transition: background 0.2s ease;
 }
 
 .sidebar-link:hover,
 .sidebar-link.is-active {
-  background: #1677ff;
+  background: #4937ff;
   color: #ffffff;
 }
 
@@ -79,11 +79,12 @@
 
 .sidebar-user-info strong {
   font-size: 14px;
+  color: #ffffff;
 }
 
 .sidebar-user-info span {
   font-size: 12px;
-  color: #8ea3b8;
+  color: #ffffff;
 }
 
 .dashboard-main {
@@ -113,13 +114,8 @@
 
 :host ::ng-deep .dashboard-header-actions .mdc-label,
 :host ::ng-deep .dashboard-header-actions .mdc-button__label {
-  color: #ffffff !important;
+  color: #081329 !important;
 }
-
-:host ::ng-deep .mat-mdc-slide-toggle label {
-  color: #ffffff !important;
-}
-
 
 @media (max-width: 768px) {
   .dashboard-layout {
@@ -128,7 +124,7 @@
 
   .dashboard-sidebar {
     border-right: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(73, 55, 255, 0.12);
   }
 
   .dashboard-header {

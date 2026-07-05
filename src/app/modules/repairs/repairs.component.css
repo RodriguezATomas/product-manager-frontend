@@ -6,7 +6,7 @@
 .repairs-page-title {
   margin: 0 0 20px;
   text-align: center;
-  color: #f2f8ff;
+  color: #081329;
   font-size: 1.9rem;
   letter-spacing: 0.04em;
 }
@@ -20,15 +20,15 @@
 
 .repairs-card {
   border-radius: 18px;
-  background: #102439;
-  border: 1px solid rgba(61, 130, 194, 0.22);
+  background: #ffffff;
+  border: 1px solid rgba(73, 55, 255, 0.22);
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
-  color: #dfeeff;
+  color: #202a44;
 }
 
 .repairs-section-title {
   margin: 0 0 18px;
-  color: #f2f8ff;
+  color: #081329;
   font-weight: 700;
 }
 
@@ -39,6 +39,28 @@
 
 .repairs-form mat-form-field {
   width: 100%;
+}
+
+:host ::ng-deep .repairs-form .mat-mdc-text-field-wrapper {
+  background: #ffffff;
+}
+
+:host ::ng-deep .repairs-form .mat-mdc-form-field-label,
+:host ::ng-deep .repairs-form .mat-mdc-floating-label,
+:host ::ng-deep .repairs-form .mat-mdc-input-element,
+:host ::ng-deep .repairs-form textarea {
+  color: #081329 !important;
+}
+
+:host ::ng-deep .repairs-form input::placeholder,
+:host ::ng-deep .repairs-form textarea::placeholder {
+  color: #66708f !important;
+}
+
+:host ::ng-deep .repairs-form .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+:host ::ng-deep .repairs-form .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+:host ::ng-deep .repairs-form .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+  border-color: rgba(73, 55, 255, 0.28) !important;
 }
 
 .repairs-form-grid {
@@ -64,7 +86,7 @@
 
 .appointment-picker-title {
   margin: 0;
-  color: #f2f8ff;
+  color: #081329;
   font-weight: 700;
 }
 
@@ -72,10 +94,11 @@
   display: grid;
   grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1fr);
   gap: 24px;
-  padding: 18px;
-  border: 1px solid #2d7be8;
-  border-radius: 12px;
-  background: rgba(4, 20, 38, 0.5);
+  padding: 22px;
+  border: 1px solid rgba(73, 55, 255, 0.22);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(73, 55, 255, 0.10);
 }
 
 .calendar-panel {
@@ -95,7 +118,7 @@
 
 .calendar-header strong,
 .time-panel strong {
-  color: #f2f8ff;
+  color: #081329;
 }
 
 .calendar-header strong {
@@ -111,17 +134,17 @@
 }
 
 .calendar-weekdays span {
-  color: #8ea3b8;
+  color: #66708f;
   font-size: 12px;
   font-weight: 700;
 }
 
 .calendar-day {
   min-height: 40px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(73, 55, 255, 0.08);
   border-radius: 10px;
-  background: transparent;
-  color: #dfeeff;
+  background: #f7f8ff;
+  color: #202a44;
   cursor: pointer;
   font: inherit;
 }
@@ -133,10 +156,13 @@
 
 .calendar-day:not(.is-disabled):hover {
   border-color: #2d7be8;
+  background: rgba(73, 55, 255, 0.10);
 }
 
 .calendar-day.is-disabled {
-  color: rgba(223, 238, 255, 0.35);
+  background: transparent;
+  border-color: transparent;
+  color: #a9b2c8;
   cursor: not-allowed;
 }
 
@@ -144,7 +170,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #8ea3b8;
+  color: #66708f;
   font-size: 13px;
 }
 
@@ -165,7 +191,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #8ea3b8;
+  color: #66708f;
 }
 
 .time-panel-helper mat-icon {
@@ -182,10 +208,10 @@
 
 .time-button {
   min-height: 42px;
-  border: 1px solid rgba(61, 130, 194, 0.38);
-  border-radius: 8px;
-  background: rgba(16, 36, 57, 0.75);
-  color: #dfeeff;
+  border: 1px solid rgba(73, 55, 255, 0.28);
+  border-radius: 10px;
+  background: #f7f8ff;
+  color: #081329;
   cursor: pointer;
   font: inherit;
   white-space: nowrap;
@@ -198,16 +224,27 @@
 }
 
 .time-button:disabled {
-  color: rgba(223, 238, 255, 0.35);
+  color: #a9b2c8;
   cursor: not-allowed;
+}
+
+.time-button:not(:disabled):hover {
+  border-color: #4937ff;
+  background: rgba(73, 55, 255, 0.10);
+}
+
+.repairs-form textarea {
+  min-height: 96px;
+  max-height: 120px;
+  resize: none;
 }
 
 .selected-appointment {
   gap: 14px;
   padding: 16px;
-  border: 1px solid #2d7be8;
-  border-radius: 12px;
-  background: rgba(31, 111, 229, 0.12);
+  border: 1px solid rgba(73, 55, 255, 0.22);
+  border-radius: 18px;
+  background: #eef4ff;
 }
 
 .selected-appointment mat-icon {
@@ -225,11 +262,11 @@
 }
 
 .selected-appointment span {
-  color: #8ea3b8;
+  color: #66708f;
 }
 
 .selected-appointment strong {
-  color: #f2f8ff;
+  color: #081329;
 }
 
 .repairs-form > button[type="submit"] {
@@ -252,18 +289,18 @@
 }
 
 .repairs-table th {
-  color: #8ea3b8;
+  color: #66708f;
   font-weight: 600;
 }
 
 .repairs-table td {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(73, 55, 255, 0.10);
 }
 
 .repairs-action-button {
   border: 0;
   background: transparent;
-  color: #4ea1ff;
+  color: #6c3cff;
   cursor: pointer;
 }
 

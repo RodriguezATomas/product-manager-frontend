@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdminLayoutComponent } from './core/layouts/admin-layout/admin-layout.component';
 import { RoleHomeRedirectComponent } from './core/layouts/role-home-redirect/role-home-redirect.component';
 import { UserLayoutComponent } from './core/layouts/user-layout/user-layout.component';
@@ -28,8 +27,7 @@ import { UserLayoutComponent } from './core/layouts/user-layout/user-layout.comp
     BrowserAnimationsModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatIconModule,
-    MatSlideToggleModule
+    MatIconModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

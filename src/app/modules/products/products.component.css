@@ -13,12 +13,12 @@
 .products-toolbar h2 {
   margin: 0 0 6px;
   font-size: 1.6rem;
-  color: #f4f7fb;
+  color: #081329;
 }
 
 .products-toolbar p {
   margin: 0;
-  color: #9db0c3;
+  color: #66708f;
 }
 
 .products-grid {
@@ -33,6 +33,26 @@
 
 :host ::ng-deep .mat-mdc-paginator {
   margin-top: 18px;
+  border-radius: 0 0 14px 14px;
+  background: #ffffff;
+  color: #081329;
+  border-top: 1px solid rgba(73, 55, 255, 0.10);
+}
+
+:host ::ng-deep .mat-mdc-paginator .mat-mdc-paginator-container {
+  color: #081329;
+}
+
+:host ::ng-deep .mat-mdc-paginator .mat-mdc-icon-button {
+  color: #4937ff !important;
+}
+
+:host ::ng-deep .mat-mdc-paginator .mat-mdc-paginator-icon {
+  fill: #4937ff !important;
+}
+
+:host ::ng-deep .mat-mdc-paginator .mat-mdc-icon-button[disabled] .mat-mdc-paginator-icon {
+  fill: #8b94aa !important;
 }
 
 .product-card,
@@ -43,8 +63,8 @@
   min-height: 360px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(42, 126, 192, 0.22);
-  box-shadow: 0 20px 50px rgba(14, 88, 146, 0.14);
+  border: 1px solid rgba(73, 55, 255, 0.22);
+  box-shadow: 0 20px 50px rgba(73, 55, 255, 0.14);
   overflow: hidden;
 }
 
@@ -54,7 +74,7 @@
 
 .product-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 24px 60px rgba(14, 88, 146, 0.22);
+  box-shadow: 0 24px 60px rgba(73, 55, 255, 0.22);
 }
 
 .product-image-shell {
@@ -64,7 +84,7 @@
   align-items: center;
   justify-content: center;
   padding: 12px;
-  background: linear-gradient(135deg, rgba(13, 123, 196, 0.12), rgba(100, 181, 246, 0.18));
+  background: linear-gradient(135deg, rgba(73, 55, 255, 0.12), rgba(143, 75, 255, 0.18));
 }
 
 .product-image {
@@ -123,7 +143,7 @@
 }
 
 .status-pulse-off {
-  background: #f97316;
+  background: #ff6b35;
   box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.45);
 }
 
@@ -147,18 +167,18 @@
 }
 
 .category-chip {
-  background: rgba(13, 123, 196, 0.12);
-  color: #0b6aa8;
+  background: rgba(73, 55, 255, 0.12);
+  color: #4937ff;
 }
 
 .stock-badge {
   background: rgba(56, 142, 60, 0.12);
-  color: #2e7d32;
+  color: #18a957;
 }
 
 .stock-badge-low {
   background: rgba(251, 140, 0, 0.14);
-  color: #ef6c00;
+  color: #ff5a2c;
 }
 
 :host ::ng-deep .product-card .mat-mdc-card-header {
@@ -193,7 +213,7 @@
 
 .product-card p {
   margin: 0;
-  color: #4e647a;
+  color: #58627d;
   line-height: 1.5;
   font-size: 0.92rem;
   display: -webkit-box;
@@ -209,7 +229,7 @@
 
 .product-delete-button {
   border-radius: 14px !important;
-  background: linear-gradient(135deg, #dc4d63 0%, #b5233a 100%) !important;
+  background: linear-gradient(135deg, #ff4b55 0%, #df1f3a 100%) !important;
   color: #fff !important;
 }
 
@@ -222,29 +242,37 @@
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
   gap: 24px;
   align-items: center;
-  padding: 40px;
+  padding: 34px 32px;
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(8, 21, 36, 0.9), rgba(10, 29, 48, 0.92));
+  border: 1px solid rgba(73, 55, 255, 0.18);
+  background: linear-gradient(135deg, #ffffff 0%, #f6f8ff 48%, #e8edff 100%);
+  box-shadow: 0 20px 46px rgba(73, 55, 255, 0.18);
   margin-bottom: 18px;
+}
+
+.store-hero-copy {
+  padding-left: 18px;
+  border-left: 5px solid #4937ff;
 }
 
 .store-hero-copy h1 {
   margin: 0 0 14px;
-  font-size: 3rem;
+  font-size: 2.8rem;
   line-height: 1.05;
-  color: #fff;
+  color: #081329;
+  font-weight: 800;
 }
 
 .store-hero-copy p {
   margin: 0 0 22px;
-  color: #d3e4f4;
+  color: #66708f;
   font-size: 1rem;
+  max-width: 480px;
 }
 
 .store-primary-button {
   border-radius: 14px !important;
-  background: #1677ff !important;
+  background: #4937ff !important;
   color: #fff !important;
 }
 
@@ -256,7 +284,9 @@
   min-height: 280px;
   border-radius: 20px;
   overflow: hidden;
-  background: linear-gradient(135deg, #081524, #0e2844);
+  background: transparent;
+  box-shadow: none;
+  border: 0;
 }
 
 .store-hero-image {
@@ -264,7 +294,7 @@
   height: 100%;
   min-height: 280px;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
@@ -281,23 +311,23 @@
   gap: 14px;
   padding: 16px 18px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid rgba(73, 55, 255, 0.12);
 }
 
 .store-benefit mat-icon {
-  color: #2d94ff;
+  color: #4937ff;
 }
 
 .store-benefit strong,
 .store-section-header h2,
 .storefront-copy h3 {
   display: block;
-  color: #fff;
+  color: #081329;
 }
 
 .store-benefit span {
-  color: #9db0c3;
+  color: #66708f;
   font-size: 0.92rem;
 }
 
@@ -322,11 +352,11 @@
 }
 
 .store-category-chip {
-  border: 1px solid rgba(61, 130, 194, 0.36);
+  border: 1px solid rgba(73, 55, 255, 0.36);
   border-radius: 999px;
   padding: 9px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  color: #dfeeff;
+  background: rgba(73, 55, 255, 0.07);
+  color: #202a44;
   cursor: pointer;
   font: inherit;
   font-size: 0.86rem;
@@ -335,8 +365,8 @@
 }
 
 .store-category-chip.is-active {
-  border-color: #1677ff;
-  background: #1677ff;
+  border-color: #4937ff;
+  background: #4937ff;
   color: #fff;
 }
 
@@ -350,20 +380,22 @@
   position: relative;
   padding: 16px;
   border-radius: 18px;
-  background: linear-gradient(180deg, #102439, #0c1c2e);
-  border: 1px solid rgba(61, 130, 194, 0.22);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(180deg, #ffffff, #f7f8ff);
+  border: 1px solid rgba(73, 55, 255, 0.22);
+  box-shadow: 0 18px 36px rgba(73, 55, 255, 0.12);
 }
 
 .storefront-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
   margin-bottom: 14px;
-  padding: 5px 10px;
+  width: calc(100% - 28px);
+  padding: 7px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: rgba(34, 197, 94, 0.14);
+  color: #15803d;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -376,12 +408,12 @@
 }
 
 .storefront-favorite-button {
-  color: #dfeeff;
-  background: rgba(255, 255, 255, 0.08);
+  color: #202a44;
+  background: rgba(73, 55, 255, 0.12);
 }
 
 .storefront-favorite-button.is-active {
-  color: #ff4f7b;
+  color: #ff4b8b;
 }
 
 .storefront-image-shell {
@@ -411,7 +443,7 @@
 
 .storefront-copy p {
   margin: 0;
-  color: #dfeeff;
+  color: #202a44;
   font-weight: 700;
 }
 
@@ -422,7 +454,7 @@
   gap: 10px;
   padding: 40px 24px;
   text-align: center;
-  color: #5e7287;
+  color: #7a839d;
 }
 
 .empty-state mat-icon {

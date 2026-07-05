@@ -117,7 +117,7 @@
 
   <section class="store-section" id="featured-products">
     <div class="store-section-header">
-      <h2>{{ storeFavorites ? 'Favoritos' : storeHome ? 'Productos destacados' : 'Productos' }}</h2>
+      <h2 *ngIf="storeHome || storeFavorites">{{ storeFavorites ? 'Favoritos' : 'Productos destacados' }}</h2>
       <div class="store-category-filters" *ngIf="!storeHome && !storeFavorites">
         <button type="button" class="store-category-chip" [class.is-active]="!selectedStoreCategory" (click)="selectStoreCategory('')">Todas</button>
         <button type="button" class="store-category-chip" *ngFor="let category of storeCategories" [class.is-active]="selectedStoreCategory === category.name" (click)="selectStoreCategory(category.name)">{{ category.name }}</button>

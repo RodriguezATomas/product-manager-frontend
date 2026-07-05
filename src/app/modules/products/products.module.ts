@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ProductsRoutingModule } from './products-routing.module';
 import { CartPageComponent } from './components/cart-page/cart-page.component';
@@ -60,7 +59,6 @@ export function getPaginatorIntl(): MatPaginatorIntl {
     MatPaginatorModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatSlideToggleModule,
     ProductsRoutingModule
   ],
   providers: [

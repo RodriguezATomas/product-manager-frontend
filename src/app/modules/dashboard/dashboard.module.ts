@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AdminPurchasesComponent } from './admin-purchases.component';
@@ -19,7 +18,6 @@ import { DashboardComponent } from './dashboard.component';
     RouterModule,
     MatButtonModule,
     MatIconModule,
-    MatSlideToggleModule,
     DashboardRoutingModule
   ]
 })

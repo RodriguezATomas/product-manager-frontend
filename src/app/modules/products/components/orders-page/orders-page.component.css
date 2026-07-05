@@ -6,7 +6,7 @@
 .orders-page-title {
   margin: 0 0 20px;
   text-align: center;
-  color: #f2f8ff;
+  color: #081329;
   font-size: 1.9rem;
   letter-spacing: 0.04em;
 }
@@ -19,15 +19,15 @@
 
 .orders-card {
   border-radius: 18px;
-  background: #102439;
-  border: 1px solid rgba(61, 130, 194, 0.22);
+  background: #ffffff;
+  border: 1px solid rgba(73, 55, 255, 0.22);
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
-  color: #dfeeff;
+  color: #202a44;
 }
 
 .orders-section-title {
   margin: 0 0 18px;
-  color: #f2f8ff;
+  color: #081329;
   font-weight: 700;
 }
 
@@ -44,18 +44,18 @@
 }
 
 .orders-table th {
-  color: #8ea3b8;
+  color: #66708f;
   font-weight: 600;
 }
 
 .orders-table td {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(73, 55, 255, 0.10);
 }
 
 .orders-link-button {
   border: 0;
   background: transparent;
-  color: #4ea1ff;
+  color: #6c3cff;
   cursor: pointer;
 }
 
@@ -78,13 +78,13 @@
 
 .orders-detail-item {
   padding: 12px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(73, 55, 255, 0.10);
 }
 
 .orders-total-row {
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(73, 55, 255, 0.10);
 }
 
 @media (max-width: 899px) {

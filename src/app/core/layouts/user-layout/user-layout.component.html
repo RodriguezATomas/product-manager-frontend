@@ -1,39 +1,66 @@
-<section class="user-layout">
-  <header class="user-topbar">
-    <a [routerLink]="userHomeRoute" class="user-brand">
-      <img src="assets/images/logo.png" alt="e-Sueldos" class="user-brand-logo" />
-    </a>
+<section class="dashboard-layout">
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-brand">
+      <img src="assets/images/logo.png" alt="e-Sueldos" class="sidebar-logo" />
+    </div>
 
-    <nav class="user-nav">
-      <a [routerLink]="userHomeRoute" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
-      <a routerLink="/products" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Productos</a>
-      <a routerLink="/repairs" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Reparaciones</a>
-      <a routerLink="/products/build-pc" routerLinkActive="is-active">Armá tu PC</a>
-      <a routerLink="/products/orders" routerLinkActive="is-active">Mis pedidos</a>
+    <nav class="sidebar-nav">
+      <a [routerLink]="userHomeRoute" routerLinkActive="is-active" class="sidebar-link" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>home</mat-icon>
+        <span>Inicio</span>
+      </a>
+
+      <a routerLink="/products" routerLinkActive="is-active" class="sidebar-link" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>inventory_2</mat-icon>
+        <span>Productos</span>
+      </a>
+
+      <a routerLink="/repairs" routerLinkActive="is-active" class="sidebar-link" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>build</mat-icon>
+        <span>Reparaciones</span>
+      </a>
+
+      <a routerLink="/products/build-pc" routerLinkActive="is-active" class="sidebar-link">
+        <mat-icon>memory</mat-icon>
+        <span>Arma tu PC</span>
+      </a>
+
+      <a routerLink="/products/orders" routerLinkActive="is-active" class="sidebar-link">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Mis pedidos</span>
+      </a>
+
+      <a routerLink="/profile" routerLinkActive="is-active" class="sidebar-link">
+        <mat-icon>account_circle</mat-icon>
+        <span>Perfil</span>
+      </a>
     </nav>
 
-    <div class="user-actions">
-      <button mat-icon-button type="button" aria-label="Buscar">
-        <mat-icon>search</mat-icon>
-      </button>
-      <button mat-icon-button type="button" aria-label="Favoritos" routerLink="/products/favorites">
-        <mat-icon>favorite_border</mat-icon>
-      </button>
-      <button mat-icon-button type="button" aria-label="Carrito" routerLink="/products/cart">
-        <mat-icon>shopping_cart</mat-icon>
-      </button>
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar">
+        {{ currentUserName.charAt(0) }}
+      </div>
 
-      <button mat-button [routerLink]="userHomeRoute" class="user-account-button">
-        <mat-icon>person</mat-icon>
-        {{ currentUserName }}
-      </button>
-      <button mat-stroked-button type="button" (click)="logout()">
-        Salir
-      </button>
+      <div class="sidebar-user-info">
+        <strong>{{ currentUserName }}</strong>
+        <span>{{ currentUserRoleLabel }}</span>
+      </div>
     </div>
-  </header>
+  </aside>
 
-  <main class="user-main">
+  <main class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="dashboard-header-copy">
+        <h1 *ngIf="pageTitle">{{ pageTitle }}</h1>
+      </div>
+
+      <div class="dashboard-header-actions">
+        <button mat-stroked-button type="button" (click)="logout()">
+          Salir
+        </button>
+      </div>
+    </header>
+
     <router-outlet></router-outlet>
   </main>
 </section>

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
-import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -14,7 +13,6 @@ export class AdminLayoutComponent {
 
   constructor(
     private authService: AuthService,
-    private themeService: ThemeService,
     private router: Router
   ) {
     this.router.events
@@ -38,10 +36,6 @@ export class AdminLayoutComponent {
     return this.isAdmin ? 'Administrador' : 'Usuario';
   }
 
-  get isDarkTheme(): boolean {
-    return this.themeService.isDarkTheme;
-  }
-
   get userHomeRoute(): string {
     return this.isAdmin ? '/dashboard' : '/products';
   }
@@ -49,10 +43,6 @@ export class AdminLayoutComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
-  }
-
-  toggleTheme(): void {
-    this.themeService.toggleTheme();
   }
 
   private updatePageTitle(): void {

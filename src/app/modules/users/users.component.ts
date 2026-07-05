@@ -7,7 +7,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Subject, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ThemeService } from 'src/app/core/services/theme.service';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { UserFormDialogComponent } from './components/user-form-dialog/user-form-dialog.component';
 import { User, UserPayload, UsersQuery } from './models/user.model';
@@ -41,7 +40,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private themeService: ThemeService, // NUEVO: servicio de tema para alternar modo oscuro/claro.
     private usersService: UsersService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -55,10 +53,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   get currentUserName(): string {
     return this.authService.currentUserData?.name || 'Usuario';
-  }
-
-  get isDarkTheme(): boolean {
-    return this.themeService.isDarkTheme; // NUEVO: expone estado del tema al template.
   }
 
   ngOnInit(): void {
@@ -163,10 +157,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
-  }
-
-  toggleTheme(): void {
-    this.themeService.toggleTheme(); // NUEVO: cambia tema y lo persiste en localStorage.
   }
 
   getRoleClass(role: string): string {
